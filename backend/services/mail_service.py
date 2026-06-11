@@ -44,8 +44,8 @@ L'équipe IFRI_MentorLink"""
         print(f"[MAIL] Email envoyé avec succès à {email}")
         return lien
     except Exception as e:
-        print(f"[MAIL ERREUR] Échec envoi email à {email} : {str(e)}")
-        raise
+    error = f"Erreur : {str(e)}"
+    current_step = '1'
 
 # ==========================================
 #  AJOUT : FONCTION POUR LE MOT DE PASSE OUBLIÉ
