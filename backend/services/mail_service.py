@@ -45,8 +45,9 @@ L'équipe IFRI_MentorLink"""
         return lien
     except Exception as e:
         import traceback
-        print(f"[MAIL ERREUR] {traceback.format_exc()}")
-        raise
+        print(f"[REGISTER ERREUR] {traceback.format_exc()}")
+        error = f"Erreur réelle : {str(e)}"
+        current_step = '1'
 
 # ==========================================
 #  AJOUT : FONCTION POUR LE MOT DE PASSE OUBLIÉ
