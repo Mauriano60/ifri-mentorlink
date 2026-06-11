@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Supprimer le compte - IFRI_MentorLink</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <style>
+    .settings-layout { display:flex; flex-direction:row; gap:32px; max-width:1200px; margin:0 auto }
+    .settings-sidebar { width:220px; min-width:220px; background:white; border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); height:fit-content }
+    .settings-sidebar .tab-btn { width:100%; display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; font-size:.9rem; font-weight:500; background:none; border:none; color:var(--slate-600); transition:all .2s; cursor:pointer; text-decoration:none }
+    .settings-sidebar .tab-btn:hover { background:var(--slate-50) }
+    .settings-sidebar .tab-btn.active { background:var(--blue-50); color:var(--blue-600) }
+    .settings-sidebar .tab-btn.danger { color:var(--red-500) }
+    .settings-sidebar .tab-btn.danger.active { background:var(--red-50); color:var(--red-600) }
+    .settings-content { flex:1; background:white; border-radius:12px; padding:32px; box-shadow:0 1px 3px rgba(0,0,0,.08) }
+    .settings-content h3 { font-size:1.25rem; font-family:'Poppins',sans-serif; font-weight:600; color:var(--slate-900); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--slate-100) }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar">
+      <div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div>
+      <div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="{{ url_for('demandes.demandes') }}"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching</a>
+        <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots" style="width:20px"></i> Messages</a>
+        <a href="{{ url_for('notifications.notifications') }}"><i class="bi bi-bell" style="width:20px"></i> Notifications</a>
+        <a href="{{ url_for('settings.modifier_profil_matieres') }}" class="active"><i class="bi bi-gear" style="width:20px"></i> Param&egrave;tres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right" style="width:20px"></i> D&eacute;connexion</button>
+      </nav>
+      <div class="sidebar-user">
+        {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-sm" style="object-fit:cover" />{% else %}<div class="avatar-sm">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+        <div><div class="name">{{ user.prenom }} {{ user.nom }}</div><div class="role">{{ user.filiere_nom or '' }}</div></div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Param&egrave;tres</h1>
+        <div class="header-actions">
+          <button class="bell-btn" onclick="window.location.href='{{ url_for('notifications.notifications') }}'">
+            <i class="bi bi-bell" style="font-size:1.2rem"></i>
+            {% if nb_notifs > 0 %}<span class="bell-dot"></span>{% endif %}
+          </button>
+          {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-circle" style="object-fit:cover" />{% else %}<div class="avatar-circle">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+
+      <div class="dash-content">
+        {% if error %}<div class="alert alert-danger alert-dismissible fade show py-2" style="font-size:.85rem">{{ error }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>{% endif %}
+
+        <div class="settings-layout">
+          <div class="settings-sidebar">
+            <a href="{{ url_for('settings.modifier_profil_matieres') }}" class="tab-btn"><i class="bi bi-person-circle"></i> Compte</a>
+            <a href="{{ url_for('settings.preferences') }}" class="tab-btn"><i class="bi bi-sliders2"></i> Pr&eacute;f&eacute;rences</a>
+            <a href="{{ url_for('settings.confidentialite') }}" class="tab-btn"><i class="bi bi-eye-slash"></i> Confidentialit&eacute;</a>
+            <a href="{{ url_for('settings.supprimer_compte') }}" class="tab-btn danger active"><i class="bi bi-exclamation-triangle"></i> Zone de danger</a>
+          </div>
+          <div class="settings-content">
+            <h3 style="color:var(--red-600)">Zone de danger</h3>
+            <div class="alert alert-danger py-3" style="border-radius:10px;font-size:.9rem">
+              <i class="bi bi-exclamation-triangle me-2"></i>
+              Cette action est irr&eacute;versible. La suppression de votre compte entra&icirc;nera la perte de toutes vos donn&eacute;es (offres, demandes, correspondances, messages).
+            </div>
+            <form method="POST" onsubmit="return confirm('&Ecirc;tes-vous s&ucirc;r de vouloir supprimer votre compte ? Cette action est irr&eacute;versible.');">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <div style="text-align:right">
+                <button type="submit" class="btn" style="background:#dc2626;color:white;padding:10px 32px;border-radius:8px"><i class="bi bi-trash me-1"></i> Supprimer mon compte</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge"></i> Matching</a>
+      <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots"></i> Messages</a>
+    </nav>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

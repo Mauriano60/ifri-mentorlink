@@ -1,0 +1,21 @@
+
+# Environnement virtuel (indispensable pour ne pas uploader des milliers de fichiers inutiles)
+venv/
+ENV/
+env/
+.venv/
+
+# Fichiers de configuration sensibles (Règle d'or en Cybersécurité 🛡️)
+.env
+
+# Caches Python
+**/__pycache__/
+*.py[cod]
+*$py.class
+
+# Stockage local et uploads d'étudiants (si applicable)
+instance/
+uploads/
+
+# Configuration de l'éditeur VS Code
+.vscode/

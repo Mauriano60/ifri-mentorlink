@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<!-- Déclaration du type de document HTML5 -->
+<html lang="fr">
+<!-- Début du document HTML, langue française -->
+
+<head>
+  <!-- Section d'en-tête : métadonnées, liens CSS, titre -->
+
+  <meta charset="UTF-8" />
+  <!-- Encodage des caractères en UTF-8 pour supporter les accents -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Rend la page responsive sur mobile (adapte la largeur à l'écran) -->
+
+  <title>IFRI_MentorLink – Connexion</title>
+  <!-- Titre affiché dans l'onglet du navigateur -->
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <!-- Importation de Bootstrap 5 via CDN pour les classes utilitaires (d-flex, mb-3, etc.) -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <!-- Préconnexion à Google Fonts pour accélérer le chargement de la police -->
+
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" />
+  <!-- Importation de la police DM Sans (poids 400, 500, 600, 700) depuis Google Fonts -->
+
+  <link rel="stylesheet" href="Connexion.css" />
+  <!-- Lien vers notre feuille de style personnalisée -->
+
+</head>
+
+<body>
+<!-- Corps de la page : tout le contenu visible -->
+
+<div class="wrap">
+<!-- Conteneur principal qui englobe les deux panneaux (gauche + droit) -->
+
+  <!-- ===== PANNEAU GAUCHE ===== -->
+  <aside class="left">
+  <!-- Panneau latéral gauche : fond bleu dégradé avec logo, réseau et citation -->
+
+    <div class="logo-row">
+    <!-- Ligne du logo : icône + nom de l'application -->
+
+        <!-- Icône livre SVG bleue -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+          <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+        </svg>
+
+      <span>IFRI_MentorLink</span>
+      <!-- Nom de l'application affiché à droite de l'icône -->
+
+    </div>
+    <!-- Fin logo-row -->
+
+    <div class="net-area">
+    <!-- Zone centrale du panneau gauche contenant l'illustration réseau SVG -->
+
+      <svg viewBox="0 0 220 160" xmlns="http://www.w3.org/2000/svg">
+      <!-- SVG de l'illustration réseau avec trois nœuds connectés par des lignes pointillées -->
+
+        <!-- lignes pointillées reliant les trois nœuds -->
+        <line x1="48" y1="88" x2="105" y2="34" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <!-- Ligne pointillée entre le nœud blanc (bas-gauche) et le nœud bleu (haut-centre) -->
+
+        <line x1="105" y1="34" x2="148" y2="96" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <!-- Ligne pointillée entre le nœud bleu (haut-centre) et le nœud vert (bas-droite) -->
+
+        <line x1="48" y1="88" x2="148" y2="96" stroke="rgba(255,255,255,.4)" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <!-- Ligne pointillée entre le nœud blanc (bas-gauche) et le nœud vert (bas-droite) -->
+
+        <!-- halo vert autour du nœud vert (deux cercles transparents concentriques) -->
+        <circle cx="148" cy="96" r="34" fill="rgba(34,197,94,.10)" stroke="rgba(34,197,94,.20)" stroke-width="1"/>
+        <!-- Grand cercle translucide externe formant l'anneau de halo vert -->
+
+        <circle cx="148" cy="96" r="22" fill="rgba(34,197,94,.15)"/>
+        <!-- Cercle intermédiaire légèrement plus opaque du halo vert -->
+
+        <!-- nœud blanc (gauche) -->
+        <circle cx="48" cy="88" r="20" fill="rgba(255,255,255,.12)"/>
+        <!-- Cercle extérieur semi-transparent formant le halo blanc -->
+
+        <circle cx="48" cy="88" r="13" fill="#ffffff"/>
+        <!-- Cercle blanc plein représentant le nœud gauche -->
+
+        <!-- nœud bleu (haut-centre) -->
+        <circle cx="105" cy="34" r="10" fill="rgba(100,160,255,.30)"/>
+        <!-- Cercle extérieur semi-transparent formant le halo bleu -->
+
+        <circle cx="105" cy="34" r="7" fill="#6ea8fe"/>
+        <!-- Cercle bleu plein représentant le nœud du haut -->
+
+        <!-- nœud vert (droite) -->
+        <circle cx="148" cy="96" r="14" fill="#22c55e"/>
+        <!-- Cercle vert plein représentant le nœud principal à droite -->
+
+      </svg>
+    </div>
+    <!-- Fin net-area -->
+
+    <blockquote class="quote">
+    <!-- Citation inspirante affichée en bas du panneau gauche -->
+      "Chaque expert a été un jour un débutant.<br/>
+      <!-- Première ligne de la citation avec saut de ligne -->
+      IFRI_MentorLink vous connecte."
+      <!-- Deuxième ligne de la citation -->
+    </blockquote>
+
+    <p class="left-foot">© 2026 IFRI_MentorLink</p>
+    <!-- Mention de copyright en bas à gauche du panneau -->
+
+  </aside>
+  <!-- Fin panneau gauche -->
+
+  <!-- ===== PANNEAU DROIT ===== -->
+  <main class="right">
+  <!-- Panneau principal droit : fond gris clair avec le formulaire de connexion -->
+
+    <div class="card-wrap">
+    <!-- Wrapper centré qui contient le badge, les titres et la carte formulaire -->
+
+      <div class="badge-icon mx-auto">
+      <!-- Badge icône centré horizontalement (mx-auto = margin auto Bootstrap) -->
+
+        <!-- Icône livre SVG bleue -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+          <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+        </svg>
+      </div>
+      <!-- Fin badge-icon -->
+
+      <h1 class="login-title">Bon retour parmi nous !</h1>
+      <!-- Titre principal de la page de connexion -->
+
+      <p class="login-sub">Connectez-vous à votre compte IFRI_MentorLink</p>
+      <!-- Sous-titre descriptif sous le titre principal -->
+
+      <div class="fcard">
+      <!-- Carte blanche avec ombre contenant tous les champs du formulaire -->
+
+        <!-- Champ Email / Téléphone -->
+        <div class="mb-3">
+        <!-- Groupe de champ avec marge inférieure Bootstrap (mb-3 = margin-bottom 1rem) -->
+
+          <label class="flabel" for="email">Email ou téléphone</label>
+          <!-- Label lié au champ email via l'attribut for="email" -->
+
+          <input id="email" type="text" class="finput" placeholder="votre@email.com" autocomplete="username"/>
+          <!-- Champ de saisie texte pour l'email ou le numéro de téléphone -->
+          <!-- autocomplete="username" aide le gestionnaire de mots de passe du navigateur -->
+
+          <div class="err-msg" id="err-email"></div>
+          <!-- Zone d'affichage du message d'erreur pour le champ email (vide par défaut) -->
+
+        </div>
+        <!-- Fin groupe email -->
+
+        <!-- Champ Mot de passe -->
+        <div class="mb-4">
+        <!-- Groupe de champ avec marge inférieure plus grande (mb-4 = margin-bottom 1.5rem) -->
+
+          <div class="d-flex justify-content-between align-items-center mb-1">
+          <!-- Ligne flex qui place le label et le lien "oublié" à chaque extrémité -->
+
+            <label class="flabel mb-0" for="password">Mot de passe</label>
+            <!-- Label du champ mot de passe, mb-0 annule la marge inférieure par défaut -->
+
+            <a href="#" class="forgot">Mot de passe oublié ?</a>
+            <!-- Lien cliquable pour récupérer un mot de passe oublié (href="#" = placeholder) -->
+
+          </div>
+          <!-- Fin ligne label + lien -->
+
+          <div class="pw-wrap">
+          <!-- Wrapper relatif permettant de positionner le bouton œil en absolu -->
+
+            <input id="password" type="password" class="finput" placeholder="••••••••" autocomplete="current-password"/>
+            <!-- Champ de saisie du mot de passe (masqué par défaut avec type="password") -->
+            <!-- autocomplete="current-password" aide les gestionnaires de mots de passe -->
+
+            <button class="eye-btn" type="button" id="togglePw" aria-label="Afficher le mot de passe" style="display: none;">
+            <!-- Bouton icône positionné à droite du champ pour afficher/masquer le mot de passe -->
+            <!-- style="display:none;" : caché par défaut, affiché par JS dès la première saisie -->
+            <!-- aria-label pour l'accessibilité des lecteurs d'écran -->
+
+            </button>
+            <!-- Fin bouton œil -->
+
+          </div>
+          <!-- Fin pw-wrap -->
+
+          <div class="err-msg" id="err-pw"></div>
+          <!-- Zone d'affichage du message d'erreur pour le mot de passe (vide par défaut) -->
+
+        </div>
+        <!-- Fin groupe mot de passe -->
+
+        <!-- Bouton de connexion -->
+        <button type="button" class="btn-conn" id="btnLogin">Se connecter</button>
+        <!-- Bouton principal déclenchant la validation et la soumission du formulaire -->
+        <!-- type="button" évite la soumission automatique HTML (géré par JS) -->
+
+        <!-- Séparateur visuel -->
+        <div class="divider">ou</div>
+        <!-- Ligne séparatrice avec le texte "ou" centré, créée via ::before et ::after CSS -->
+
+        <!-- Lien vers la création de compte -->
+        <p class="signup-txt">
+        <!-- Paragraphe d'invitation à créer un compte -->
+
+          Vous n'avez pas de compte ? <a href="#">Créer un compte</a>
+          <!-- Texte + lien cliquable vers la page d'inscription (href="#" = placeholder) -->
+
+        </p>
+        <!-- Fin signup-txt -->
+
+      </div>
+      <!-- Fin fcard (carte formulaire) -->
+
+    </div>
+    <!-- Fin card-wrap -->
+
+  </main>
+  <!-- Fin panneau droit -->
+
+</div>
+<!-- Fin wrap (conteneur principal) -->
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Importation du JavaScript Bootstrap 5 (inclut Popper.js pour les composants interactifs) -->
+
+<script src="Connexion.js"></script>
+<!-- Importation de notre script JavaScript personnalisé (placé en fin de body pour performance) -->
+
+</body>
+<!-- Fin du corps de la page -->
+
+</html>
+<!-- Fin du document HTML -->

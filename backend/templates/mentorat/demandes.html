@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Demandes - IFRI_MentorLink</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar">
+      <div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div>
+      <div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="{{ url_for('demandes.demandes') }}" class="active"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching</a>
+        <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots" style="width:20px"></i> Messages</a>
+        <a href="{{ url_for('notifications.notifications') }}"><i class="bi bi-bell" style="width:20px"></i> Notifications</a>
+        <a href="{{ url_for('settings.modifier_profil_matieres') }}"><i class="bi bi-gear" style="width:20px"></i> Param&egrave;tres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right" style="width:20px"></i> D&eacute;connexion</button>
+      </nav>
+      <div class="sidebar-user">
+        {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-sm" style="object-fit:cover" />{% else %}<div class="avatar-sm">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+        <div><div class="name">{{ user.prenom }} {{ user.nom }}</div><div class="role">{{ user.filiere_nom or '' }}</div></div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Demandes</h1>
+        <div class="header-actions">
+          <button class="bell-btn" onclick="window.location.href='{{ url_for('notifications.notifications') }}'">
+            <i class="bi bi-bell" style="font-size:1.2rem"></i>
+            {% if nb_notifs > 0 %}<span class="bell-dot"></span>{% endif %}
+          </button>
+          {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-circle" style="object-fit:cover" />{% else %}<div class="avatar-circle">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+
+      <div class="dash-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show py-2" style="font-size:.85rem">{{ message }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="filter-bar mb-4 animate-fade-in">
+          <div class="position-relative mb-3">
+  <i class="bi bi-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--slate-400);z-index:1"></i>
+  <input type="text" id="searchInput" class="form-control input-custom" style="padding-left:36px!important" placeholder="Rechercher une demande..." oninput="filterCards()" />
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <select id="filterSubject" class="filter-select flex-grow-1" onchange="filterCards()"><option value="">Mati&egrave;re</option>{% for m in matieres %}<option>{{ m.nom }}</option>{% endfor %}</select>
+            <select id="filterDay" class="filter-select flex-grow-1" onchange="filterCards()"><option value="">Jour</option><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option>Vendredi</option><option>Samedi</option><option>Dimanche</option></select>
+            <input type="time" id="filterTimeStart" class="filter-select flex-grow-1" onchange="filterCards()" value="" title="Heure d&eacute;but" />
+            <input type="time" id="filterTimeEnd" class="filter-select flex-grow-1" onchange="filterCards()" value="" title="Heure fin" />
+            <a href="{{ url_for('demandes.creer_demande') }}" class="btn btn-primary-custom flex-shrink-0"><i class="bi bi-plus-lg me-1"></i> Publier une demande</a>
+          </div>
+        </div>
+
+        <div class="row g-3" id="requestGrid">
+          {% for demande in demandes %}
+          <div class="col-md-6 col-lg-4 request-card-wrapper">
+            {% if match_result and match_result.annonce_id == demande.id %}
+            <div class="request-card" style="border:2px solid var(--teal-500)">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                {% if demande.avatar_url %}<img src="{{ url_for('static', filename=demande.avatar_url.lstrip('static/')) }}" alt="Avatar" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0" />{% else %}<div style="width:48px;height:48px;border-radius:50%;background:var(--blue-100);color:var(--blue-600);font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ demande.prenom[:1]|upper }}{{ demande.nom_user[:1]|upper }}</div>{% endif %}
+                <div>
+                  <p class="fw-semibold mb-0" style="font-size:.9rem">{{ demande.prenom }} {{ demande.nom_user }}</p>
+                  <p style="font-size:.8rem;color:var(--slate-500);margin:0">{{ demande.filiere or '' }} &middot; {{ demande.niveau or '' }}</p>
+                </div>
+                <span style="margin-left:auto;padding:2px 10px;border-radius:999px;font-size:.75rem;font-weight:600;background:var(--teal-50);color:var(--teal-600)">{{ match_result.score_compatibilite }}%</span>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--blue-50);color:var(--blue-600)">{{ demande.matiere }}</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">{{ demande.description }}</p>
+              {% if demande.format %}<p style="font-size:.8rem;color:var(--slate-500);margin-bottom:8px"><i class="bi bi-globe me-1"></i> {{ demande.format }}</p>{% endif %}
+
+              {% if match_result.commun_matieres %}
+              <div class="mb-2">
+                <p style="font-size:.8rem;font-weight:600;color:var(--slate-700);margin-bottom:4px">Mati&egrave;res en commun</p>
+                <div class="d-flex flex-wrap gap-1">{% for mat in match_result.commun_matieres %}<span style="padding:2px 10px;border-radius:999px;font-size:.75rem;background:var(--blue-50);color:var(--blue-600)">{{ mat }}</span>{% endfor %}</div>
+              </div>
+              {% endif %}
+              {% if match_result.commun_dispos %}
+              <div class="mb-2">
+                <p style="font-size:.8rem;font-weight:600;color:var(--slate-700);margin-bottom:4px">Disponibilit&eacute;s communes</p>
+                <div class="d-flex flex-wrap gap-1">{% for d in match_result.commun_dispos %}<span style="padding:2px 10px;border-radius:999px;font-size:.75rem;background:var(--green-50);color:var(--green-600)">{{ d.jour_semaine }} {{ d.heure_debut }}-{{ d.heure_fin }}</span>{% endfor %}</div>
+              </div>
+              {% endif %}
+
+              <div class="d-flex gap-2 mt-2">
+                <form method="POST" action="{{ url_for('demandes.demandes') }}" style="flex:1">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <input type="hidden" name="annonce_id" value="{{ demande.id }}" />
+                  <input type="hidden" name="action" value="confirmer" />
+                  <input type="hidden" name="score" value="{{ match_result.score_compatibilite }}" />
+                  <button type="submit" class="btn w-100" style="background:var(--blue-600);color:white;border:none;padding:6px;font-size:.85rem;font-weight:600;border-radius:8px">Offrir mon aide</button>
+                </form>
+              </div>
+            </div>
+
+            {% else %}
+            <div class="request-card">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                {% if demande.avatar_url %}<img src="{{ url_for('static', filename=demande.avatar_url.lstrip('static/')) }}" alt="Avatar" style="width:48px;height:48px;border-radius:50%;object-fit:cover;flex-shrink:0" />{% else %}<div style="width:48px;height:48px;border-radius:50%;background:var(--blue-100);color:var(--blue-600);font-weight:700;font-size:1rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ demande.prenom[:1]|upper }}{{ demande.nom_user[:1]|upper }}</div>{% endif %}
+                <div>
+                  <p class="fw-semibold mb-0" style="font-size:.9rem">{{ demande.prenom }} {{ demande.nom_user }}</p>
+                  <p style="font-size:.8rem;color:var(--slate-500);margin:0">{{ demande.filiere or '' }} &middot; {{ demande.niveau or '' }}</p>
+                </div>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--amber-50);color:var(--amber-700)">{{ demande.matiere }}</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">{{ demande.description }}</p>
+              {% if demande.format %}<p style="font-size:.8rem;color:var(--slate-500);margin-bottom:8px"><i class="bi bi-globe me-1"></i> Format : {{ demande.format }}</p>{% endif %}
+              {% if demande.disponibilites %}
+              <div class="mb-3">
+                <p style="font-size:.8rem;font-weight:600;color:var(--slate-700);margin-bottom:4px">Disponibilit&eacute;s</p>
+                <div class="d-flex flex-wrap gap-1">
+                  {% for d in demande.disponibilites %}<span style="padding:2px 10px;border-radius:999px;font-size:.75rem;background:var(--green-50);color:var(--green-600)">{{ d.jour_semaine }} {{ d.heure_debut }}-{{ d.heure_fin }}</span>{% endfor %}
+                </div>
+              </div>
+              {% endif %}
+              <form method="POST" action="{{ url_for('demandes.demandes') }}">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                <input type="hidden" name="annonce_id" value="{{ demande.id }}" />
+                <input type="hidden" name="action" value="calculer" />
+                <button type="submit" class="btn w-100" style="background:var(--blue-600);color:white;border:none;padding:8px;font-size:.85rem;font-weight:600;border-radius:8px">Faire le match</button>
+              </form>
+            </div>
+            {% endif %}
+          </div>
+          {% else %}
+          <p style="text-align:center;color:var(--slate-500);padding:48px 0">Aucune demande disponible pour le moment.</p>
+          {% endfor %}
+        </div>
+        <p id="noResults" style="display:none;text-align:center;color:var(--slate-500);padding:48px 0">Aucune demande ne correspond &agrave; vos crit&egrave;res.</p>
+
+        {% if total_pages > 1 %}
+        <nav class="mt-4 d-flex justify-content-center">
+          <ul class="pagination pagination-sm">
+            {% if page > 1 %}<li class="page-item"><a class="page-link" href="?page={{ page-1 }}" style="color:var(--blue-600)">Pr&eacute;c&eacute;dent</a></li>{% endif %}
+            {% for p in range(1, total_pages+1) %}
+            <li class="page-item {% if p == page %}active{% endif %}"><a class="page-link" href="?page={{ p }}" style="{% if p == page %}background:var(--blue-600);border-color:var(--blue-600);color:white{% else %}color:var(--blue-600){% endif %}">{{ p }}</a></li>
+            {% endfor %}
+            {% if page < total_pages %}<li class="page-item"><a class="page-link" href="?page={{ page+1 }}" style="color:var(--blue-600)">Suivant</a></li>{% endif %}
+          </ul>
+        </nav>
+        {% endif %}
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="{{ url_for('demandes.demandes') }}" class="active"><i class="bi bi-inbox"></i> Demandes</a>
+      <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge"></i> Matching</a>
+      <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots"></i> Messages</a>
+    </nav>
+  </div>
+
+  <script>
+    function filterCards() {
+      var q = document.getElementById('searchInput').value.toLowerCase();
+      var subj = document.getElementById('filterSubject').value;
+      var day = document.getElementById('filterDay').value;
+      var cards = document.querySelectorAll('.request-card-wrapper');
+      var visible = 0;
+      cards.forEach(function(c) {
+        var text = c.textContent.toLowerCase();
+        var show = (!q || text.includes(q)) && (!subj || text.includes(subj.toLowerCase())) && (!day || text.includes(day.toLowerCase()));
+        c.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+  </script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

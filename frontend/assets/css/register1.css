@@ -1,0 +1,259 @@
+/* ============================================================
+   style.css — Feuille de styles personnalisée IFRI_MentorLink
+   Complète Bootstrap 5 pour reproduire fidèlement la maquette
+   ============================================================ */
+
+/* ----- Variables CSS globales ----- */
+:root {
+  --blue-primary: #2563eb;       /* Bleu principal (bouton, cercle actif, lien) */
+  --blue-light-bg: #dbeafe;      /* Bleu clair pour fond du logo */
+  --blue-icon: #3b82f6;          /* Bleu icône du logo */
+  --gray-border: #e2e8f0;        /* Gris clair pour les bordures */
+  --gray-muted: #94a3b8;         /* Gris texte secondaire / placeholder */
+  --gray-step: #cbd5e1;          /* Gris cercle d'étape inactif */
+  --body-bg: #f1f5f9;            /* Fond de page gris très clair */
+  --card-bg: #ffffff;            /* Fond de la carte blanche */
+  --text-dark: #0f172a;          /* Couleur texte foncé principal */
+  --input-radius: 10px;          /* Rayon de bordure des inputs */
+  --card-radius: 18px;           /* Rayon de bordure de la carte */
+}
+
+/* ----- Reset / Base ----- */
+*, *::before, *::after {
+  box-sizing: border-box; /* Modèle de boîte standard inclut padding/border */
+}
+
+body {
+  background-color: var(--body-bg); /* Fond gris clair de toute la page */
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; /* Police lisible et moderne */
+  color: var(--text-dark);          /* Couleur de texte par défaut */
+  min-height: 100vh;                /* Hauteur minimale = toute la fenêtre */
+  transition: 0.2s;
+}
+
+/* ----- Conteneur wrapper principal ----- */
+.main-wrapper {
+  width: 100%;         /* Pleine largeur */
+  max-width: 860px;    /* Largeur maximale centrée */
+  margin: 0 auto;      /* Centrage horizontal */
+  padding: 2rem 1rem;  /* Espacement intérieur vertical et latéral */
+}
+
+/* ----- Icône logo dans carré arrondi bleu clair ----- */
+.logo-icon {
+  width: 56px;                        /* Largeur du carré */
+  height: 56px;                       /* Hauteur du carré */
+  border-radius: 14px;                /* Coins arrondis */
+  background-color: var(--blue-light-bg); /* Fond bleu clair */
+  display: flex;                      /* Flexbox pour centrer l'icône */
+  align-items: center;                /* Centrage vertical */
+  justify-content: center;            /* Centrage horizontal */
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.13); /* Légère ombre bleue */
+}
+
+/* ----- Titre principal ----- */
+h1 {
+  color: var(--text-dark);   /* Texte très foncé */
+  letter-spacing: -0.5px;    /* Légèrement condensé pour look moderne */
+}
+
+/* ============================================================
+   STEPPER — Indicateur d'étapes
+   ============================================================ */
+
+/* Conteneur global du stepper */
+.stepper {
+  width: 100%;          /* Pleine largeur */
+  max-width: 560px;     /* Largeur max identique à la maquette */
+  position: relative;   /* Pour positionnement des lignes */
+}
+
+/* Chaque bloc étape (cercle + libellé) */
+.step-item {
+  display: flex;          /* Flexbox pour empiler cercle et libellé */
+  flex-direction: column; /* Disposition verticale */
+  align-items: center;    /* Centrage horizontal */
+  min-width: 100px;       /* Largeur minimale pour éviter le rétrécissement */
+}
+
+/* Cercle numéroté d'une étape */
+.step-circle {
+  width: 40px;                      /* Diamètre du cercle */
+  height: 40px;                     /* Hauteur = largeur pour cercle parfait */
+  border-radius: 50%;               /* Cercle parfait */
+  display: flex;                    /* Flexbox pour centrer le chiffre */
+  align-items: center;              /* Centrage vertical du chiffre */
+  justify-content: center;          /* Centrage horizontal du chiffre */
+  font-size: 0.95rem;               /* Taille du chiffre */
+  font-weight: 600;                 /* Chiffre semi-gras */
+  border: 2px solid var(--gray-step); /* Bordure gris clair par défaut */
+  color: var(--gray-muted);         /* Chiffre gris par défaut */
+  background-color: var(--card-bg); /* Fond blanc */
+  transition: all 0.3s ease;       /* Transition douce lors du changement d'état */
+}
+
+/* Cercle actif (étape en cours) : bleu rempli */
+.step-circle.active {
+  background-color: var(--blue-primary); /* Fond bleu principal */
+  border-color: var(--blue-primary);     /* Bordure bleu principal */
+  color: #ffffff;                        /* Chiffre blanc */
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15); /* Halo bleu autour */
+}
+
+/* Cercle complété (étapes passées) : contour bleu */
+.step-circle.completed {
+  border-color: var(--blue-primary); /* Bordure bleue */
+  color: var(--blue-primary);        /* Chiffre bleu */
+}
+
+/* Libellé sous le cercle */
+.step-label {
+  font-size: 0.75rem;  /* Petite taille de police */
+  margin-top: 4px;     /* Espace entre cercle et libellé */
+  white-space: nowrap; /* Empêche le retour à la ligne */
+}
+
+/* Ligne horizontale entre deux étapes */
+.step-line {
+  flex: 1;                              /* Prend tout l'espace disponible entre les étapes */
+  height: 2px;                          /* Épaisseur de la ligne */
+  background-color: var(--gray-border); /* Couleur gris clair */
+  margin: 0 6px;                        /* Marge latérale légère */
+  margin-bottom: 24px;                  /* Descend la ligne pour l'aligner avec les cercles */
+}
+
+/* ============================================================
+   CARTE FORMULAIRE
+   ============================================================ */
+
+/* Carte blanche avec ombre portée */
+.form-card {
+  background-color: var(--card-bg);   /* Fond blanc */
+  border-radius: var(--card-radius);  /* Coins arrondis */
+  box-shadow: 0 4px 24px rgba(15, 23, 42, 0.08); /* Ombre subtile */
+  width: 100%;                        /* Pleine largeur */
+  max-width: 620px;                   /* Largeur max comme dans la maquette */
+}
+
+/* ============================================================
+   CHAMPS DE FORMULAIRE (inputs)
+   ============================================================ */
+
+/* Label de champ */
+.form-label {
+  font-size: 0.82rem;       /* Petite taille */
+  color: var(--gray-muted); /* Gris secondaire */
+  margin-bottom: 6px;       /* Espace sous le label */
+  font-weight: 500;         /* Légèrement gras */
+}
+
+/* Champ de saisie personnalisé */
+.custom-input {
+  border-radius: var(--input-radius) !important; /* Coins bien arrondis */
+  border: 1.5px solid var(--gray-border) !important; /* Bordure gris clair */
+  background-color: #ffffff !important;             /* Fond blanc */
+  color: var(--text-dark) !important;               /* Texte foncé */
+  font-size: 0.92rem;                               /* Taille de police */
+  padding: 0.65rem 1rem;                            /* Espacement intérieur */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Transition focus */
+  height: 48px;                                     /* Hauteur fixe pour uniformité */
+}
+
+/* Style au focus (clic sur le champ) */
+.custom-input:focus {
+  border-color: var(--blue-primary) !important; /* Bordure bleue au focus */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12) !important; /* Halo bleu léger */
+  outline: none;                                /* Supprime le contour natif */
+}
+
+/* Placeholder du champ */
+.custom-input::placeholder {
+  color: var(--gray-muted); /* Texte placeholder gris */
+  opacity: 0.8;             /* Légèrement transparent */
+}
+
+/* Champ en erreur (classe Bootstrap) */
+.custom-input.is-invalid {
+  border-color: #ef4444 !important; /* Bordure rouge */
+}
+
+/* Message d'erreur Bootstrap */
+.invalid-feedback {
+  font-size: 0.78rem; /* Petite police pour le message */
+  color: #ef4444;     /* Rouge d'erreur */
+}
+
+/* ============================================================
+   BOUTON SUIVANT
+   ============================================================ */
+
+/* Bouton primaire bleu plein */
+.btn-suivant {
+  background-color: var(--blue-primary); /* Fond bleu */
+  border: none;                          /* Pas de bordure */
+  border-radius: 10px;                   /* Coins arrondis */
+  padding: 0.8rem 1.5rem;               /* Espacement intérieur */
+  font-size: 1rem;                       /* Taille police */
+  font-weight: 600;                      /* Gras */
+  color: #ffffff;                        /* Texte blanc */
+  letter-spacing: 0.3px;                /* Légèrement espacé */
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  /* Transition douce sur hover/clic */
+}
+
+/* Effet au survol du bouton */
+.btn-suivant:hover {
+  background-color: #1d4ed8;            /* Bleu légèrement plus foncé */
+  box-shadow: 0 4px 16px rgba(37, 99, 235, 0.35); /* Ombre bleue prononcée */
+  transform: translateY(-1px);          /* Légère élévation visuelle */
+}
+
+/* Effet au clic sur le bouton */
+.btn-suivant:active {
+  transform: translateY(0);             /* Retour à la position normale */
+  box-shadow: none;                     /* Suppression de l'ombre */
+}
+
+/* ============================================================
+   LIEN "Se connecter"
+   ============================================================ */
+
+/* Lien bleu en bas de page */
+a.text-primary {
+  color: var(--blue-primary) !important; /* Couleur bleue */
+}
+
+/* Survol du lien */
+a.text-primary:hover {
+  text-decoration: underline !important; /* Soulignement au survol */
+}
+
+/* ============================================================
+   RESPONSIVE — Adaptations mobiles
+   ============================================================ */
+
+/* Sur petits écrans (< 576px) */
+@media (max-width: 576px) {
+
+  /* Réduire le padding de la carte */
+  .form-card {
+    padding: 1.5rem !important;
+  }
+
+  /* Réduire la taille du titre */
+  h1 {
+    font-size: 1.4rem;
+  }
+
+  /* Rétrécir les libellés du stepper */
+  .step-label {
+    font-size: 0.65rem;
+  }
+
+  /* Réduire légèrement la taille des cercles */
+  .step-circle {
+    width: 34px;
+    height: 34px;
+    font-size: 0.85rem;
+  }
+}

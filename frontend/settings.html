@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Paramètres - IFRI_MentorLink</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .settings-layout { display:flex; flex-direction:row; gap:32px; max-width:1200px; margin:0 auto }
+    .settings-sidebar { width:220px; min-width:220px; background:white; border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); height:fit-content }
+    .settings-sidebar .tab-btn { width:100%; display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; font-size:.9rem; font-weight:500; background:none; border:none; color:var(--slate-600); transition:all .2s; cursor:pointer }
+    .settings-sidebar .tab-btn:hover { background:var(--slate-50) }
+    .settings-sidebar .tab-btn.active { background:var(--blue-50); color:var(--blue-600) }
+    .settings-sidebar .tab-btn.danger { color:var(--red-500) }
+    .settings-sidebar .tab-btn.danger.active { background:var(--red-50); color:var(--red-600) }
+    .settings-content { flex:1; background:white; border-radius:12px; padding:32px; box-shadow:0 1px 3px rgba(0,0,0,.08) }
+    .settings-content h3 { font-size:1.25rem; font-family:'Poppins',sans-serif; font-weight:600; color:var(--slate-900); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--slate-100) }
+    .form-label-custom { font-size:.85rem; font-weight:500; color:var(--slate-700); margin-bottom:6px }
+    .toggle-switch { position:relative; display:inline-flex; height:24px; width:44px; align-items:center; border-radius:999px; cursor:pointer; transition:background .2s; background:var(--slate-300); border:none; padding:0; flex-shrink:0 }
+    .toggle-switch.active { background:var(--blue-600) }
+    .toggle-switch span { display:inline-block; height:18px; width:18px; border-radius:50%; background:white; transition:transform .2s; box-shadow:0 1px 3px rgba(0,0,0,.15) }
+    .toggle-switch.active span { transform:translateX(22px) }
+    .avatar-wrapper { position:relative; display:inline-block; cursor:pointer }
+    .avatar-wrapper .avatar-overlay { position:absolute; inset:0; border-radius:50%; background:rgba(0,0,0,.4); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .2s }
+    .avatar-wrapper:hover .avatar-overlay { opacity:1 }
+    .skill-chip { padding:6px 14px; border-radius:8px; font-size:.85rem; font-weight:500; border:1px solid var(--slate-200); background:var(--slate-50); color:var(--slate-600); cursor:pointer; transition:all .2s }
+    .skill-chip:hover { border-color:var(--blue-300) }
+    .skill-chip.active { background:var(--blue-600); color:white; border-color:var(--blue-600) }
+    .skill-chip.lacune.active { background:#f59e0b; color:white; border-color:#f59e0b }
+    .creneau-row { display:flex; flex-wrap:wrap; gap:12px; align-items:flex-end; padding:16px; border:1px solid var(--slate-100); border-radius:8px; background:var(--slate-50); margin-bottom:8px }
+    .creneau-row .form-label-custom { font-size:.75rem; margin-bottom:4px }
+    .creneau-row select,.creneau-row input[type=time] { height:38px; border-radius:8px; border:1.5px solid var(--slate-200); padding:0 12px; font-size:.85rem; background:white }
+    .creneau-row select:focus,.creneau-row input:focus { outline:none; border-color:var(--blue-600); box-shadow:0 0 0 2px rgba(37,99,235,.15) }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar"><div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div><div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="dashboard.html"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="profile.html"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="offers.html"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="requests.html"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="matching.html"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching <span class="nav-badge" style="background:var(--teal-500)">12</span></a>
+        <a href="messages.html"><i class="bi bi-chat-dots" style="width:20px"></i> Messages <span class="nav-badge" style="background:var(--red-500)">5</span></a>
+        <a href="notifications.html"><i class="bi bi-bell" style="width:20px"></i> Notifications <span class="nav-badge" style="background:var(--amber-500)">3</span></a>
+        <a href="settings.html" class="active"><i class="bi bi-gear" style="width:20px"></i> Paramètres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right" style="width:20px"></i> Déconnexion</button>
+      </nav>
+      <div class="sidebar-user"><div class="avatar-sm">JD</div><div><div class="name">Jean Dupont</div><div class="role">Génie Logiciel</div></div></div>
+    </aside>
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Paramètres</h1>
+        <div class="header-actions">
+          <div class="search-box"><i class="bi bi-search"></i><input type="text" placeholder="Rechercher un étudiant..." /></div>
+          <button class="bell-btn" onclick="window.location.href='notifications.html'"><i class="bi bi-bell" style="font-size:1.2rem"></i><span class="bell-dot"></span></button>
+          <div class="avatar-circle">JD</div>
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+      <div class="dash-content">
+        <div class="settings-layout">
+          <div class="settings-sidebar">
+            <button class="tab-btn active" data-tab="Compte"><i class="bi bi-person-circle"></i> Compte</button>
+            <button class="tab-btn" data-tab="Sécurité"><i class="bi bi-shield-lock"></i> Sécurité</button>
+            <button class="tab-btn" data-tab="Préférences"><i class="bi bi-sliders2"></i> Préférences</button>
+            <button class="tab-btn" data-tab="Confidentialité"><i class="bi bi-eye-slash"></i> Confidentialité</button>
+            <button class="tab-btn danger" data-tab="Zone de danger"><i class="bi bi-exclamation-triangle"></i> Zone de danger</button>
+          </div>
+          <div class="settings-content" id="settingsContent"></div>
+        </div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <a href="dashboard.html"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="profile.html"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="offers.html"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="matching.html"><i class="bi bi-lightning-charge"></i> Matching <span class="nav-dot" style="background:var(--teal-500)"></span></a>
+      <a href="messages.html"><i class="bi bi-chat-dots"></i> Messages <span class="nav-dot" style="background:var(--red-500)"></span></a>
+    </nav>
+  </div>
+  <script>
+    var activeTab = 'Compte';
+    var fileInputRef = null;
+
+    var userData = {
+      nom:'Dupont', prenom:'Jean', email:'jean.dupont@ifri.bj', phone:'+229 01 23 45 67 89',
+      filiere:'Génie Logiciel', niveau:'L3', bio:'',
+      competences:['Python','JavaScript','SQL'],
+      lacunes:['Réseaux','Sécurité informatique'],
+      disponibilites:[
+        {id:'d1',jour:'Lundi',heureDebut:'08:00',heureFin:'18:00'},
+        {id:'d2',jour:'Mardi',heureDebut:'08:00',heureFin:'18:00'},
+        {id:'d3',jour:'Mercredi',heureDebut:'10:00',heureFin:'20:00'}
+      ]
+    };
+    var editData = JSON.parse(JSON.stringify(userData));
+    var skillOptions = ['Python','JavaScript','SQL','Développement Web','Algorithmique','Base de données','Réseaux','IA / Machine Learning','Sécurité informatique'];
+
+    document.querySelectorAll('.tab-btn').forEach(function(btn){
+      btn.addEventListener('click',function(){ switchTab(this.dataset.tab); });
+    });
+
+    var togglesState = { email:true, matchs:true, messages:true, hebdo:false };
+
+    function switchTab(tab) {
+      activeTab = tab;
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelector('.tab-btn[data-tab="'+tab+'"]').classList.add('active');
+      renderTab();
+    }
+
+    function renderTab() {
+      var c = document.getElementById('settingsContent');
+      c.innerHTML = '';
+      if (activeTab === 'Compte') renderCompte(c);
+      else if (activeTab === 'Sécurité') renderSecurite(c);
+      else if (activeTab === 'Préférences') renderPreferences(c);
+      else if (activeTab === 'Confidentialité') renderConfidentialite(c);
+      else if (activeTab === 'Zone de danger') renderDanger(c);
+    }
+
+    function initiales(prenom,nom) { return (prenom&&nom) ? (prenom[0]+nom[0]).toUpperCase() : 'U'; }
+
+    function renderCompte(c) {
+      c.innerHTML =
+        '<div class="d-flex align-items-center justify-content-between mb-3" style="border-bottom:1px solid var(--slate-100);padding-bottom:12px">'+
+          '<h3 style="margin:0;padding:0;border:none">Mon Compte</h3>'+
+          '<button class="btn" style="background:var(--blue-600);color:white;padding:8px 24px;border-radius:8px;font-size:.85rem" onclick="saveAccount()">Enregistrer les modifications</button>'+
+        '</div>'+
+        '<div class="d-flex align-items-center gap-4 mb-4">'+
+          '<div class="avatar-wrapper">'+
+            '<div class="avatar-circle" style="width:80px;height:80px;font-size:1.8rem;border-width:3px;cursor:pointer" id="avatarDisplay">'+initiales(editData.prenom,editData.nom)+'</div>'+
+            '<div class="avatar-overlay" onclick="document.getElementById(\'avatarInput\').click()"><i class="bi bi-camera" style="font-size:1.3rem;color:white"></i></div>'+
+            '<input type="file" id="avatarInput" accept="image/*" style="display:none" onchange="handleAvatar(this)" />'+
+          '</div>'+
+          '<div><h6 class="fw-semibold mb-0" style="font-size:1rem">'+editData.prenom+' '+editData.nom+'</h6><p class="mb-0" style="color:var(--slate-500);font-size:.8rem">IFRI</p><button class="btn btn-sm p-0 mt-1" style="color:var(--blue-600);background:none;border:none;font-size:.8rem;text-decoration:underline" onclick="document.getElementById(\'avatarInput\').click()">Changer de photo</button></div>'+
+        '</div>'+
+        '<div class="row mb-3"><div class="col-md-6 mb-3"><label class="form-label-custom">Nom</label><input class="form-control" value="'+editData.nom+'" onchange="editData.nom=this.value;updateAvatarInitials()" /></div>'+
+        '<div class="col-md-6 mb-3"><label class="form-label-custom">Prénom</label><input class="form-control" value="'+editData.prenom+'" onchange="editData.prenom=this.value;updateAvatarInitials()" /></div></div>'+
+        '<div class="row mb-3"><div class="col-md-6 mb-3"><label class="form-label-custom">Email</label><input class="form-control" type="email" value="'+editData.email+'" onchange="editData.email=this.value" /></div>'+
+        '<div class="col-md-6 mb-3"><label class="form-label-custom">Téléphone</label><input class="form-control" value="'+editData.phone+'" onchange="editData.phone=this.value" /></div></div>'+
+        '<div class="row mb-3"><div class="col-md-6 mb-3"><label class="form-label-custom">Filière</label><select class="form-select" onchange="editData.filiere=this.value"><option value="">Sélectionnez...</option><option value="Génie Logiciel"'+(editData.filiere==='Génie Logiciel'?' selected':'')+'>Génie Logiciel</option><option value="Réseaux & Télécoms"'+(editData.filiere==='Réseaux & Télécoms'?' selected':'')+'>Réseaux & Télécoms</option><option value="Systèmes d\'Information"'+(editData.filiere==="Systèmes d'Information"?' selected':'')+'>Systèmes d\'Information</option><option value="Intelligence Artificielle"'+(editData.filiere==='Intelligence Artificielle'?' selected':'')+'>Intelligence Artificielle</option></select></div>'+
+        '<div class="col-md-6 mb-3"><label class="form-label-custom">Niveau</label><select class="form-select" onchange="editData.niveau=this.value"><option value="">Sélectionnez...</option><option value="L1"'+(editData.niveau==='L1'?' selected':'')+'>L1</option><option value="L2"'+(editData.niveau==='L2'?' selected':'')+'>L2</option><option value="L3"'+(editData.niveau==='L3'?' selected':'')+'>L3</option><option value="M1"'+(editData.niveau==='M1'?' selected':'')+'>M1</option><option value="M2"'+(editData.niveau==='M2'?' selected':'')+'>M2</option></select></div></div>'+
+        '<div class="mb-4"><label class="form-label-custom">Biographie</label><textarea class="form-control" rows="4" placeholder="Parlez de vous, vos centres d\'intérêt..." onchange="editData.bio=this.value">'+editData.bio+'</textarea></div>'+
+        '<div class="mb-4 pt-3" style="border-top:1px solid var(--slate-100)"><label class="form-label-custom mb-2">Compétences (ce que vous pouvez enseigner)</label><div id="skillsChips" class="d-flex flex-wrap gap-2"></div></div>'+
+        '<div class="mb-4 pt-3" style="border-top:1px solid var(--slate-100)"><label class="form-label-custom mb-2">Besoins académiques (ce que vous voulez apprendre)</label><div id="gapsChips" class="d-flex flex-wrap gap-2"></div></div>'+
+        '<div class="mb-4 pt-3" style="border-top:1px solid var(--slate-100)"><label class="form-label-custom mb-2">Disponibilités</label><div id="creneauxContainer"></div><button class="btn btn-sm w-100 mt-2" style="border:1px dashed var(--slate-300);color:var(--slate-600);border-radius:8px;padding:10px" onclick="addCreneau()"><i class="bi bi-plus-lg"></i> Ajouter un créneau</button></div>'+
+        '<div class="pt-4" style="border-top:1px solid var(--slate-200);text-align:right"><button class="btn" style="background:var(--blue-600);color:white;padding:10px 32px;border-radius:8px" onclick="saveAccount()">Enregistrer les modifications</button></div>';
+      renderSkillChips();
+      renderGapChips();
+      renderCreneaux();
+    }
+
+    function updateAvatarInitials() {
+      document.getElementById('avatarDisplay').textContent = initiales(editData.prenom,editData.nom);
+    }
+
+    function handleAvatar(input) {
+      var file = input.files[0];
+      if (!file) return;
+      if (file.size > 2*1024*1024) { alert("L'image ne doit pas dépasser 2MB"); return; }
+      if (!file.type.startsWith('image/')) { alert('Veuillez sélectionner une image'); return; }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var avatarDiv = document.getElementById('avatarDisplay');
+        if (avatarDiv) { avatarDiv.innerHTML = '<img src="'+e.target.result+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover" />'; }
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function renderSkillChips() {
+      var container = document.getElementById('skillsChips');
+      if (!container) return;
+      container.innerHTML = '';
+      skillOptions.forEach(function(s) {
+        var chip = document.createElement('span');
+        chip.className = 'skill-chip' + (editData.competences.includes(s) ? ' active' : '');
+        chip.textContent = s;
+        chip.onclick = function() {
+          var idx = editData.competences.indexOf(s);
+          if (idx > -1) { editData.competences.splice(idx,1); chip.classList.remove('active'); }
+          else { editData.competences.push(s); chip.classList.add('active'); }
+        };
+        container.appendChild(chip);
+      });
+    }
+
+    function renderGapChips() {
+      var container = document.getElementById('gapsChips');
+      if (!container) return;
+      container.innerHTML = '';
+      skillOptions.forEach(function(s) {
+        var chip = document.createElement('span');
+        chip.className = 'skill-chip lacune' + (editData.lacunes.includes(s) ? ' active' : '');
+        chip.textContent = s;
+        chip.onclick = function() {
+          var idx = editData.lacunes.indexOf(s);
+          if (idx > -1) { editData.lacunes.splice(idx,1); chip.classList.remove('active'); }
+          else { editData.lacunes.push(s); chip.classList.add('active'); }
+        };
+        container.appendChild(chip);
+      });
+    }
+
+    function renderCreneaux() {
+      var container = document.getElementById('creneauxContainer');
+      if (!container) return;
+      container.innerHTML = '';
+      editData.disponibilites.forEach(function(d,i) {
+        var row = document.createElement('div');
+        row.className = 'creneau-row';
+        row.innerHTML =
+          '<div style="flex:1;min-width:120px"><label class="form-label-custom">Jour</label><select onchange="editData.disponibilites['+i+'].jour=this.value">'+
+            '<option value="">Sélectionnez...</option>'+
+            ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'].map(function(j){return '<option value="'+j+'"'+(d.jour===j?' selected':'')+'>'+j+'</option>';}).join('')+
+          '</select></div>'+
+          '<div style="flex:1;min-width:100px"><label class="form-label-custom">Début</label><input type="time" value="'+d.heureDebut+'" onchange="editData.disponibilites['+i+'].heureDebut=this.value" /></div>'+
+          '<div style="flex:1;min-width:100px"><label class="form-label-custom">Fin</label><input type="time" value="'+d.heureFin+'" onchange="editData.disponibilites['+i+'].heureFin=this.value" /></div>'+
+          '<button class="btn btn-sm" style="color:var(--red-500);background:none;border:1px solid var(--red-200);height:38px;width:38px;border-radius:8px;padding:0;flex-shrink:0" onclick="deleteCreneau('+i+')"><i class="bi bi-trash3"></i></button>';
+        container.appendChild(row);
+      });
+    }
+
+    function addCreneau() {
+      editData.disponibilites.push({id:'d'+Date.now(),jour:'',heureDebut:'',heureFin:''});
+      renderCreneaux();
+    }
+
+    function deleteCreneau(i) {
+      editData.disponibilites.splice(i,1);
+      renderCreneaux();
+    }
+
+    function saveAccount() {
+      Object.assign(userData,JSON.parse(JSON.stringify(editData)));
+      alert('Vos informations ont été mises à jour avec succès.');
+    }
+
+    function renderSecurite(c) {
+      c.innerHTML =
+        '<h3>Sécurité</h3>'+
+        '<div style="max-width:400px"><div class="mb-3"><label class="form-label-custom">Mot de passe actuel</label><input type="password" class="form-control" /></div>'+
+        '<div class="mb-3"><label class="form-label-custom">Nouveau mot de passe</label><input type="password" class="form-control" /></div>'+
+        '<div class="mb-4"><label class="form-label-custom">Confirmer nouveau mot de passe</label><input type="password" class="form-control" /></div>'+
+        '<button class="btn" style="background:var(--blue-600);color:white;padding:10px 32px;border-radius:8px">Changer le mot de passe</button></div>';
+    }
+
+    function renderPreferences(c) {
+      c.innerHTML =
+        '<h3>Notifications</h3>'+
+        '<div style="max-width:500px"><div class="d-flex align-items-center justify-content-between py-2"><span class="fw-medium" style="font-size:.9rem;color:var(--slate-700)">Recevoir les notifications par email</span><button class="toggle-switch'+(togglesState.email?' active':'')+'" onclick="toggleState(\'email\')"><span></span></button></div>'+
+        '<hr class="my-2" />'+
+        '<div class="d-flex align-items-center justify-content-between py-2"><span class="fw-medium" style="font-size:.9rem;color:var(--slate-700)">Alertes de nouveaux matchs</span><button class="toggle-switch'+(togglesState.matchs?' active':'')+'" onclick="toggleState(\'matchs\')"><span></span></button></div>'+
+        '<hr class="my-2" />'+
+        '<div class="d-flex align-items-center justify-content-between py-2"><span class="fw-medium" style="font-size:.9rem;color:var(--slate-700)">Alertes de nouveaux messages</span><button class="toggle-switch'+(togglesState.messages?' active':'')+'" onclick="toggleState(\'messages\')"><span></span></button></div>'+
+        '<hr class="my-2" />'+
+        '<div class="d-flex align-items-center justify-content-between py-2"><span class="fw-medium" style="font-size:.9rem;color:var(--slate-700)">Résumé hebdomadaire</span><button class="toggle-switch'+(togglesState.hebdo?' active':'')+'" onclick="toggleState(\'hebdo\')"><span></span></button></div></div>';
+    }
+
+    function toggleState(key) {
+      togglesState[key] = !togglesState[key];
+      renderTab();
+    }
+
+    function renderConfidentialite(c) {
+      c.innerHTML =
+        '<h3>Confidentialité</h3>'+
+        '<div style="max-width:500px"><div class="mb-4"><label class="form-label-custom">Visibilité du profil</label><select class="form-select"><option selected>Tous les étudiants</option><option>Uniquement mes matchs</option><option>Privé</option></select></div>'+
+        '<div class="d-flex align-items-center justify-content-between py-2"><span class="fw-medium" style="font-size:.9rem;color:var(--slate-700)">Afficher mes disponibilités publiquement</span><button class="toggle-switch active" onclick="this.classList.toggle(\'active\')"><span></span></button></div></div>';
+    }
+
+    function renderDanger(c) {
+      c.innerHTML =
+        '<h3>Zone de danger</h3>'+
+        '<div style="background:var(--red-50);border:1px solid var(--red-200);border-radius:12px;padding:24px;max-width:500px">'+
+          '<h5 class="fw-semibold mb-2" style="color:var(--red-700);font-size:1rem">Suppression du compte</h5>'+
+          '<p style="font-size:.85rem;color:var(--red-600);margin-bottom:20px">La suppression de votre compte est définitive et irréversible. Toutes vos données, messages et correspondances seront effacés.</p>'+
+          '<button class="btn" style="background:var(--red-600);color:white;padding:10px 32px;border-radius:8px" onclick="if(confirm(\'Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.\')){alert(\'Compte supprimé.\');window.location.href=\'index.html\';}">Supprimer mon compte</button>'+
+        '</div>';
+    }
+
+    renderTab();
+  </script>
+</body>
+</html>

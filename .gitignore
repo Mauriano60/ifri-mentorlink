@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+*.egg-info/
+dist/
+build/
+*.log
+cookies*.txt
+headers.txt
+sess.txt
+test.txt
+instance/
+.venv/

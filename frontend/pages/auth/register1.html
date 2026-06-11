@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<!-- Déclaration du type de document HTML5 -->
+<html lang="fr">
+<!-- Langue de la page définie en français -->
+
+<head>
+  <!-- Section d'en-tête : métadonnées, liens CSS, titre -->
+  <meta charset="UTF-8" />
+  <!-- Encodage des caractères en UTF-8 pour supporter les accents français -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Rend la page responsive sur mobile et tablette -->
+
+  <title>Créer mon compte IFRI_MentorLink</title>
+  <!-- Titre affiché dans l'onglet du navigateur -->
+
+  <!-- Bootstrap 5 CSS : framework de mise en page et composants -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Bootstrap Icons : bibliothèque d'icônes SVG de Bootstrap -->
+  <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    rel="stylesheet"
+  />
+
+  <!-- Feuille de style personnalisée -->
+  <link rel="stylesheet" href="Inscription 1.css" />
+</head>
+
+<body>
+  <!-- Corps de la page : contenu visible par l'utilisateur -->
+
+  <!-- Conteneur principal centré verticalement et horizontalement -->
+  <div class="main-wrapper d-flex flex-column align-items-center justify-content-center min-vh-100 py-5">
+
+    <!-- ===== EN-TÊTE : Logo + Titre ===== -->
+    <div class="text-center mb-4">
+
+      <!-- Icône logo : livre ouvert dans un carré arrondi bleu clair -->
+      <div class="logo-icon mb-3 mx-auto">
+        <!-- Icône livre SVG bleue -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16" style="color: #007bff;">
+  			<path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+		</svg>
+      </div>
+
+      <!-- Titre principal de la page -->
+      <h1 class="fw-bold fs-3 mb-1">Créer mon compte IFRI_MentorLink</h1>
+
+      <!-- Sous-titre descriptif -->
+      <p class="text-muted small">Rejoignez la communauté de mentorat de l'IFRI</p>
+    </div>
+
+    <!-- ===== INDICATEUR D'ÉTAPES (Stepper) ===== -->
+    <div class="stepper d-flex align-items-center justify-content-center mb-4 gap-0">
+
+      <!-- Étape 1 : Informations personnelles (active) -->
+      <div class="step-item text-center">
+        <!-- Cercle numéroté - actif (bleu rempli) -->
+        <div class="step-circle active mx-auto mb-1">1</div>
+        <!-- Libellé de l'étape -->
+        <span class="step-label fw-bold small">Informations personnelles</span>
+      </div>
+
+      <!-- Ligne de séparation entre étapes 1 et 2 -->
+      <div class="step-line"></div>
+
+      <!-- Étape 2 : Profil académique (inactive) -->
+      <div class="step-item text-center">
+        <!-- Cercle numéroté - inactif (gris bordure) -->
+        <div class="step-circle mx-auto mb-1">2</div>
+        <!-- Libellé de l'étape -->
+        <span class="step-label text-muted small">Profil académique</span>
+      </div>
+
+      <!-- Ligne de séparation entre étapes 2 et 3 -->
+      <div class="step-line"></div>
+
+      <!-- Étape 3 : Disponibilités (inactive) -->
+      <div class="step-item text-center">
+        <!-- Cercle numéroté - inactif (gris bordure) -->
+        <div class="step-circle mx-auto mb-1">3</div>
+        <!-- Libellé de l'étape -->
+        <span class="step-label text-muted small">Disponibilités</span>
+      </div>
+    </div>
+
+    <!-- ===== CARTE FORMULAIRE ===== -->
+    <div class="form-card p-4 p-md-5">
+
+      <!-- Formulaire d'inscription - pas de balise <form> pour compatibilité artifact -->
+      <div id="registerForm">
+
+        <!-- ===== LIGNE : Nom + Prénom ===== -->
+        <div class="row g-3 mb-3">
+
+          <!-- Champ Nom -->
+          <div class="col-md-6">
+            <!-- Libellé du champ Nom -->
+            <label for="nom" class="form-label text-muted small">Nom</label>
+            <!-- Input texte avec placeholder pré-rempli -->
+            <input
+              type="text"
+              id="nom"
+              class="form-control custom-input"
+              placeholder="Dupont"
+            />
+            <!-- Message d'erreur caché par défaut -->
+            <div class="invalid-feedback">Le nom est requis.</div>
+          </div>
+
+          <!-- Champ Prénom -->
+          <div class="col-md-6">
+            <!-- Libellé du champ Prénom -->
+            <label for="prenom" class="form-label text-muted small">Prénom</label>
+            <!-- Input texte avec placeholder pré-rempli -->
+            <input
+              type="text"
+              id="prenom"
+              class="form-control custom-input"
+              placeholder="Jean"
+            />
+            <!-- Message d'erreur caché par défaut -->
+            <div class="invalid-feedback">Le prénom est requis.</div>
+          </div>
+        </div>
+
+        <!-- ===== LIGNE : Email ===== -->
+        <div class="mb-3">
+          <!-- Libellé du champ Email -->
+          <label for="email" class="form-label text-muted small">Email</label>
+          <!-- Input email avec placeholder pré-rempli -->
+          <input
+            type="email"
+            id="email"
+            class="form-control custom-input"
+            placeholder="jean.dupont@ifri.edu"
+          />
+          <!-- Message d'erreur caché par défaut -->
+          <div class="invalid-feedback">Un email valide est requis.</div>
+        </div>
+
+        <!-- ===== LIGNE : Téléphone ===== -->
+        <div class="mb-3">
+          <!-- Libellé du champ Téléphone -->
+          <label for="telephone" class="form-label text-muted small">Téléphone</label>
+          <!-- Input téléphone avec indicatif Bénin -->
+          <input
+            type="tel"
+            id="telephone"
+            class="form-control custom-input"
+            placeholder="+229 xx xx xx xx"
+          />
+          <!-- Message d'erreur caché par défaut -->
+          <div class="invalid-feedback">Un numéro de téléphone valide est requis.</div>
+        </div>
+
+        <!-- ===== LIGNE : Mot de passe + Confirmer ===== -->
+        <div class="row g-3 mb-4">
+
+          <!-- Champ Mot de passe -->
+          <div class="col-md-6">
+            <!-- Libellé du champ mot de passe -->
+            <label for="motdepasse" class="form-label text-muted small">Mot de passe</label>
+            <!-- Input password masqué -->
+            <input
+              type="password"
+              id="motdepasse"
+              class="form-control custom-input"
+              placeholder="••••••••"
+            />
+            <!-- Message d'erreur caché par défaut -->
+            <div class="invalid-feedback">Le mot de passe est requis (min. 8 caractères).</div>
+          </div>
+
+          <!-- Champ Confirmer le mot de passe -->
+          <div class="col-md-6">
+            <!-- Libellé du champ confirmation -->
+            <label for="confirmer" class="form-label text-muted small">Confirmer le mot de passe</label>
+            <!-- Input password masqué pour confirmation -->
+            <input
+              type="password"
+              id="confirmer"
+              class="form-control custom-input"
+              placeholder="••••••••"
+            />
+            <!-- Message d'erreur caché par défaut -->
+            <div class="invalid-feedback">Les mots de passe ne correspondent pas.</div>
+          </div>
+        </div>
+
+        <!-- ===== BOUTON SUIVANT ===== -->
+        <button
+          type="button"
+          id="btnSuivant"
+          class="btn btn-primary w-100 btn-suivant"
+          onclick="validerEtape1()"
+        >
+          <!-- Texte du bouton avec flèche -->
+          Suivant →
+        </button>
+        <!-- onclick appelle la fonction de validation JS -->
+
+      </div>
+      <!-- Fin du formulaire -->
+
+    </div>
+    <!-- Fin de la carte formulaire -->
+
+    <!-- ===== LIEN : Déjà un compte ===== -->
+    <p class="mt-4 text-muted small text-center">
+      Vous avez déjà un compte ?
+      <!-- Lien vers la page de connexion -->
+      <a href="#" class="text-primary fw-semibold text-decoration-none">Se connecter</a>
+    </p>
+
+  </div>
+  <!-- Fin du conteneur principal -->
+
+  <!-- Bootstrap 5 JS Bundle (inclut Popper.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script personnalisé de validation -->
+  <script src="Inscription 1.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,440 @@
+/* =========================================================
+   IFRI_MentorLink — style.css
+   Feuille de style personnalisée de la page de connexion
+   ========================================================= */
+
+/* Réinitialisation universelle : supprime les marges et paddings par défaut
+   sur tous les éléments et leurs pseudo-éléments before/after */
+*, *::before, *::after { 
+  box-sizing: border-box; margin: 0; padding: 0; 
+}
+
+/* Styles de base de la page :
+   - height: 100% permet au body de prendre toute la hauteur de la fenêtre
+   - font-family définit DM Sans comme police principale (avec fallback sans-serif)
+   - background définit la couleur de fond gris très clair du panneau droit */
+html, body {
+  height: 100%;
+  font-family: 'Inter', sans-serif;
+  background: #f4f6fb;
+}
+
+/* ── Wrapper principal ─────────────────────────────── */
+/* Conteneur flex qui place les deux panneaux côte à côte
+   min-height: 100vh garantit que la page occupe toute la hauteur de l'écran */
+.wrap {
+  display: flex;       /* Disposition en ligne (row par défaut) */
+  min-height: 100vh;   /* Hauteur minimale = hauteur totale de la fenêtre */
+  width: 100%;         /* Largeur totale de la fenêtre */
+}
+
+/* =========================================================
+   PANNEAU GAUCHE
+   ========================================================= */
+
+/* Styles du panneau gauche :
+   - width: 42% occupe moins de la moitié de l'écran
+   - linear-gradient crée le fond bleu dégradé en diagonale
+   - flex-direction: column empile les enfants verticalement
+   - position: relative permet de placer le pseudo-élément ::before en absolu */
+.left {
+  width: 42%;                    /* Largeur fixe du panneau gauche */
+  min-width: 300px;              /* Largeur minimale pour éviter l'écrasement sur petits écrans */
+  background: linear-gradient(   /* Dégradé bleu allant du bleu vif au bleu très foncé */
+    150deg,                      /* Angle du dégradé (150° = diagonale haut-gauche vers bas-droite) */
+    #1a4bd4 0%,                  /* Bleu vif en haut */
+    #0e2fa8 40%,                 /* Bleu moyen au centre */
+    #0a237a 100%                 /* Bleu très foncé en bas */
+  );
+  display: flex;                 /* Flexbox pour empiler logo, réseau, citation, footer */
+  flex-direction: column;        /* Disposition verticale des enfants */
+  padding: 2rem 2.5rem;          /* Espacement interne (haut/bas: 2rem, gauche/droite: 2.5rem) */
+  position: relative;            /* Nécessaire pour positionner le ::before en absolu */
+  overflow: hidden;              /* Cache le débordement de la lueur radiale */
+  color: #fff;                   /* Couleur de texte blanche pour tout le panneau */
+}
+
+/* Lueur radiale décorative positionnée en haut à gauche du panneau
+   Crée un effet de lumière douce sur le fond bleu */
+.left::before {
+  content: '';                   /* Nécessaire pour afficher un pseudo-élément */
+  position: absolute;            /* Sortie du flux normal, positionnée par rapport à .left */
+  top: -80px;                    /* Décalage vers le haut (partiellement hors du panneau) */
+  left: -80px;                   /* Décalage vers la gauche (partiellement hors du panneau) */
+  width: 350px;                  /* Largeur du cercle de lueur */
+  height: 350px;                 /* Hauteur du cercle de lueur */
+  border-radius: 50%;            /* Rend l'élément parfaitement circulaire */
+  background: radial-gradient(   /* Dégradé radial du centre vers l'extérieur */
+    circle,
+    rgba(60,120,255,.28) 0%,     /* Bleu lumineux semi-transparent au centre */
+    transparent 70%              /* Totalement transparent sur les bords */
+  );
+  pointer-events: none;          /* Empêche cet élément décoratif de capturer les clics */
+}
+
+/* ── Logo ─────────────────────────────────────────── */
+
+/* Conteneur du logo : flexbox horizontal avec espacement entre icône et texte */
+.logo-row {
+  display: flex;           /* Aligne l'icône et le texte sur la même ligne */
+  align-items: center;     /* Centre verticalement l'icône et le texte */
+  gap: 8px;                /* Espace de 8px entre l'icône et le nom */
+  font-size: 18px;       /* Taille de police légèrement réduite */
+  font-weight: 600;        /* Texte semi-gras */
+  position: relative;      /* Passe au-dessus du pseudo-élément ::before (z-index implicite) */
+  z-index: 1;              /* S'assure que le logo est visible par-dessus la lueur */
+  color: rgba(255,255,255,.80);   /* Blanc très transparent (discret) */
+}
+
+
+/* ── Zone réseau ──────────────────────────────────── */
+
+/* Zone centrale qui contient l'illustration SVG du réseau de nœuds
+   flex: 1 lui permet de prendre tout l'espace disponible entre logo et citation */
+.net-area {
+  flex: 1;                 /* Occupe tout l'espace vertical restant */
+  display: flex;           /* Flexbox pour centrer le SVG */
+  align-items: center;     /* Centre verticalement le SVG */
+  justify-content: center; /* Centre horizontalement le SVG */
+  position: relative;      /* Pour l'empilement z-index */
+  z-index: 1;              /* S'assure que l'illustration est visible */
+}
+
+/* Dimensions du SVG de l'illustration réseau
+   overflow: visible permet aux animations de déborder légèrement */
+.net-area svg {
+  width: 240px;         /* Largeur du SVG */
+  height: 180px;        /* Hauteur du SVG */
+  overflow: visible;    /* Les animations de flottement peuvent sortir du viewBox */
+}
+
+/* ── Citation ─────────────────────────────────────── */
+
+/* Bloc de citation inspirante affiché en bas du panneau gauche
+   border: none supprime la bordure gauche par défaut des blockquotes */
+.quote {
+  font-size: 20px;              /* Taille de texte légèrement réduite */
+  font-weight: 600;               /* Texte semi-gras pour l'emphase */
+  line-height: 1.6;               /* Interligne confortable pour la lisibilité */
+  text-align: center;             /* Texte centré horizontalement */
+  color: rgba(255,255,255,.92);   /* Blanc légèrement transparent */
+  border: none;                   /* Supprime la bordure gauche des blockquotes par défaut */
+  padding: 0 1rem 1.25rem;        /* Padding : pas en haut, 1rem côtés, 1.25rem en bas */
+  position: relative;             /* Pour l'empilement z-index */
+  z-index: 1;                     /* S'assure que la citation est visible */
+}
+
+/* ── Footer gauche ────────────────────────────────── */
+
+/* Texte de copyright en bas à gauche, semi-transparent et petit */
+.left-foot {
+  font-size: .72rem;              /* Texte très petit */
+  color: rgba(255,255,255,.80);   /* Blanc très transparent (discret) */
+  position: relative;             /* Pour l'empilement z-index */
+  z-index: 1;                     /* S'assure que le footer est visible */
+}
+
+/* =========================================================
+   PANNEAU DROIT
+   ========================================================= */
+
+/* Panneau droit principal : fond gris clair, flexbox pour centrer le formulaire */
+.right {
+  flex: 1;                 /* Occupe tout l'espace restant après le panneau gauche */
+  background: #f4f6fb;     /* Fond gris très clair */
+  display: flex;           /* Flexbox pour centrer le contenu */
+  align-items: center;     /* Centre verticalement le formulaire */
+  justify-content: center; /* Centre horizontalement le formulaire */
+  padding: 2.5rem 1.5rem;  /* Espacement interne (utile sur mobile) */
+}
+
+/* ── Contenu centré ───────────────────────────────── */
+
+/* Wrapper qui limite la largeur du formulaire et de ses titres
+   max-width évite que le formulaire soit trop large sur grands écrans */
+.card-wrap {
+  width: 100%;        /* Prend toute la largeur disponible dans .right */
+  max-width: 420px;   /* Mais jamais plus de 420px */
+}
+
+/* ── Badge icône ──────────────────────────────────── */
+
+/* Badge carré arrondi avec fond bleu très clair qui contient l'icône du livre
+   Centré via mx-auto Bootstrap (margin: auto gauche et droite) */
+.badge-icon {
+  width: 58px;                 /* Largeur du badge */
+  height: 58px;                /* Hauteur du badge */
+  background: #e8effe;         /* Fond bleu très pâle */
+  border-radius: 16px;         /* Coins bien arrondis pour un look moderne */
+  display: flex;               /* Flexbox pour centrer l'icône SVG */
+  align-items: center;         /* Centre verticalement l'icône */
+  justify-content: center;     /* Centre horizontalement l'icône */
+  margin-bottom: 1.1rem;       /* Espace sous le badge avant le titre */
+  color: #1a56db !important; /* Bleu Bootstrap surchargé */
+}
+
+/* Taille de l'icône SVG dans le badge */
+.badge-icon svg {
+  width: 26px;   /* Largeur de l'icône */
+  height: 26px;  /* Hauteur de l'icône */
+}
+
+/* ── Titre & sous-titre ───────────────────────────── */
+
+/* Titre principal "Bon retour parmi nous !" */
+.login-title {
+  font-size: 1.6rem;      /* Grande taille pour le titre principal */
+  font-weight: 700;       /* Texte très gras */
+  color: #0f172a;         /* Couleur presque noire (slate-900) */
+  text-align: center;     /* Centré horizontalement */
+  margin-bottom: .35rem;  /* Petit espace avant le sous-titre */
+}
+
+/* Sous-titre descriptif sous le titre principal */
+.login-sub {
+  font-size: .84rem;       /* Texte plus petit que le titre */
+  color: #64748b;          /* Gris moyen (slate-500) */
+  text-align: center;      /* Centré horizontalement */
+  margin-bottom: 1.6rem;   /* Espace avant la carte formulaire */
+}
+
+/* ── Carte formulaire ─────────────────────────────── */
+
+/* Carte blanche avec ombre légère contenant le formulaire de connexion */
+.fcard {
+  background: #ffffff;                        /* Fond blanc pur */
+  border-radius: 18px;                        /* Coins très arrondis pour un look moderne */
+  padding: 1.75rem;                           /* Espacement interne confortable */
+  box-shadow: 0 2px 22px rgba(10,42,138,.07); /* Ombre portée subtile bleue */
+}
+
+/* ── Labels des champs ────────────────────────────── */
+
+/* Style des labels au-dessus des champs de saisie */
+.flabel {
+  display: block;       /* Occupe toute la largeur (passage à la ligne avant et après) */
+  font-size: .78rem;    /* Texte petit */
+  font-weight: 600;     /* Semi-gras */
+  color: #0f172a;       /* Couleur presque noire */
+  margin-bottom: .4rem; /* Espace entre le label et le champ */
+}
+
+/* ── Champs de saisie ─────────────────────────────── */
+
+/* Style commun à tous les champs input (email et mot de passe) */
+.finput {
+  width: 100%;                                    /* Prend toute la largeur du conteneur */
+  border: 1.5px solid #e2e8f0;                    /* Bordure fine grise */
+  border-radius: 9px;                             /* Coins légèrement arrondis */
+  padding: .6rem .9rem;                           /* Espacement interne confortable */
+  font-size: .88rem;                              /* Taille de texte légèrement réduite */
+  font-family: 'DM Sans', sans-serif;             /* Même police que le reste de la page */
+  color: #0f172a;                                 /* Couleur du texte saisi (presque noir) */
+  background: #fff;                               /* Fond blanc */
+  outline: none;                                  /* Supprime le contour bleu natif du navigateur */
+  transition: border-color .2s, box-shadow .2s;   /* Transition douce au focus */
+}
+
+/* Couleur du texte placeholder (texte indicatif grisé) */
+.finput::placeholder {
+  color: #b0bec5;  /* Gris clair pour le placeholder */
+}
+
+/* Style du champ quand il est actif (l'utilisateur clique dedans) */
+.finput:focus {
+  border-color: #2563eb;                    /* Bordure bleue au focus */
+  box-shadow: 0 0 0 3px rgba(37,99,235,.12); /* Halo bleu semi-transparent autour du champ */
+}
+
+/* Style du champ en cas d'erreur de validation (ajouté par JavaScript) */
+.finput.error {
+  border-color: #ef4444;  /* Bordure rouge pour signaler l'erreur */
+}
+
+/* ── Message d'erreur ─────────────────────────────── */
+
+/* Zone de texte qui affiche les messages d'erreur sous les champs
+   min-height évite que la mise en page "saute" quand le message apparaît */
+.err-msg {
+  font-size: .73rem;   /* Texte très petit */
+  color: #ef4444;      /* Couleur rouge pour les erreurs */
+  margin-top: .3rem;   /* Petit espace au-dessus du message */
+  min-height: 1rem;    /* Réserve l'espace même quand vide (évite le saut de layout) */
+}
+
+/* ── Lien "Mot de passe oublié" ───────────────────── */
+
+/* Lien bleu aligné à droite du label du mot de passe */
+.forgot {
+  font-size: .76rem;    /* Texte petit */
+  font-weight: 600;     /* Semi-gras */
+  color: #2563eb;       /* Bleu primaire */
+  text-decoration: none; /* Supprime le soulignement par défaut des liens */
+}
+
+/* Légère transparence au survol pour l'effet de hover */
+.forgot:hover {
+  opacity: .75;  /* 75% d'opacité = effet d'assombrissement subtil */
+}
+
+/* ── Wrapper du champ mot de passe ────────────────── */
+
+/* Conteneur relatif permettant de positionner le bouton œil en absolu à l'intérieur */
+.pw-wrap {
+  position: relative;  /* Contexte de positionnement pour l'enfant .eye-btn */
+}
+
+/* Ajoute du padding à droite pour éviter que le texte saisi se superpose au bouton œil */
+.pw-wrap .finput {
+  padding-right: 2.6rem;  /* Espace réservé pour le bouton œil à droite */
+}
+
+/* ── Bouton afficher/masquer le mot de passe (icône œil) ── */
+
+/* Bouton positionné en absolu à l'intérieur du .pw-wrap, centré verticalement */
+.eye-btn {
+  position: absolute;          /* Sorti du flux, positionné par rapport à .pw-wrap */
+  right: .7rem;                /* Collé au bord droit avec un léger écart */
+  top: 50%;                    /* Centré verticalement (point de départ = milieu) */
+  transform: translateY(-50%); /* Décale de -50% de sa propre hauteur pour un vrai centrage */
+  background: none;            /* Pas de fond (transparent) */
+  border: none;                /* Pas de bordure */
+  cursor: pointer;             /* Curseur de clic */
+  color: #94a3b8;              /* Couleur grise de l'icône */
+  padding: 0;                  /* Pas de padding */
+  display: flex;               /* Flexbox pour centrer l'icône SVG dans le bouton */
+  align-items: center;         /* Centre verticalement l'icône */
+  transition: color .2s;       /* Transition douce sur le changement de couleur */
+}
+
+/* Couleur bleue au survol du bouton œil */
+.eye-btn:hover {
+  color: #2563eb;  /* Bleu primaire au hover */
+}
+
+/* Taille de l'icône SVG dans le bouton œil */
+.eye-btn svg {
+  width: 17px;   /* Largeur de l'icône œil */
+  height: 17px;  /* Hauteur de l'icône œil */
+}
+
+/* ── Bouton "Se connecter" ────────────────────────── */
+
+/* Bouton principal de soumission du formulaire */
+.btn-conn {
+  width: 100%;                                       /* Pleine largeur de la carte */
+  background: #2563eb;                               /* Fond bleu primaire */
+  color: #fff;                                       /* Texte blanc */
+  border: none;                                      /* Pas de bordure */
+  border-radius: 10px;                               /* Coins arrondis */
+  padding: .72rem 1rem;                              /* Espacement interne (hauteur confortable) */
+  font-size: .9rem;                                  /* Taille de police */
+  font-weight: 600;                                  /* Texte semi-gras */
+  font-family: 'DM Sans', sans-serif;                /* Même police que le reste */
+  cursor: pointer;                                   /* Curseur de clic */
+  transition: background .2s, transform .15s, box-shadow .2s; /* Transitions douces */
+}
+
+/* Effets au survol du bouton : bleu plus foncé, légère élévation */
+.btn-conn:hover {
+  background: #1d4ed8;                          /* Bleu légèrement plus foncé */
+  box-shadow: 0 6px 18px rgba(37,99,235,.28);   /* Ombre portée bleue pour l'effet d'élévation */
+  transform: translateY(-1px);                   /* Déplace légèrement le bouton vers le haut */
+}
+
+/* Retour à la position normale au clic */
+.btn-conn:active {
+  transform: translateY(0);  /* Annule le translateY du hover */
+  box-shadow: none;           /* Supprime l'ombre au clic */
+}
+
+/* État désactivé (pendant la simulation de connexion via JavaScript) */
+.btn-conn:disabled {
+  opacity: .7;           /* Rend le bouton semi-transparent */
+  pointer-events: none;  /* Empêche tout clic pendant le chargement */
+}
+
+/* ── Séparateur "ou" ──────────────────────────────── */
+
+/* Séparateur horizontal avec le texte "ou" centré entre deux lignes
+   Utilise les pseudo-éléments ::before et ::after pour dessiner les lignes */
+.divider {
+  display: flex;        /* Aligne les lignes et le texte sur une seule ligne */
+  align-items: center;  /* Centre verticalement les éléments */
+  gap: .85rem;          /* Espace entre les lignes et le texte */
+  color: #94a3b8;       /* Couleur grise du texte "ou" */
+  font-size: .78rem;    /* Petite taille de texte */
+  margin: 1rem 0;       /* Espace au-dessus et en dessous du séparateur */
+}
+
+/* Ligne gauche du séparateur (avant le texte "ou") */
+.divider::before,
+/* Ligne droite du séparateur (après le texte "ou") */
+.divider::after {
+  content: '';          /* Nécessaire pour afficher les pseudo-éléments */
+  flex: 1;              /* Chaque ligne occupe l'espace restant de manière égale */
+  height: 1px;          /* Épaisseur de la ligne */
+  background: #e2e8f0;  /* Couleur grise de la ligne */
+}
+
+/* ── Texte et lien "Créer un compte" ──────────────── */
+
+/* Paragraphe centré invitant l'utilisateur à créer un compte */
+.signup-txt {
+  text-align: center;  /* Centrage horizontal */
+  font-size: .82rem;   /* Texte légèrement petit */
+  color: #64748b;      /* Gris moyen */
+  margin: 0;           /* Supprime les marges par défaut du paragraphe */
+}
+
+/* Lien "Créer un compte" en bleu et gras */
+.signup-txt a {
+  font-weight: 600;      /* Semi-gras */
+  color: #2563eb;        /* Bleu primaire */
+  text-decoration: none; /* Pas de soulignement */
+}
+
+/* Légère transparence au survol */
+.signup-txt a:hover {
+  opacity: .75;  /* Effet de hover discret */
+}
+
+/* =========================================================
+   RESPONSIVE — Adaptation mobile (écrans <= 768px)
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+  /* Sur mobile, les panneaux s'empilent verticalement */
+  .wrap {
+    flex-direction: column;  /* Passe de row (côte à côte) à column (empilé) */
+  }
+
+  /* Le panneau gauche prend toute la largeur sur mobile */
+  .left {
+    width: 100%;        /* Pleine largeur */
+    min-height: 260px;  /* Hauteur minimale pour ne pas écraser l'illustration */
+    padding: 1.5rem;    /* Padding réduit sur mobile */
+  }
+
+  /* Réduit la taille du SVG du réseau sur mobile */
+  .net-area svg {
+    width: 180px;   /* SVG plus petit */
+    height: 140px;  /* SVG plus petit */
+  }
+
+  /* Réduit le padding du panneau droit sur mobile */
+  .right {
+    padding: 2rem 1rem;  /* Moins d'espace sur les côtés */
+  }
+
+  /* Réduit le padding de la carte formulaire sur mobile */
+  .fcard {
+    padding: 1.25rem;  /* Padding plus compact */
+  }
+
+  /* Réduit la taille du titre principal sur mobile */
+  .login-title {
+    font-size: 1.35rem;  /* Titre légèrement plus petit */
+  }
+}

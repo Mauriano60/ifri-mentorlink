@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Email confirmé - IFRI_MentorLink</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+  <style>
+    body {
+      background: linear-gradient(135deg, #1a4bd4 0%, #0e2fa8 40%, #0a237a 100%);
+      font-family: 'DM Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-confirmation {
+      background: white;
+      border-radius: 20px;
+      padding: 3rem 2.5rem;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+      text-align: center;
+    }
+    .icon-check {
+      font-size: 3.5rem;
+      color: #38a169;
+      margin-bottom: 1rem;
+    }
+    .icon-error {
+      font-size: 3.5rem;
+      color: #e53e3e;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.75rem;
+    }
+    p {
+      color: #6c757d;
+      font-size: 0.95rem;
+      margin-bottom: 1.5rem;
+    }
+    .btn-retour {
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      padding: 0.75rem 2rem;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-retour:hover {
+      background: #1d4ed8;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <div class="card-confirmation">
+    {% if error %}
+      <div class="icon-error"><i class="bi bi-x-circle"></i></div>
+      <h1>Lien invalide ou expiré</h1>
+      <p>Le lien de confirmation que vous avez utilisé est invalide ou a expiré. Veuillez vous réinscrire.</p>
+    {% else %}
+      <div class="icon-check"><i class="bi bi-check-circle"></i></div>
+      <h1>Email confirmé</h1>
+      <p>Votre adresse email a été confirmée avec succès. Vous pouvez maintenant vous connecter.</p>
+    {% endif %}
+    <a href="{{ url_for('auth.login') }}" class="btn-retour">Aller à la connexion</a>
+  </div>
+</body>
+</html>

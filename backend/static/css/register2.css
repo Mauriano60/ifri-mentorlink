@@ -1,0 +1,226 @@
+/* ============================================================
+   style2.css — Styles spécifiques à l'étape 2 : Profil académique
+   Complète style.css (partagé avec l'étape 1)
+   ============================================================ */
+
+/* ============================================================
+   STEPPER — Ligne bleue entre étape 1 validée et étape 2
+   ============================================================ */
+
+/* Ligne entre deux étapes déjà complétées : bleue */
+.step-line-done {
+  background-color: #2563eb; /* Bleu principal pour indiquer que l'étape est passée */
+}
+
+/* Cercle d'étape complétée : fond bleu avec icône coche */
+.step-circle.completed {
+  background-color: #2563eb;  /* Fond bleu comme l'étape active */
+  border-color: #2563eb;      /* Bordure bleue */
+  color: #ffffff;             /* Icône blanche */
+  font-size: 0.85rem;         /* Taille de la coche */
+}
+
+/* ============================================================
+   SELECT — Menus déroulants personnalisés
+   ============================================================ */
+
+/* Quand une option est choisie, le texte devient foncé */
+.custom-select.selected-value {
+  color: #0f172a; /* Texte foncé une fois une valeur choisie */
+}
+
+/* Focus sur le select */
+.custom-select:focus {
+  border-color: #2563eb !important;             /* Bordure bleue */
+  box-shadow: 0 0 0 3px rgba(37,99,235,0.12) !important; /* Halo bleu */
+  outline: none;
+}
+
+/* ============================================================
+   LIBELLÉ DE SECTION (Compétences / Lacunes)
+   ============================================================ */
+
+/* Texte de section au-dessus des badges */
+.section-label {
+  font-size: 0.85rem;   /* Petite police */
+  color: #64748b;       /* Gris secondaire identique aux labels de champs */
+  font-weight: 500;     /* Légèrement gras */
+  margin-bottom: 10px;  /* Espace sous le libellé */
+}
+
+/* ============================================================
+   BADGES CLIQUABLES (compétences / lacunes)
+   ============================================================ */
+
+/* Conteneur flex qui permet le retour à la ligne automatique */
+.badges-container {
+  display: flex;        /* Disposition en ligne */
+  flex-wrap: wrap;      /* Retour à la ligne si trop de badges */
+  gap: 10px;            /* Espace uniforme entre chaque badge */
+}
+
+/* Badge individuel — état par défaut (non sélectionné) */
+.badge-pill {
+  display: inline-flex;              /* Flex pour centrer le texte */
+  align-items: center;               /* Centrage vertical */
+  padding: 7px 18px;                 /* Espacement intérieur (hauteur × largeur) */
+  border-radius: 999px;              /* Forme pilule parfaite */
+  border: 1.5px solid #cbd5e1;      /* Bordure gris clair */
+  background-color: #ffffff;         /* Fond blanc */
+  color: #334155;                    /* Texte gris foncé */
+  font-size: 0.875rem;               /* Taille de police légèrement réduite */
+  font-weight: 500;                  /* Semi-gras */
+  cursor: pointer;                   /* Curseur main pour indiquer la cliquabilité */
+  user-select: none;                 /* Empêche la sélection du texte au clic */
+  transition:
+    background-color 0.18s ease,    /* Transition fond */
+    border-color 0.18s ease,         /* Transition bordure */
+    color 0.18s ease,                /* Transition texte */
+    box-shadow 0.18s ease;           /* Transition ombre */
+  white-space: nowrap;               /* Empêche le retour à la ligne à l'intérieur du badge */
+}
+
+/* Badge au survol (hover) — léger feedback visuel */
+.badge-pill:hover {
+  border-color: #2563eb;                         /* Bordure bleue au survol */
+  background-color: #eff6ff;                     /* Fond bleu très clair */
+  color: #2563eb;                                /* Texte bleu */
+  box-shadow: 0 1px 6px rgba(37, 99, 235, 0.1); /* Légère ombre */
+}
+
+/* Badge sélectionné (actif) — fond bleu + texte blanc */
+.badge-pill.selected {
+  background-color: #2563eb;                    /* Fond bleu principal */
+  border-color: #2563eb;                        /* Bordure bleue */
+  color: #ffffff;                               /* Texte blanc */
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.25); /* Ombre bleue subtile */
+}
+
+/* Badge sélectionné au survol — bleu légèrement plus foncé */
+.badge-pill.selected:hover {
+  background-color: #1d4ed8;   /* Bleu plus foncé */
+  border-color: #1d4ed8;       /* Bordure bleu foncé */
+  color: #ffffff;              /* Texte reste blanc */
+}
+
+/* ============================================================
+   BOUTONS DE NAVIGATION : Retour + Suivant
+   ============================================================ */
+
+/* Bouton "← Retour" : contour bleu, fond transparent */
+.btn-retour {
+  border: 2px solid #2563eb;   /* Bordure bleue épaisse */
+  color: #2563eb;              /* Texte bleu */
+  background-color: transparent; /* Fond transparent */
+  border-radius: 10px;         /* Coins arrondis */
+  padding: 0.75rem 1.5rem;    /* Espacement intérieur */
+  font-size: 0.95rem;          /* Taille de police */
+  font-weight: 600;            /* Semi-gras */
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.1s ease;       /* Transitions fluides */
+}
+
+/* Hover du bouton Retour : fond bleu clair */
+.btn-retour:hover {
+  background-color: #eff6ff;   /* Fond bleu très clair au survol */
+  color: #1d4ed8;              /* Texte bleu foncé */
+  border-color: #1d4ed8;       /* Bordure bleu foncé */
+}
+
+/* Clic sur Retour */
+.btn-retour:active {
+  transform: translateY(1px);  /* Léger enfoncement visuel */
+}
+
+/* Le bouton Suivant hérite de .btn-suivant dans style.css */
+/* On ajuste uniquement la hauteur pour matcher le bouton Retour */
+.btn-suivant {
+  padding: 0.75rem 1.5rem; /* Identique à btn-retour pour alignement */
+}
+
+/* ============================================================
+   RESPONSIVE — Mobiles (< 576px)
+   ============================================================ */
+
+@media (max-width: 576px) {
+
+  /* Badges un peu plus petits sur mobile */
+  .badge-pill {
+    font-size: 0.8rem;   /* Police réduite */
+    padding: 6px 14px;   /* Moins d'espace intérieur */
+  }
+
+  /* Libellé de section légèrement réduit */
+  .section-label {
+    font-size: 0.8rem;
+  }
+
+  /* Boutons empilés sur mobile — col-12 géré par Bootstrap, mais on ajuste le gap */
+  .btn-retour,
+  .btn-suivant {
+    font-size: 0.9rem;   /* Police légèrement réduite sur mobile */
+  }
+}
+
+/* ============================================================
+   LISTES À PUCES CLIQUABLES
+   ============================================================ */
+
+.bullet-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 9px;
+}
+
+.bullet-list li {
+  padding: 0.5rem 0.9rem;
+  border-bottom: 1px solid #f1f5f9;
+  cursor: pointer;
+  font-size: 0.85rem;
+  color: #0f172a;
+  transition: background 0.15s;
+}
+
+.bullet-list li:last-child {
+  border-bottom: none;
+}
+
+.bullet-list li::before {
+  content: "○";
+  margin-right: 0.6rem;
+  color: #94a3b8;
+  font-size: 0.8rem;
+}
+
+.bullet-list li.selected {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.bullet-list li.selected::before {
+  content: "●";
+  color: #2563eb;
+}
+
+.bullet-list li:hover {
+  background: #f8fafc;
+}
+
+.bullet-list li.disabled-item {
+  color: #cbd5e1;
+  cursor: not-allowed;
+  background: #f8fafc;
+}
+
+.bullet-list li.disabled-item::before {
+  content: "○";
+  color: #cbd5e1;
+}
+
+

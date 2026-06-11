@@ -1,0 +1,388 @@
+/* ════════════════════════════════
+   RESET & BASE
+════════════════════════════════ */
+
+* {
+  margin: 0;               /* Supprime marges par défaut */
+  padding: 0;              /* Supprime paddings par défaut */
+  box-sizing: border-box;  /* Padding inclus dans la largeur */
+}
+
+body {
+  font-family: 'Inter', sans-serif; /* Police principale */
+  background-color: #f0f4f8;          /* Fond gris-bleu pâle */
+  color: #0d1117;                     /* Couleur texte par défaut */
+}
+
+
+/* ════════════════════════════════
+   NAVBAR
+════════════════════════════════ */
+
+#mainNav {
+  height: 64px;                          /* Hauteur fixe identique à la maquette */
+  border-bottom: 1px solid #e2e8f0;      /* Ligne séparatrice grise en bas */
+  transition: box-shadow 0.3s;           /* Transition douce de l'ombre au scroll */
+  font-family: 'Inter', sans-serif; /* Police principale */
+  position: sticky;
+  top: 0;
+  z-index: 1000; /* Force la nav à rester au-dessus du reste du contenu */
+  background-color: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important; /* Pour que ça marche sur iPhone/Safari */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.logo-brand {
+  display: flex;             /* Flexbox pour icône + texte côte à côte */
+  align-items: center;       /* Centre verticalement */
+  gap: 8px;                  /* Espace entre l'icône et "IFRI" */
+  font-size: 20px;           /* Taille du texte IFRI */
+  font-weight: 700;          /* Gras */
+  color: #1a56db !important; /* Bleu Bootstrap surchargé */
+  text-decoration: none;     /* Pas de soulignement */
+}
+
+.nav-custom {
+  font-size: 14px;           /* Taille des liens nav */
+  font-weight: 400;          /* Normal */
+  color: #1a202c !important; /* Gris foncé */
+  padding: 0 !important;     /* Supprime le padding Bootstrap par défaut */
+  transition: color 0.2s;    /* Transition couleur au survol */
+}
+
+.nav-custom:hover {
+  color: #1a56db !important; /* Bleu au survol */
+}
+
+.btn-connexion {
+  padding: 8px 22px;               /* Espacement intérieur */
+  border: 1.5px solid #1a56db;     /* Bordure bleue */
+  border-radius: 8px;              /* Coins arrondis */
+  background: transparent;         /* Fond transparent */
+  color: #1a56db;                  /* Texte bleu */
+  font-size: 14px;                 /* Taille du texte */
+  font-weight: 500;                /* Semi-gras */
+  font-family: 'DM Sans', sans-serif; /* Police */
+  cursor: pointer;                 /* Curseur main */
+  transition: background 0.2s;    /* Transition fluide */
+  white-space: nowrap;             /* Empêche le retour à la ligne */
+}
+
+.btn-connexion:hover {
+  background: #eef2ff; /* Fond bleu très pâle au survol */
+  color: #1a56db;      /* Texte reste bleu */
+}
+
+.btn-inscription {
+  padding: 8px 22px;               /* Espacement identique au btn-connexion */
+  border: none;                    /* Pas de bordure */
+  border-radius: 8px;              /* Coins arrondis */
+  background: #1a56db;             /* Fond bleu plein */
+  color: #ffffff;                  /* Texte blanc */
+  font-size: 14px;                 /* Taille du texte */
+  font-weight: 500;                /* Semi-gras */
+  font-family: 'DM Sans', sans-serif; /* Police */
+  cursor: pointer;                 /* Curseur main */
+  transition: background 0.2s;    /* Transition fluide */
+  white-space: nowrap;             /* Empêche le retour à la ligne */
+}
+
+.btn-inscription:hover {
+  background: #1447b8; /* Bleu plus foncé au survol */
+  color: #fff;         /* Texte reste blanc */
+}
+
+
+/* ════════════════════════════════
+   SECTION HERO
+════════════════════════════════ */
+
+.hero-section {
+  background: #f0f4f8;   /* Fond identique au body */
+  padding: 80px 0 40px;  /* Haut généreux, bas réduit car stats en dessous */
+}
+
+.hero-row {
+  min-height: 460px; /* Hauteur minimale de la ligne */
+}
+
+.hero-badge {
+  display: inline-flex;        /* Inline + flexbox */
+  align-items: center;         /* Centre icône + texte */
+  gap: 6px;                    /* Espace étoile / texte */
+  background: #ffffff;         /* Fond blanc */
+  border: 1px solid #d0daf0;   /* Bordure bleu-grise */
+  border-radius: 20px;         /* Forme pilule */
+  padding: 5px 14px;           /* Espacement intérieur */
+  font-size: 13px;             /* Petite taille */
+  color: #1a56db;              /* Texte bleu */
+  font-weight: 500;            /* Semi-gras */
+  margin-bottom: 24px;         /* Espace sous le badge */
+}
+
+.hero-title {
+  font-size: 50px;        /* Grande taille conforme à la maquette */
+  font-weight: 800;       /* Très gras */
+  line-height: 1.12;      /* Interligne serré */
+  color: #0d1117;         /* Noir profond */
+  margin-bottom: 20px;    /* Espace sous le titre */
+  letter-spacing: -0.5px; /* Légèrement condensé */
+}
+
+.hero-sub {
+  font-size: 16px;      /* Taille lisible */
+  color: #4a5568;       /* Gris moyen */
+  line-height: 1.7;     /* Interligne aéré */
+  margin-bottom: 32px;  /* Espace avant les boutons */
+  max-width: 500px;     /* Limite la largeur */
+}
+
+.btn-cta-primary {
+  padding: 14px 28px;              /* Grand espacement */
+  background: #1a56db;             /* Fond bleu */
+  color: #ffffff;                  /* Texte blanc */
+  border: none;                    /* Pas de bordure */
+  border-radius: 10px;             /* Coins arrondis */
+  font-size: 16px;                 /* Taille lisible */
+  font-weight: 600;                /* Gras */
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-cta-primary:hover {
+  background: #1447b8; /* Bleu foncé au survol */
+  color: #fff;
+}
+
+.btn-cta-secondary {
+  padding: 14px 28px;               /* Même taille que le primaire */
+  background: #ffffff;              /* Fond blanc */
+  color: #1a56db;                   /* Texte bleu */
+  border: 1.5px solid #c5d3f0;      /* Bordure gris-bleu */
+  border-radius: 10px;              /* Coins arrondis */
+  font-size: 16px;
+  font-weight: 500;
+  font-family: 'DM Sans', sans-serif;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-cta-secondary:hover {
+  background: #eef2ff; /* Fond bleu très clair au survol */
+}
+
+.hero-stats {
+  margin-top: 48px;  /* Espace au-dessus de la barre stats */
+  gap: 0;            /* Pas de gap Bootstrap, géré manuellement */
+}
+
+.stat-item {
+  font-size: 14px;  /* Taille normale */
+  color: #6b7280;   /* Gris pour les labels */
+}
+
+.stat-item strong {
+  color: #0d1117;   /* Chiffres en noir */
+  font-weight: 700; /* Gras */
+}
+
+.stat-dot {
+  margin: 0 14px;  /* Espace autour du séparateur point */
+  color: #b0bcc8;  /* Gris clair */
+  font-size: 16px; /* Légèrement plus grand pour être visible */
+}
+
+.network-card {
+  background: #ffffff;                      /* Fond blanc */
+  border-radius: 20px;                      /* Coins très arrondis */
+  border: 1px solid #e2e8f0;               /* Bordure grise fine */
+  width: 380px;                             /* Largeur fixe */
+  height: 380px;                            /* Hauteur fixe = carré */
+  display: flex;                            /* Flexbox */
+  align-items: center;                      /* Centre SVG verticalement */
+  justify-content: center;                  /* Centre SVG horizontalement */
+  box-shadow: 0 12px 48px rgba(0,0,0,0.07);/* Ombre légère */
+}
+
+
+/* ════════════════════════════════
+   SECTION FEATURES
+════════════════════════════════ */
+
+.features-section {
+  background: #ffffff;  /* Fond blanc */
+  padding: 100px 0;      /* Espacement haut et bas */
+}
+
+.features-title {
+  font-size: 28px;       /* Taille titre section */
+  font-weight: 800;      /* Très gras */
+  color: #0d1117;        /* Noir */
+  margin-bottom: 10px;   /* Espace sous le titre */
+}
+
+.features-sub {
+  font-size: 18px;  /* Taille normale */
+  color: #6b7280;   /* Gris */
+  padding: 8px;
+}
+
+.feature-card {
+  background: #ffffff;                      /* Fond blanc */
+  border: 1px solid #e8edf5;               /* Bordure grise fine */
+  border-radius: 16px;                      /* Coins arrondis */
+  padding: 40px 50px;                       /* Espacement intérieur */
+  height: 100%;                             /* Toute la hauteur colonne */
+  box-shadow: 0 2px 12px rgba(0,0,0,0.04); /* Ombre très légère */
+  transition: box-shadow 0.25s;            /* Transition au survol */
+}
+
+.feature-card:hover {
+  box-shadow: 0 8px 28px rgba(0,0,0,0.09); /* Ombre plus marquée au survol */
+}
+
+.feature-icon {
+  width: 44px;           /* Largeur du carré icône */
+  height: 44px;          /* Hauteur */
+  border-radius: 10px;   /* Coins arrondis */
+  display: flex;         /* Flexbox pour centrer */
+  align-items: center;   /* Centre verticalement */
+  justify-content: center; /* Centre horizontalement */
+  margin-bottom: 20px;   /* Espace sous l'icône */
+}
+
+.icon-blue   { background: #eff6ff; } /* Fond bleu très pâle */
+.icon-green  { background: #ecfdf5; } /* Fond vert très pâle */
+.icon-teal   { background: #f0f9ff; } /* Fond cyan très pâle */
+.icon-indigo { background: #eef2ff; } /* Fond indigo très pâle */
+
+.feature-title {
+  font-size: 20px;      /* Taille titre carte */
+  font-weight: 700;     /* Gras */
+  color: #0d1117;       /* Noir */
+  margin-bottom: 10px;  /* Espace sous le titre */
+}
+
+.feature-desc {
+  font-size: 16px;  /* Taille description */
+  color: #6b7280;   /* Gris */
+  line-height: 1.6; /* Interligne aéré */
+}
+
+
+/* ════════════════════════════════
+   SECTION STATS FONCÉE
+════════════════════════════════ */
+
+.dark-stats-section {
+  background: #0f172a;  /* Bleu marine très foncé */
+  padding: 70px 0;      /* Espacement haut et bas */
+}
+
+.stat-col {
+  padding: 20px 40px; /* Espacement intérieur de chaque colonne stat */
+}
+
+.stat-col-bordered {
+  border-left: 1px solid #1e293b;  /* Bordure gauche de séparation */
+  border-right: 1px solid #1e293b; /* Bordure droite de séparation */
+}
+
+.big-stat-number {
+  font-size: 68px;       /* Très grand chiffre comme dans la maquette */
+  font-weight: 800;      /* Très gras */
+  color: #10b981;        /* Vert émeraude */
+  line-height: 1;        /* Interligne minimal */
+  margin-bottom: 12px;   /* Espace sous le chiffre */
+}
+
+.big-stat-label {
+  font-size: 11px;          /* Petit texte */
+  font-weight: 600;         /* Semi-gras */
+  letter-spacing: 2.5px;    /* Espacement entre lettres */
+  color: #94a3b8;           /* Gris clair sur fond foncé */
+  text-transform: uppercase;/* Majuscules */
+}
+
+
+
+/* ════════════════════════════════
+   FOOTER
+════════════════════════════════ */
+
+.site-footer {
+  background: #0f172a;     /* Même fond que la section stats */
+  padding: 28px 0;         /* Espacement haut et bas */
+}
+
+.footer-logo {
+  display: flex;           /* Flexbox pour icône + texte */
+  align-items: center;     /* Centre verticalement */
+  gap: 8px;                /* Espace entre icône et texte */
+  color: #ffffff;          /* Logo blanc sur fond foncé */
+  font-weight: 900;        /* Gras */
+  font-size: 20px;         /* Taille du logo footer */
+  text-decoration: none;   /* Pas de soulignement */
+}
+
+.footer-link {
+  font-size: 14px;         /* Taille des liens footer */
+  color: #94a3b8;          /* Gris clair */
+  text-decoration: none;   /* Pas de soulignement */
+  transition: color 0.2s;  /* Transition fluide */
+}
+
+.footer-link:hover {
+  color: #ffffff; /* Blanc au survol */
+}
+
+.footer-copy {
+  font-size: 12px;   /* Petite taille pour le copyright */
+  color: #64748b;    /* Gris foncé discret */
+}
+
+
+
+/* ════════════════════════════════
+   RESPONSIVE MOBILE
+════════════════════════════════ */
+
+@media (max-width: 991px) {
+  /* Bootstrap lg breakpoint */
+
+  .network-card {
+    width: 280px;      /* Réduit la carte sur tablette/mobile */
+    height: 280px;
+    margin-top: 40px;  /* Espace au-dessus */
+  }
+
+  .hero-title {
+    font-size: 36px;   /* Réduit le titre */
+  }
+}
+
+@media (max-width: 768px) {
+
+  .big-stat-number {
+    font-size: 48px;   /* Réduit les grands chiffres sur mobile */
+  }
+
+  .stat-col-bordered {
+    border: none;      /* Supprime les bordures latérales sur mobile */
+  }
+
+  .stat-col {
+    padding: 16px;     /* Réduit le padding sur mobile */
+  }
+
+  .footer-copy {
+    text-align: center; /* Centre le copyright */
+    margin-top: 12px;
+  }
+
+  .col-md-4.text-end {
+    text-align: center !important; /* Centre sur mobile */
+  }
+}

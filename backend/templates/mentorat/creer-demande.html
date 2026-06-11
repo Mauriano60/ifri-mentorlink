@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Créer une demande - IFRI_MentorLink</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar">
+      <div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div>
+      <div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="{{ url_for('demandes.demandes') }}" class="active"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching</a>
+        <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots" style="width:20px"></i> Messages</a>
+        <a href="{{ url_for('notifications.notifications') }}"><i class="bi bi-bell" style="width:20px"></i> Notifications</a>
+        <a href="{{ url_for('settings.modifier_profil_matieres') }}"><i class="bi bi-gear" style="width:20px"></i> Param&egrave;tres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right" style="width:20px"></i> D&eacute;connexion</button>
+      </nav>
+      <div class="sidebar-user">
+        {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-sm" style="object-fit:cover" />{% else %}<div class="avatar-sm">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+        <div><div class="name">{{ user.prenom }} {{ user.nom }}</div><div class="role">{{ user.filiere_nom or '' }}</div></div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Publier une demande d'aide</h1>
+        <div class="header-actions">
+          <button class="bell-btn" onclick="window.location.href='{{ url_for('notifications.notifications') }}'">
+            <i class="bi bi-bell" style="font-size:1.2rem"></i>
+            {% if nb_notifs > 0 %}<span class="bell-dot"></span>{% endif %}
+          </button>
+          {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-circle" style="object-fit:cover" />{% else %}<div class="avatar-circle">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+
+      <div class="dash-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show py-2" style="font-size:.85rem">{{ message }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% if error %}
+          <div class="alert alert-danger py-2" style="font-size:.85rem">{{ error }}</div>
+        {% endif %}
+
+        {% if matchs %}
+          <div class="card-custom p-4 mb-4">
+            <h5 class="fw-semibold mb-3" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Mentors potentiels d&eacute;tect&eacute;s</h5>
+            <p style="font-size:.85rem;color:var(--slate-500)" class="mb-3">Notre algorithme a trouv&eacute; des profils compatibles avec votre demande&nbsp;!</p>
+            <div class="row g-3">
+              {% for m in matchs %}
+              <div class="col-md-6">
+                <div class="match-card" style="gap:16px;flex-direction:column">
+                  <div class="d-flex align-items-center gap-3">
+                    {% if m.avatar_url %}<img src="{{ url_for('static', filename=m.avatar_url.lstrip('static/')) }}" alt="Avatar" style="width:56px;height:56px;border-radius:50%;object-fit:cover;flex-shrink:0" />{% else %}<div style="width:56px;height:56px;border-radius:50%;background:var(--blue-100);color:var(--blue-600);font-weight:700;font-size:1.2rem;display:flex;align-items:center;justify-content:center;flex-shrink:0">{{ m.prenom[:1]|upper }}{{ m.nom[:1]|upper }}</div>{% endif %}
+                    <div class="flex-grow-1 min-width-0">
+                      <p class="fw-semibold mb-0" style="font-size:.95rem;color:var(--slate-900)">{{ m.prenom }} {{ m.nom }}</p>
+                      <p style="font-size:.8rem;color:var(--slate-500);margin:0">{{ m.filiere or '' }} &middot; {{ m.niveau or '' }}</p>
+                    </div>
+                    <div style="padding:6px 12px;border-radius:999px;font-size:.85rem;font-weight:700;background:var(--teal-50);color:var(--teal-600);white-space:nowrap">{{ m.score_compatibilite }}%</div>
+                  </div>
+                  {% if m.commun_matieres %}
+                  <div>
+                    <p style="font-size:.8rem;font-weight:600;color:var(--slate-700);margin-bottom:4px">Mati&egrave;res en commun</p>
+                    <div class="d-flex flex-wrap gap-1">
+                      {% for mat in m.commun_matieres %}<span style="padding:2px 10px;border-radius:999px;font-size:.75rem;background:var(--blue-50);color:var(--blue-600)">{{ mat }}</span>{% endfor %}
+                    </div>
+                  </div>
+                  {% endif %}
+                  {% if m.commun_dispos %}
+                  <div>
+                    <p style="font-size:.8rem;font-weight:600;color:var(--slate-700);margin-bottom:4px">Disponibilit&eacute;s communes</p>
+                    <div class="d-flex flex-wrap gap-1">
+                      {% for d in m.commun_dispos %}<span style="padding:2px 10px;border-radius:999px;font-size:.75rem;background:var(--green-50);color:var(--green-600)">{{ d.jour_semaine }} {{ d.heure_debut }}-{{ d.heure_fin }}</span>{% endfor %}
+                    </div>
+                  </div>
+                  {% endif %}
+                  <form method="POST" action="{{ url_for('matching.envoyer_demande') }}" style="margin-top:auto">
+                    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                    <input type="hidden" name="mentor_id" value="{{ m.id }}" />
+                    <input type="hidden" name="mentee_id" value="{{ user.id }}" />
+                    <input type="hidden" name="score" value="{{ m.score_compatibilite }}" />
+                    <button type="submit" class="btn w-100" style="background:var(--blue-600);color:white;border-radius:8px;padding:8px;font-size:.85rem;font-weight:600">Demander de l'aide</button>
+                  </form>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <a href="{{ url_for('demandes.demandes') }}" class="btn btn-primary-custom mt-3">Voir toutes mes demandes</a>
+          </div>
+        {% else %}
+          <div class="card-custom p-4">
+            <h5 class="fw-semibold mb-3" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Nouvelle demande d'aide</h5>
+            <form method="POST">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <div class="mb-3">
+                <label class="form-label-custom">Mati&egrave;re <small class="text-muted">(vos lacunes)</small></label>
+                <select name="matiere_id" class="form-select input-custom" required>
+                  <option value="">S&eacute;lectionnez une mati&egrave;re</option>
+                  {% for m in matieres %}<option value="{{ m.id }}">{{ m.nom }}</option>{% endfor %}
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label-custom">Format</label>
+                <select name="format" class="form-select input-custom" required>
+                  <option value="">Choisissez un format</option>
+                  <option value="en_ligne">En ligne</option>
+                  <option value="presentiel">Pr&eacute;sentiel</option>
+                  <option value="les_deux">Les deux</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label-custom">Description</label>
+                <textarea name="description" class="form-control input-custom" rows="4" placeholder="D&eacute;crivez ce dont vous avez besoin (max 1000 caract&egrave;res)" maxlength="1000"></textarea>
+              </div>
+              <div class="mb-4">
+                <label class="form-label-custom">Disponibilit&eacute;s <small class="text-muted">(depuis votre profil)</small></label>
+                <div id="dispoContainer">
+                  {% if user_dispos %}
+                    {% for d in user_dispos %}
+                    <div class="dispo-row">
+                      <select name="jour[]" class="form-select" style="flex:1;min-width:100px">
+                        <option value="">Jour</option>
+                        {% for j in ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'] %}
+                        <option value="{{ j }}"{% if d.jour_semaine == j %} selected{% endif %}>{{ j }}</option>
+                        {% endfor %}
+                      </select>
+                      <input type="time" name="heure_debut[]" class="form-control" style="flex:1;min-width:80px" title="D&eacute;but" value="{{ d.heure_debut }}" />
+                      <input type="time" name="heure_fin[]" class="form-control" style="flex:1;min-width:80px" title="Fin" value="{{ d.heure_fin }}" />
+                      <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDispo(this)" style="flex-shrink:0" title="Supprimer"><i class="bi bi-x-lg"></i></button>
+                    </div>
+                    {% endfor %}
+                  {% else %}
+                  <div class="dispo-row">
+                    <select name="jour[]" class="form-select" style="flex:1;min-width:100px">
+                      <option value="">Jour</option>
+                      <option value="Lundi">Lundi</option>
+                      <option value="Mardi">Mardi</option>
+                      <option value="Mercredi">Mercredi</option>
+                      <option value="Jeudi">Jeudi</option>
+                      <option value="Vendredi">Vendredi</option>
+                      <option value="Samedi">Samedi</option>
+                    </select>
+                    <input type="time" name="heure_debut[]" class="form-control" style="flex:1;min-width:80px" title="D&eacute;but" />
+                    <input type="time" name="heure_fin[]" class="form-control" style="flex:1;min-width:80px" title="Fin" />
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDispo(this)" style="flex-shrink:0" title="Supprimer"><i class="bi bi-x-lg"></i></button>
+                  </div>
+                  {% endif %}
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addDispo()"><i class="bi bi-plus-lg"></i> Ajouter un cr&eacute;neau</button>
+              </div>
+              <button type="submit" class="btn btn-primary-custom w-100 py-3">Publier la demande</button>
+            </form>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="{{ url_for('demandes.demandes') }}" class="active"><i class="bi bi-inbox"></i> Demandes</a>
+      <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge"></i> Matching</a>
+      <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots"></i> Messages</a>
+    </nav>
+  </div>
+
+  <script>
+    function addDispo() {
+      var container = document.getElementById('dispoContainer');
+      var row = document.createElement('div');
+      row.className = 'dispo-row';
+      row.innerHTML = '<select name="jour[]" class="form-select" style="flex:1;min-width:100px"><option value="">Jour</option><option value="Lundi">Lundi</option><option value="Mardi">Mardi</option><option value="Mercredi">Mercredi</option><option value="Jeudi">Jeudi</option><option value="Vendredi">Vendredi</option><option value="Samedi">Samedi</option></select><input type="time" name="heure_debut[]" class="form-control" style="flex:1;min-width:80px" title="D\u00e9but" /><input type="time" name="heure_fin[]" class="form-control" style="flex:1;min-width:80px" title="Fin" /><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDispo(this)" style="flex-shrink:0" title="Supprimer"><i class="bi bi-x-lg"></i></button>';
+      container.appendChild(row);
+    }
+    function removeDispo(btn) {
+      var container = document.getElementById('dispoContainer');
+      if (container.children.length > 1) btn.closest('.dispo-row').remove();
+    }
+  </script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

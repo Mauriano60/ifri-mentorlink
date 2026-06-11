@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Messages - IFRI_MentorLink</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar"><div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div><div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="dashboard.html"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="profile.html"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="offers.html"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="requests.html"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="matching.html"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching <span class="nav-badge" style="background:var(--teal-500)">12</span></a>
+        <a href="messages.html" class="active"><i class="bi bi-chat-dots" style="width:20px"></i> Messages <span class="nav-badge" style="background:var(--red-500)">5</span></a>
+        <a href="notifications.html"><i class="bi bi-bell" style="width:20px"></i> Notifications <span class="nav-badge" style="background:var(--amber-500)">3</span></a>
+        <a href="settings.html"><i class="bi bi-gear" style="width:20px"></i> Paramètres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right" style="width:20px"></i> Déconnexion</button>
+      </nav>
+      <div class="sidebar-user"><div class="avatar-sm">JD</div><div><div class="name">Jean Dupont</div><div class="role">Génie Logiciel</div></div></div>
+    </aside>
+    <div class="dash-main" style="padding-bottom:0">
+      <header class="dash-header">
+        <h1>Messages</h1>
+        <div class="header-actions">
+          <div class="search-box"><i class="bi bi-search"></i><input type="text" placeholder="Rechercher un étudiant..." /></div>
+          <button class="bell-btn" onclick="window.location.href='notifications.html'"><i class="bi bi-bell" style="font-size:1.2rem"></i><span class="bell-dot"></span></button>
+          <div class="avatar-circle">JD</div>
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+      <div class="messages-container">
+        <div class="conv-list" id="convList">
+          <div class="p-3 border-bottom d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+              <h5 class="fw-semibold mb-0" style="font-family:'Poppins',sans-serif;color:var(--slate-900);font-size:1rem">Messages</h5>
+              <span style="padding:2px 8px;border-radius:999px;background:var(--red-50);color:var(--red-600);font-size:.7rem;font-weight:700" id="unreadBadge">5 non lus</span>
+            </div>
+            <button class="btn btn-sm" style="color:var(--slate-500);background:none;border:none"><i class="bi bi-pen"></i></button>
+          </div>
+          <div class="p-3 border-bottom">
+            <div class="position-relative">
+              <i class="bi bi-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--slate-400);z-index:1"></i>
+              <input type="text" class="form-control" style="padding-left:36px;height:36px;border-radius:8px;font-size:.85rem;background:var(--slate-50)" placeholder="Rechercher une conversation..." />
+            </div>
+          </div>
+          <div class="flex-grow-1" style="overflow-y:auto" id="convItems"></div>
+        </div>
+        <div class="chat-area" id="chatArea">
+          <div class="chat-header">
+            <div class="d-flex align-items-center gap-3">
+              <div class="position-relative">
+                <div class="conv-avatar" style="width:40px;height:40px;background:var(--blue-600);color:white" id="chatAvatar">MH</div>
+                <div style="position:absolute;bottom:0;right:0;width:10px;height:10px;background:var(--green-500);border:2px solid white;border-radius:50%"></div>
+              </div>
+              <div>
+                <h6 class="fw-semibold mb-0" id="chatName" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Marie Houngbédji</h6>
+                <span style="font-size:.75rem;color:var(--slate-500)" id="chatStatus">Génie Logiciel · En ligne</span>
+              </div>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <button class="btn btn-sm" style="color:var(--slate-500);background:none;border:none"><i class="bi bi-person-circle" style="font-size:1.1rem"></i></button>
+              <button class="btn btn-sm" style="color:var(--slate-500);background:none;border:none"><i class="bi bi-three-dots" style="font-size:1.1rem"></i></button>
+            </div>
+          </div>
+          <div class="chat-messages" id="chatMessages"></div>
+          <div class="chat-input-area">
+            <div class="input-group-custom">
+              <input type="text" id="msgInput" placeholder="Écrire un message..." onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage()}" />
+              <button class="chat-send-btn" onclick="sendMessage()"><i class="bi bi-send" style="margin-left:2px"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    var conversations = [
+      {id:'c1',initials:'MH',name:'Marie Houngbédji',preview:'Parfait, je te confirme. Je t\'envoie le lien de la session !',time:'14:32',unread:2,status:'En ligne',
+       msgs:[
+         {id:'m1',sender:'them',text:'Bonjour Jean ! J\'ai vu que tu cherchais de l\'aide en Python.',time:'14:25'},
+         {id:'m2',sender:'me',text:'Oui exactement ! Je bloque sur les décorateurs. Tu penses pouvoir m\'aider ?',time:'14:27',status:'read'},
+         {id:'m3',sender:'them',text:'Bien sûr, c\'est ma spécialité 😊 On peut faire une session ce mardi soir ?',time:'14:29'},
+         {id:'m4',sender:'me',text:'Super ! Je suis disponible à partir de 18h30.',time:'14:30',status:'read'},
+         {id:'m5',sender:'them',text:'Parfait, je te confirme. Je t\'envoie le lien de la session !',time:'14:32'}
+       ]},
+      {id:'c2',initials:'PA',name:'Paul Adéoti',preview:'Merci pour les explications',time:'Hier',unread:0,status:'En ligne il y a 1h',
+       msgs:[
+         {id:'m1',sender:'them',text:'Salut ! Tu peux m\'expliquer les jointures SQL ?',time:'10:00'},
+         {id:'m2',sender:'me',text:'Bien sûr ! Les jointures permettent de combiner les données de plusieurs tables...',time:'10:15',status:'read'},
+         {id:'m3',sender:'them',text:'Merci pour les explications',time:'10:30'}
+       ]},
+      {id:'c3',initials:'AK',name:'Aminata Kora',preview:'À demain alors 👍',time:'Lun',unread:0,status:'En ligne il y a 2j',
+       msgs:[
+         {id:'m1',sender:'them',text:'On se voit demain pour la session ?',time:'16:00'},
+         {id:'m2',sender:'me',text:'Oui parfait, à 14h comme prévu',time:'16:05',status:'read'},
+         {id:'m3',sender:'them',text:'À demain alors 👍',time:'16:10'}
+       ]}
+    ];
+    var activeId = 'c1';
+    var convMsgs = {};
+    conversations.forEach(function(c){convMsgs[c.id]=c.msgs;});
+
+    function renderConvList() {
+      var container = document.getElementById('convItems');
+      container.innerHTML = '';
+      conversations.forEach(function(c) {
+        var item = document.createElement('div');
+        item.className = 'conv-item' + (c.id === activeId ? ' active' : '');
+        item.onclick = function(){ switchConv(c.id); };
+        item.innerHTML =
+          '<div class="conv-avatar">'+c.initials+'</div>'+
+          '<div class="flex-grow-1 min-width-0"><div class="d-flex align-items-center justify-content-between mb-1"><span class="fw-semibold" style="font-size:.9rem;'+(c.unread>0?'color:var(--slate-900)':'color:var(--slate-700)')+'">'+c.name+'</span><span style="font-size:.75rem;'+(c.unread>0?'color:var(--blue-600);font-weight:700':'color:var(--slate-400)')+'">'+c.time+'</span></div><p style="font-size:.85rem;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;'+(c.unread>0?'font-weight:500;color:var(--slate-900)':'color:var(--slate-500)')+'">'+c.preview+'</p></div>'+
+          (c.unread>0?'<div class="conv-unread">'+c.unread+'</div>':'');
+        container.appendChild(item);
+      });
+    }
+
+    function renderMessages() {
+      var container = document.getElementById('chatMessages');
+      var msgs = convMsgs[activeId] || [];
+      container.innerHTML = '<div style="text-align:center;margin-bottom:24px"><span style="background:white;padding:4px 12px;border-radius:999px;font-size:.75rem;color:var(--slate-400);border:1px solid var(--slate-200)">Aujourd\'hui</span></div>';
+      msgs.forEach(function(m) {
+        if (m.sender === 'me') {
+          container.innerHTML +=
+            '<div class="msg-sent"><div><div class="msg-bubble" style="background:var(--blue-600);color:white;padding:12px 16px;border-radius:16px 16px 4px 16px;max-width:100%">'+m.text+'</div><div style="font-size:.7rem;color:var(--slate-400);text-align:right;margin-top:4px">'+(m.status==='read'?'<i class="bi bi-check-all"></i>':'<i class="bi bi-check"></i>')+' '+m.time+'</div></div></div>';
+        } else {
+          container.innerHTML +=
+            '<div class="msg-received"><div class="msg-avatar" style="background:var(--blue-100);color:var(--blue-600)">'+getActiveConv().initials+'</div><div><div style="font-size:.75rem;color:var(--slate-500);margin-left:4px;margin-bottom:2px">'+m.sender+'</div><div class="msg-bubble" style="background:white;border:1px solid var(--slate-200);padding:12px 16px;border-radius:16px 16px 16px 4px">'+m.text+'</div><div style="font-size:.7rem;color:var(--slate-400);margin-top:4px;margin-left:4px">'+m.time+'</div></div></div>';
+        }
+      });
+      container.scrollTop = container.scrollHeight;
+    }
+
+    function getActiveConv() {
+      return conversations.find(function(c){return c.id===activeId;});
+    }
+
+    function switchConv(id) {
+      activeId = id;
+      var c = getActiveConv();
+      document.getElementById('chatAvatar').textContent = c.initials;
+      document.getElementById('chatName').textContent = c.name;
+      document.getElementById('chatStatus').textContent = c.status;
+      renderConvList();
+      renderMessages();
+    }
+
+    function sendMessage() {
+      var input = document.getElementById('msgInput');
+      var text = input.value.trim();
+      if (!text) return;
+      var msgs = convMsgs[activeId];
+      var now = new Date();
+      var time = now.getHours().toString().padStart(2,'0')+':'+now.getMinutes().toString().padStart(2,'0');
+      msgs.push({id:'m'+Date.now(),sender:'me',text:text,time:time,status:'sent'});
+      input.value = '';
+      renderMessages();
+    }
+
+    renderConvList();
+    renderMessages();
+  </script>
+</body>
+</html>

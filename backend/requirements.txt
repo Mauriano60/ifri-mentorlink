@@ -1,0 +1,11 @@
+Flask
+Flask-Cors
+Flask-Limiter
+PyJWT
+mysql-connector-python
+python-dotenv
+Werkzeug
+pytest
+pytest-cov
+pytest-mock
+requests

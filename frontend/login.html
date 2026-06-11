@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Connexion - IFRI_MentorLink</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    .password-toggle {
+      position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+      background: none; border: none; color: var(--slate-400); cursor: pointer; padding: 0;
+    }
+    .password-toggle:hover { color: var(--slate-600); }
+  </style>
+</head>
+<body>
+  <div class="auth-split">
+    <!-- Left -->
+    <div class="auth-left">
+      <div class="d-flex align-items-center gap-2" style="opacity:.8;z-index:1">
+        <i class="bi bi-book" style="font-size:1.2rem"></i>
+        <span style="font-family:'Poppins',sans-serif;font-weight:700;font-size:1.1rem">IFRI_MentorLink</span>
+      </div>
+      <div class="flex-1 d-flex flex-column justify-content-center align-items-center" style="z-index:1">
+        <div style="max-width:320px;width:100%;aspect-ratio:1">
+          <svg width="100%" height="100%" viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M120 250 C120 250 180 200 280 250" stroke="white" stroke-width="2" stroke-dasharray="4 4" opacity=".5"/>
+            <circle cx="120" cy="250" r="40" fill="white" opacity=".2"/>
+            <circle cx="120" cy="250" r="20" fill="white" opacity=".9"/>
+            <circle cx="280" cy="250" r="60" fill="white" opacity=".1"/>
+            <circle cx="280" cy="250" r="30" fill="#14B8A6" opacity=".9"/>
+            <path d="M200 120 L280 250" stroke="white" stroke-width="2" stroke-dasharray="4 4" opacity=".5"/>
+            <circle cx="200" cy="120" r="25" fill="#3B82F6" opacity=".9"/>
+          </svg>
+        </div>
+        <blockquote style="font-size:1.2rem;font-family:'Poppins',sans-serif;font-weight:500;font-style:italic;max-width:300px;text-align:center;margin-top:32px">
+          &ldquo;Chaque expert a été un jour un débutant. IFRI_MentorLink vous connecte.&rdquo;
+        </blockquote>
+      </div>
+      <div style="z-index:1;font-size:.85rem;opacity:.5">&copy; 2026 IFRI_MentorLink</div>
+    </div>
+
+    <!-- Right -->
+    <div class="auth-right">
+      <div class="auth-form-wrap">
+        <div class="text-center mb-4">
+          <div class="auth-badge mx-auto"><i class="bi bi-book" style="font-size:1.3rem"></i></div>
+          <h2 class="fw-bold mb-1" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Bon retour parmi nous !</h2>
+          <p style="color:var(--slate-500)">Connectez-vous à votre compte IFRI_MentorLink</p>
+        </div>
+        <div class="auth-form-card">
+          <form id="loginForm" onsubmit="return handleLogin(event)">
+            <div class="mb-3">
+              <label for="email" class="form-label-custom">Email ou téléphone</label>
+              <input type="email" id="email" class="form-control input-custom" placeholder="votre@email.com" required />
+            </div>
+            <div class="mb-3">
+              <div class="d-flex justify-content-between align-items-center mb-1">
+                <label for="password" class="form-label-custom mb-0">Mot de passe</label>
+                <a href="forgot_password.html" style="font-size:.8rem;color:var(--blue-600);font-weight:600;text-decoration:none">Mot de passe oublié ?</a>
+              </div>
+              <div class="position-relative">
+                <input type="password" id="password" class="form-control input-custom" placeholder="••••••••" required />
+                <button type="button" class="password-toggle" onclick="togglePassword()">
+                  <i id="eyeIcon" class="bi bi-eye-slash"></i>
+                </button>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary-custom w-100 py-3 mt-2">Se connecter</button>
+          </form>
+          <div class="d-flex align-items-center gap-3 my-4">
+            <div class="flex-grow-1" style="height:1px;background:var(--slate-200)"></div>
+            <span style="font-size:.85rem;color:var(--slate-500);font-weight:500">ou</span>
+            <div class="flex-grow-1" style="height:1px;background:var(--slate-200)"></div>
+          </div>
+          <p class="text-center mb-0" style="font-size:.9rem;color:var(--slate-600)">
+            Vous n'avez pas de compte ? <a href="register.html" style="color:var(--blue-600);font-weight:600;text-decoration:none">Créer un compte</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function togglePassword() {
+      var pwd = document.getElementById('password');
+      var icon = document.getElementById('eyeIcon');
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.className = 'bi bi-eye';
+      } else {
+        pwd.type = 'password';
+        icon.className = 'bi bi-eye-slash';
+      }
+    }
+    function handleLogin(e) {
+      e.preventDefault();
+      window.location.href = 'dashboard.html';
+      return false;
+    }
+  </script>
+</body>
+</html>

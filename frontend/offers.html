@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Offres - IFRI_MentorLink</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar">
+      <div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div>
+      <div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="dashboard.html"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="profile.html"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="offers.html" class="active"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="requests.html"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="matching.html"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching <span class="nav-badge" style="background:var(--teal-500)">12</span></a>
+        <a href="messages.html"><i class="bi bi-chat-dots" style="width:20px"></i> Messages <span class="nav-badge" style="background:var(--red-500)">5</span></a>
+        <a href="notifications.html"><i class="bi bi-bell" style="width:20px"></i> Notifications <span class="nav-badge" style="background:var(--amber-500)">3</span></a>
+        <a href="settings.html"><i class="bi bi-gear" style="width:20px"></i> Paramètres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right" style="width:20px"></i> Déconnexion</button>
+      </nav>
+      <div class="sidebar-user">
+        <div class="avatar-sm">JD</div>
+        <div><div class="name">Jean Dupont</div><div class="role">Génie Logiciel</div></div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Offres</h1>
+        <div class="header-actions">
+          <div class="search-box"><i class="bi bi-search"></i><input type="text" placeholder="Rechercher un étudiant..." /></div>
+          <button class="bell-btn" onclick="window.location.href='notifications.html'"><i class="bi bi-bell" style="font-size:1.2rem"></i><span class="bell-dot"></span></button>
+          <div class="avatar-circle">JD</div>
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+
+      <div class="dash-content">
+        <!-- Filter Bar -->
+        <div class="filter-bar mb-4 animate-fade-in">
+          <div class="position-relative mb-3">
+            <i class="bi bi-search" style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--slate-400);z-index:1"></i>
+            <input type="text" id="searchInput" class="form-control input-custom" style="padding-left:36px" placeholder="Rechercher une offre, une matière..." oninput="filterCards()" />
+          </div>
+          <div class="d-flex flex-wrap gap-2">
+            <select id="filterSubject" class="filter-select flex-grow-1" onchange="filterCards()"><option value="">Matière</option><option>Python</option><option>SQL</option><option>Développement Web</option><option>Algorithmique</option><option>Base de données</option><option>Réseaux</option></select>
+            <select id="filterField" class="filter-select flex-grow-1" onchange="filterCards()"><option value="">Filière</option><option>Génie Logiciel</option><option>SI</option><option>RT</option></select>
+            <select id="filterLevel" class="filter-select flex-grow-1" onchange="filterCards()"><option value="">Niveau</option><option>L1</option><option>L2</option><option>L3</option><option>M1</option><option>M2</option></select>
+            <select id="filterDay" class="filter-select flex-grow-1" onchange="filterCards()"><option value="">Jour</option><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option>Vendredi</option><option>Samedi</option><option>Dimanche</option></select>
+            <button class="btn btn-primary-custom flex-shrink-0" onclick="alert('Formulaire de publication (simulation)')"><i class="bi bi-plus-lg me-1"></i> Publier une offre</button>
+          </div>
+        </div>
+
+        <!-- Offer Cards Grid -->
+        <div class="row g-3" id="offerGrid">
+          <div class="col-md-6 col-lg-4 offer-card-wrapper">
+            <div class="offer-card">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="match-avatar" style="width:44px;height:44px;font-size:.8rem;background:var(--blue-100);color:var(--blue-600)">MH</div>
+                <div>
+                  <p class="fw-semibold mb-0" style="font-size:.9rem">Marie Houngbédji</p>
+                  <p style="font-size:.8rem;color:var(--slate-500);margin:0">Génie Logiciel · M1</p>
+                </div>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--blue-50);color:var(--blue-600)">Python</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">Aide au débogage Python, introduction aux librairies Pandas et NumPy. Je propose 2h de session par semaine.</p>
+              <div style="font-size:.8rem;color:var(--slate-500);margin-bottom:12px">
+                <i class="bi bi-calendar3 me-1"></i> Mardi 17:00-21:00 · Jeudi 18:00-21:00 · Samedi 08:00-12:00
+              </div>
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="match-score" style="background:var(--teal-50);color:var(--teal-600);padding:4px 12px">94%</span>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-custom" style="padding:4px 12px;font-size:.8rem">Profil</button>
+                  <button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 12px;font-size:.8rem;border-radius:8px" onclick="window.location.href='messages.html'">Contacter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 offer-card-wrapper">
+            <div class="offer-card">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="match-avatar" style="width:44px;height:44px;font-size:.8rem">PA</div>
+                <div><p class="fw-semibold mb-0" style="font-size:.9rem">Paul Adéoti</p><p style="font-size:.8rem;color:var(--slate-500);margin:0">Génie Logiciel · L3</p></div>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--blue-50);color:var(--blue-600)">SQL</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">Modélisation de bases de données, requêtes complexes et optimisation.</p>
+              <div style="font-size:.8rem;color:var(--slate-500);margin-bottom:12px"><i class="bi bi-calendar3 me-1"></i> Lundi 18:00-21:00 · Mercredi 18:00-21:00</div>
+              <div class="d-flex align-items-center justify-content-between">
+                <span class="match-score" style="background:var(--teal-50);color:var(--teal-600);padding:4px 12px">87%</span>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-custom" style="padding:4px 12px;font-size:.8rem">Profil</button>
+                  <button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 12px;font-size:.8rem;border-radius:8px" onclick="window.location.href='messages.html'">Contacter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 offer-card-wrapper">
+            <div class="offer-card">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="match-avatar" style="width:44px;height:44px;font-size:.8rem;background:var(--fuchsia-100)">AK</div>
+                <div><p class="fw-semibold mb-0" style="font-size:.9rem">Aminata Kora</p><p style="font-size:.8rem;color:var(--slate-500);margin:0">SI · M2</p></div>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--blue-50);color:var(--blue-600)">Développement Web</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">React, Node.js et intégration d'API. Parfait pour les projets de fin d'année.</p>
+              <div style="font-size:.8rem;color:var(--slate-500);margin-bottom:12px"><i class="bi bi-calendar3 me-1"></i> Samedi 10:00-18:00 · Dimanche 10:00-18:00</div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div></div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-custom" style="padding:4px 12px;font-size:.8rem">Profil</button>
+                  <button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 12px;font-size:.8rem;border-radius:8px" onclick="window.location.href='messages.html'">Contacter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 offer-card-wrapper">
+            <div class="offer-card">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="match-avatar" style="width:44px;height:44px;font-size:.8rem">KM</div>
+                <div><p class="fw-semibold mb-0" style="font-size:.9rem">Kofi Mensah</p><p style="font-size:.8rem;color:var(--slate-500);margin:0">Génie Logiciel · L2</p></div>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--blue-50);color:var(--blue-600)">Algorithmique</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">Structures de données, complexité, arbres et graphes.</p>
+              <div style="font-size:.8rem;color:var(--slate-500);margin-bottom:12px"><i class="bi bi-calendar3 me-1"></i> Mercredi 14:00-18:00</div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div></div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-custom" style="padding:4px 12px;font-size:.8rem">Profil</button>
+                  <button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 12px;font-size:.8rem;border-radius:8px" onclick="window.location.href='messages.html'">Contacter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 offer-card-wrapper">
+            <div class="offer-card">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="match-avatar" style="width:44px;height:44px;font-size:.8rem">FD</div>
+                <div><p class="fw-semibold mb-0" style="font-size:.9rem">Fatoumata Diallo</p><p style="font-size:.8rem;color:var(--slate-500);margin:0">SI · L3</p></div>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--blue-50);color:var(--blue-600)">Base de données</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">Création et gestion de BDD avec PostgreSQL et MySQL.</p>
+              <div style="font-size:.8rem;color:var(--slate-500);margin-bottom:12px"><i class="bi bi-calendar3 me-1"></i> Jeudi 18:00-21:00</div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div></div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-custom" style="padding:4px 12px;font-size:.8rem">Profil</button>
+                  <button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 12px;font-size:.8rem;border-radius:8px" onclick="window.location.href='messages.html'">Contacter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 col-lg-4 offer-card-wrapper">
+            <div class="offer-card">
+              <div class="d-flex align-items-center gap-3 mb-3">
+                <div class="match-avatar" style="width:44px;height:44px;font-size:.8rem">IT</div>
+                <div><p class="fw-semibold mb-0" style="font-size:.9rem">Ibrahim Touré</p><p style="font-size:.8rem;color:var(--slate-500);margin:0">RT · M1</p></div>
+              </div>
+              <div class="mb-2"><span class="match-tag" style="background:var(--blue-50);color:var(--blue-600)">Réseaux</span></div>
+              <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">Configuration routeurs Cisco, modèle OSI, TCP/IP approfondi.</p>
+              <div style="font-size:.8rem;color:var(--slate-500);margin-bottom:12px"><i class="bi bi-calendar3 me-1"></i> Samedi 09:00-17:00 · Dimanche 09:00-17:00</div>
+              <div class="d-flex align-items-center justify-content-between">
+                <div></div>
+                <div class="d-flex gap-2">
+                  <button class="btn btn-sm btn-outline-custom" style="padding:4px 12px;font-size:.8rem">Profil</button>
+                  <button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 12px;font-size:.8rem;border-radius:8px" onclick="window.location.href='messages.html'">Contacter</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p id="noResults" style="display:none;text-align:center;color:var(--slate-500);padding:48px 0">Aucune offre ne correspond à vos critères.</p>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="dashboard.html"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="profile.html"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="offers.html" class="active"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="matching.html"><i class="bi bi-lightning-charge"></i> Matching <span class="nav-dot" style="background:var(--teal-500)"></span></a>
+      <a href="messages.html"><i class="bi bi-chat-dots"></i> Messages <span class="nav-dot" style="background:var(--red-500)"></span></a>
+    </nav>
+  </div>
+
+  <script>
+    function filterCards() {
+      var q = document.getElementById('searchInput').value.toLowerCase();
+      var subj = document.getElementById('filterSubject').value;
+      var field = document.getElementById('filterField').value;
+      var level = document.getElementById('filterLevel').value;
+      var day = document.getElementById('filterDay').value;
+      var cards = document.querySelectorAll('.offer-card-wrapper');
+      var visible = 0;
+      cards.forEach(function(c) {
+        var text = c.textContent.toLowerCase();
+        var show = (!q || text.includes(q)) && (!subj || text.includes(subj.toLowerCase())) && (!field || text.includes(field.toLowerCase())) && (!level || text.includes(level.toLowerCase())) && (!day || text.includes(day.toLowerCase()));
+        c.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      document.getElementById('noResults').style.display = visible === 0 ? 'block' : 'none';
+    }
+    // Simulate a published offre
+    document.querySelector('.filter-bar .btn-primary-custom').addEventListener('click', function() {
+      alert('Formulaire de publication d\'offre (simulation maquette)');
+    });
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

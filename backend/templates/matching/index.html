@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Matching - IFRI_MentorLink</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar">
+      <div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div>
+      <div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="{{ url_for('demandes.demandes') }}"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="{{ url_for('matching.matching') }}" class="active"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching</a>
+        <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots" style="width:20px"></i> Messages</a>
+        <a href="{{ url_for('notifications.notifications') }}"><i class="bi bi-bell" style="width:20px"></i> Notifications</a>
+        <a href="{{ url_for('settings.modifier_profil_matieres') }}"><i class="bi bi-gear" style="width:20px"></i> Param&egrave;tres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right" style="width:20px"></i> D&eacute;connexion</button>
+      </nav>
+      <div class="sidebar-user">
+        {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-sm" style="object-fit:cover" />{% else %}<div class="avatar-sm">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+        <div><div class="name">{{ user.prenom }} {{ user.nom }}</div><div class="role">{{ user.filiere_nom or '' }}</div></div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Matching</h1>
+        <div class="header-actions">
+          <button class="bell-btn" onclick="window.location.href='{{ url_for('notifications.notifications') }}'">
+            <i class="bi bi-bell" style="font-size:1.2rem"></i>
+            {% if nb_notifs > 0 %}<span class="bell-dot"></span>{% endif %}
+          </button>
+          {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-circle" style="object-fit:cover" />{% else %}<div class="avatar-circle">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+
+      <div class="dash-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show py-2" style="font-size:.85rem">{{ message }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% if matchs_en_attente %}
+        <div class="mt-4">
+          <h3 class="fw-semibold mb-3" style="font-family:'Poppins',sans-serif;font-size:1.1rem;color:var(--slate-900)">En attente</h3>
+          <div class="row g-4">
+            {% for m in matchs_en_attente %}
+            {% set dash_array = 2 * 3.14159 * 54 %}
+            {% set dash_offset = dash_array - (dash_array * m.score_compatibilite / 100) %}
+            <div class="col-xl-6">
+              <div class="match-card">
+                <div class="match-score-ring" style="position:relative">
+                  <svg width="120" height="120" viewBox="0 0 120 120" style="transform:rotate(-90deg)">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="#E2E8F0" stroke-width="8"/>
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="#F59E0B" stroke-width="8" stroke-linecap="round" stroke-dasharray="{{ dash_array }}" stroke-dashoffset="{{ dash_offset }}" style="transition:all 1s ease-out"/>
+                  </svg>
+                  <span class="score-value" style="color:#F59E0B">{{ m.score_compatibilite|int }}%</span>
+                </div>
+                <div class="match-info">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                    {% if m.avatar_url %}<img src="{{ url_for('static', filename=m.avatar_url.lstrip('static/')) }}" alt="Avatar" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #F59E0B" />{% else %}<div style="width:48px;height:48px;border-radius:50%;background:var(--slate-100);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;color:var(--slate-700);border:2px solid #F59E0B">{{ m.prenom[:1]|upper }}{{ m.nom[:1]|upper }}</div>{% endif %}
+                    <div><h5 style="font-family:'Poppins',sans-serif;font-weight:600;margin:0;color:var(--slate-900)">{{ m.prenom }} {{ m.nom }}</h5><div style="font-size:.8rem;color:var(--slate-500)">{{ m.niveau or '' }} &middot; {{ m.filiere or '' }}</div></div>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="match-tag" style="background:var(--green-50);color:var(--green-700)"><i class="bi bi-check-lg" style="font-size:.7rem"></i> Fili&egrave;re : {{ m.filiere or '' }}</span>
+                  </div>
+                  {% if m.commun_matieres and m.commun_matieres|length > 0 %}
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    {% for matiere in m.commun_matieres %}
+                    <span class="match-tag" style="background:var(--blue-50);color:var(--blue-700)"><i class="bi bi-book" style="font-size:.7rem"></i> {{ matiere }}</span>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  {% if m.commun_dispos and m.commun_dispos|length > 0 %}
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    {% for d in m.commun_dispos[:3] %}
+                    <span class="match-tag" style="background:var(--amber-50);color:var(--amber-700)"><i class="bi bi-clock" style="font-size:.7rem"></i> {{ d.jour_semaine }} {{ d.heure_debut[:5] }}-{{ d.heure_fin[:5] }}</span>
+                    {% endfor %}
+                    {% if m.commun_dispos|length > 3 %}
+                    <span class="match-tag" style="background:var(--slate-100);color:var(--slate-600)">+{{ m.commun_dispos|length - 3 }}</span>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+                  {% if m.biographie %}
+                  <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">{{ m.biographie[:120] }}{% if m.biographie|length > 120 %}...{% endif %}</p>
+                  {% endif %}
+                  <div class="d-flex flex-wrap gap-2 mt-3 pt-2">
+                    {% if m.initiateur_id != user.id %}
+                    <form method="POST" action="{{ url_for('matching.traiter_match', action='accepter', correspondance_id=m.id) }}" style="flex:1">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                      <button type="submit" class="btn" style="flex:1;width:100%;background:var(--green-600);color:white;border-radius:8px;padding:6px 12px;font-size:.8rem;font-weight:600">Accepter</button>
+                    </form>
+                    <form method="POST" action="{{ url_for('matching.traiter_match', action='refuser', correspondance_id=m.id) }}" style="flex:1">
+                      <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                      <button type="submit" class="btn" style="flex:1;width:100%;background:var(--red-500);color:white;border-radius:8px;padding:6px 12px;font-size:.8rem;font-weight:600">Refuser</button>
+                    </form>
+                    {% else %}
+                    <span class="badge w-100 text-center py-2" style="background:var(--amber-50);color:var(--amber-700);font-size:.85rem">En attente de r&eacute;ponse</span>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+
+        {% if matchs_acceptes %}
+        <div class="mt-4">
+          <h3 class="fw-semibold mb-3" style="font-family:'Poppins',sans-serif;font-size:1.1rem;color:var(--slate-900)">Accept&eacute;s</h3>
+          <div class="row g-4">
+            {% for m in matchs_acceptes %}
+            {% set dash_array = 2 * 3.14159 * 54 %}
+            {% set dash_offset = dash_array - (dash_array * m.score_compatibilite / 100) %}
+            <div class="col-xl-6">
+              <div class="match-card">
+                <div class="match-score-ring" style="position:relative">
+                  <svg width="120" height="120" viewBox="0 0 120 120" style="transform:rotate(-90deg)">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="#E2E8F0" stroke-width="8"/>
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="#14B8A6" stroke-width="8" stroke-linecap="round" stroke-dasharray="{{ dash_array }}" stroke-dashoffset="{{ dash_offset }}" style="transition:all 1s ease-out"/>
+                  </svg>
+                  <span class="score-value" style="color:#14B8A6">{{ m.score_compatibilite|int }}%</span>
+                </div>
+                <div class="match-info">
+                  <div class="d-flex align-items-center gap-3 mb-3">
+                    {% if m.avatar_url %}<img src="{{ url_for('static', filename=m.avatar_url.lstrip('static/')) }}" alt="Avatar" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid #14B8A6" />{% else %}<div style="width:48px;height:48px;border-radius:50%;background:var(--slate-100);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1rem;color:var(--slate-700);border:2px solid #14B8A6">{{ m.prenom[:1]|upper }}{{ m.nom[:1]|upper }}</div>{% endif %}
+                    <div><h5 style="font-family:'Poppins',sans-serif;font-weight:600;margin:0;color:var(--slate-900)">{{ m.prenom }} {{ m.nom }}</h5><div style="font-size:.8rem;color:var(--slate-500)">{{ m.niveau or '' }} &middot; {{ m.filiere or '' }}</div></div>
+                  </div>
+                  <div class="d-flex flex-wrap gap-2 mb-3">
+                    <span class="match-tag" style="background:var(--green-50);color:var(--green-700)"><i class="bi bi-check-lg" style="font-size:.7rem"></i> Fili&egrave;re : {{ m.filiere or '' }}</span>
+                  </div>
+                  {% if m.commun_matieres and m.commun_matieres|length > 0 %}
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    {% for matiere in m.commun_matieres %}
+                    <span class="match-tag" style="background:var(--blue-50);color:var(--blue-700)"><i class="bi bi-book" style="font-size:.7rem"></i> {{ matiere }}</span>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  {% if m.commun_dispos and m.commun_dispos|length > 0 %}
+                  <div class="d-flex flex-wrap gap-2 mb-2">
+                    {% for d in m.commun_dispos[:3] %}
+                    <span class="match-tag" style="background:var(--amber-50);color:var(--amber-700)"><i class="bi bi-clock" style="font-size:.7rem"></i> {{ d.jour_semaine }} {{ d.heure_debut[:5] }}-{{ d.heure_fin[:5] }}</span>
+                    {% endfor %}
+                    {% if m.commun_dispos|length > 3 %}
+                    <span class="match-tag" style="background:var(--slate-100);color:var(--slate-600)">+{{ m.commun_dispos|length - 3 }}</span>
+                    {% endif %}
+                  </div>
+                  {% endif %}
+                  {% if m.biographie %}
+                  <p style="font-size:.85rem;color:var(--slate-600);margin-bottom:12px">{{ m.biographie[:120] }}{% if m.biographie|length > 120 %}...{% endif %}</p>
+                  {% endif %}
+                  <div class="d-flex flex-wrap gap-2 mt-3 pt-2">
+                    <a href="{{ url_for('users.profil', user_id=m.partenaire_id) }}" class="btn btn-outline-custom" style="flex:1;padding:6px 12px;font-size:.8rem">Voir Profil</a>
+                    <a href="{{ url_for('conversations.demarrer_conversation', contact_id=m.partenaire_id) }}" class="btn btn-primary-custom" style="flex:1;padding:6px 12px;font-size:.8rem">Envoyer Message</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="{{ url_for('matching.matching') }}" class="active"><i class="bi bi-lightning-charge"></i> Matching</a>
+      <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots"></i> Messages</a>
+    </nav>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

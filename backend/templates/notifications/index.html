@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications - IFRI_MentorLink</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar">
+      <div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div>
+      <div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="{{ url_for('demandes.demandes') }}"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching</a>
+        <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots" style="width:20px"></i> Messages</a>
+        <a href="{{ url_for('notifications.notifications') }}" class="active"><i class="bi bi-bell" style="width:20px"></i> Notifications</a>
+        <a href="{{ url_for('settings.modifier_profil_matieres') }}"><i class="bi bi-gear" style="width:20px"></i> Param&egrave;tres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right" style="width:20px"></i> D&eacute;connexion</button>
+      </nav>
+      <div class="sidebar-user">
+        {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-sm" style="object-fit:cover" />{% else %}<div class="avatar-sm">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+        <div><div class="name">{{ user.prenom }} {{ user.nom }}</div><div class="role">{{ user.filiere_nom or '' }}</div></div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Notifications</h1>
+        <div class="header-actions">
+          <button class="bell-btn" onclick="window.location.href='{{ url_for('notifications.notifications') }}'">
+            <i class="bi bi-bell" style="font-size:1.2rem"></i>
+            {% if nb_notifs > 0 %}<span class="bell-dot"></span>{% endif %}
+          </button>
+          {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-circle" style="object-fit:cover" />{% else %}<div class="avatar-circle">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+
+      <div class="dash-content" style="max-width:800px">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show py-2" style="font-size:.85rem">{{ message }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <h2 class="fw-semibold mb-0" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Notifications</h2>
+        </div>
+
+        <div class="d-flex gap-2 mb-4">
+          <a href="{{ url_for('notifications.notifications', filtre='toutes') }}" class="btn btn-sm px-3 py-2" style="border-radius:8px;font-size:.85rem;font-weight:500;background:{{ 'var(--blue-600)' if filtre == 'toutes' else 'var(--slate-100)' }};color:{{ 'white' if filtre == 'toutes' else 'var(--slate-700)' }};text-decoration:none">Toutes</a>
+          <a href="{{ url_for('notifications.notifications', filtre='match_demande') }}" class="btn btn-sm px-3 py-2" style="border-radius:8px;font-size:.85rem;font-weight:500;background:{{ 'var(--blue-600)' if filtre == 'match_demande' else 'var(--slate-100)' }};color:{{ 'white' if filtre == 'match_demande' else 'var(--slate-700)' }};text-decoration:none">Match - demande</a>
+          <a href="{{ url_for('notifications.notifications', filtre='infos') }}" class="btn btn-sm px-3 py-2" style="border-radius:8px;font-size:.85rem;font-weight:500;background:{{ 'var(--blue-600)' if filtre == 'infos' else 'var(--slate-100)' }};color:{{ 'white' if filtre == 'infos' else 'var(--slate-700)' }};text-decoration:none">Infos</a>
+        </div>
+
+        {% if notifications %}
+        <div class="d-flex flex-column gap-3">
+          {% set icons_map = {'match_demande': 'bi-lightning-charge', 'message': 'bi-chat-dots', 'offre': 'bi-check-circle'} %}
+          {% set colors_map = {'match_demande': 'var(--teal-600)', 'message': 'var(--blue-600)', 'offre': 'var(--green-600)'} %}
+          {% set bg_map = {'match_demande': 'var(--teal-50)', 'message': 'var(--blue-50)', 'offre': 'var(--green-50)'} %}
+          {% for n in notifications %}
+          <div class="notif-card{% if not n.est_lu %} unread{% endif %}">
+            <div class="notif-icon" style="background:{{ bg_map.get(n.type_notification, 'var(--blue-50)') }}">
+              <i class="{{ icons_map.get(n.type_notification, 'bi-bell') }}" style="color:{{ colors_map.get(n.type_notification, 'var(--blue-600)') }};font-size:1.2rem"></i>
+            </div>
+            <div class="flex-grow-1 min-width-0" style="padding-right:24px">
+              <p style="font-size:.9rem;color:var(--slate-900);margin-bottom:4px">{{ n.message }}</p>
+              <p style="font-size:.75rem;color:var(--slate-400);margin-bottom:12px">{{ n.cree_le }}</p>
+              <div class="d-flex flex-wrap gap-2">
+                {% if n.correspondance_id and n.type_notification == 'match_demande' %}
+                <form method="POST" action="{{ url_for('notifications.repondre_notification', notif_id=n.id, action='accepter') }}" style="display:inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <button type="submit" class="btn btn-sm" style="background:var(--green-600);color:white;border:none;padding:4px 14px;border-radius:8px;font-size:.8rem">Accepter</button>
+                </form>
+                <form method="POST" action="{{ url_for('notifications.repondre_notification', notif_id=n.id, action='refuser') }}" style="display:inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+                  <button type="submit" class="btn btn-sm" style="background:var(--red-500);color:white;border:none;padding:4px 14px;border-radius:8px;font-size:.8rem">Refuser</button>
+                </form>
+                {% else %}
+                <a href="{{ url_for('conversations.conversations') }}" class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 14px;border-radius:8px;font-size:.8rem">D&eacute;marrer la conversation</a>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align:center;padding:48px 0;color:var(--slate-500)">Aucune notification</div>
+        {% endif %}
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge"></i> Matching</a>
+      <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots"></i> Messages</a>
+    </nav>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

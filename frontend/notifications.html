@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Notifications - IFRI_MentorLink</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar"><div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div><div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="dashboard.html"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="profile.html"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="offers.html"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="requests.html"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="matching.html"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching <span class="nav-badge" style="background:var(--teal-500)">12</span></a>
+        <a href="messages.html"><i class="bi bi-chat-dots" style="width:20px"></i> Messages <span class="nav-badge" style="background:var(--red-500)">5</span></a>
+        <a href="notifications.html" class="active"><i class="bi bi-bell" style="width:20px"></i> Notifications <span class="nav-badge" style="background:var(--amber-500)">3</span></a>
+        <a href="settings.html"><i class="bi bi-gear" style="width:20px"></i> Paramètres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right" style="width:20px"></i> Déconnexion</button>
+      </nav>
+      <div class="sidebar-user"><div class="avatar-sm">JD</div><div><div class="name">Jean Dupont</div><div class="role">Génie Logiciel</div></div></div>
+    </aside>
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Notifications</h1>
+        <div class="header-actions">
+          <div class="search-box"><i class="bi bi-search"></i><input type="text" placeholder="Rechercher un étudiant..." /></div>
+          <button class="bell-btn" onclick="window.location.href='notifications.html'"><i class="bi bi-bell" style="font-size:1.2rem"></i><span class="bell-dot"></span></button>
+          <div class="avatar-circle">JD</div>
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='login.html'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+      <div class="dash-content" style="max-width:800px">
+        <div class="d-flex align-items-center justify-content-between mb-4">
+          <h2 class="fw-semibold mb-0" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Notifications</h2>
+          <button id="clearAllBtn" class="btn btn-sm" style="background:var(--red-50);color:var(--red-600);border:1px solid var(--red-200);padding:6px 16px;border-radius:8px" onclick="clearAll()">Effacer tout</button>
+        </div>
+        <div id="notifContainer" class="d-flex flex-column gap-3"></div>
+      </div>
+    </div>
+    <nav class="bottom-nav">
+      <a href="dashboard.html"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="profile.html"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="offers.html"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="matching.html"><i class="bi bi-lightning-charge"></i> Matching <span class="nav-dot" style="background:var(--teal-500)"></span></a>
+      <a href="messages.html"><i class="bi bi-chat-dots"></i> Messages <span class="nav-dot" style="background:var(--red-500)"></span></a>
+    </nav>
+  </div>
+  <script>
+    var notifs = [
+      {id:'n1',type:'message',unread:true,content:'<strong>Marie Houngbédji</strong> vous a envoyé un message',sub:'Python — Session de ce mardi ?',time:'Il y a 30 min'},
+      {id:'n2',type:'match',unread:true,content:'Nouvelle correspondance ! <strong>Paul Adéoti</strong> correspond à <strong>87%</strong> avec votre profil',sub:'<span style="padding:2px 8px;border-radius:999px;background:var(--teal-50);color:var(--teal-700);font-size:.7rem;font-weight:700">87% Match</span>',time:'Il y a 2h'},
+      {id:'n3',type:'offer',unread:true,content:'Votre offre de mentorat en <strong>SQL</strong> a été acceptée par <strong>Kofi Mensah</strong>',time:'Il y a 5h'},
+      {id:'n4',type:'request',unread:false,content:'<strong>Aminata Kora</strong> a accepté votre demande d\'aide en <strong>Réseaux</strong>',time:'Hier, 16h45'}
+    ];
+    var icons = {message:'bi-chat-dots',match:'bi-lightning-charge',offer:'bi-check-circle',request:'bi-check-circle'};
+    var iconColors = {message:'var(--blue-600)',match:'var(--teal-600)',offer:'var(--green-600)',request:'var(--green-600)'};
+    var iconBgs = {message:'var(--blue-50)',match:'var(--teal-50)',offer:'var(--green-50)',request:'var(--green-50)'};
+
+    function renderNotifs() {
+      var container = document.getElementById('notifContainer');
+      if (notifs.length === 0) {
+        container.innerHTML = '<div style="text-align:center;padding:48px 0;color:var(--slate-500)">Aucune notification</div>';
+        return;
+      }
+      container.innerHTML = '';
+      notifs.forEach(function(n) {
+        var card = document.createElement('div');
+        card.className = 'notif-card' + (n.unread ? ' unread' : '');
+        card.id = 'notif-'+n.id;
+        var actionsHtml = '';
+        if (n.type === 'message') actionsHtml = '<button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 14px;border-radius:8px;font-size:.8rem" onclick="window.location.href=\'messages.html\'">Répondre</button>'+(n.unread?'<button class="btn btn-sm" style="background:none;color:var(--slate-500);border:none;padding:4px 14px;font-size:.8rem" onclick="markRead(\''+n.id+'\')">Marquer comme lu</button>':'');
+        else if (n.type === 'match') actionsHtml = '<button class="btn btn-sm btn-outline-custom" style="padding:4px 14px;font-size:.8rem" onclick="window.location.href=\'matching.html\'">Voir le profil</button><button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 14px;border-radius:8px;font-size:.8rem" onclick="window.location.href=\'messages.html\'">Envoyer un message</button>';
+        else actionsHtml = '<button class="btn btn-sm" style="background:var(--blue-600);color:white;border:none;padding:4px 14px;border-radius:8px;font-size:.8rem" onclick="window.location.href=\'messages.html\'">Démarrer la conversation</button>';
+        card.innerHTML =
+          '<button class="notif-close" onclick="deleteNotif(\''+n.id+'\')"><i class="bi bi-x"></i></button>'+
+          '<div class="notif-icon" style="background:'+iconBgs[n.type]+'"><i class="'+icons[n.type]+'" style="color:'+iconColors[n.type]+';font-size:1.2rem"></i></div>'+
+          '<div class="flex-grow-1 min-width-0" style="padding-right:24px">'+
+            '<p style="font-size:.9rem;color:var(--slate-900);margin-bottom:4px">'+n.content+'</p>'+
+            (n.sub ? '<div style="font-size:.85rem;color:var(--slate-500);margin-bottom:4px">'+n.sub+'</div>' : '')+
+            '<p style="font-size:.75rem;color:var(--slate-400);margin-bottom:12px">'+n.time+'</p>'+
+            '<div class="d-flex flex-wrap gap-2">'+actionsHtml+'</div>'+
+          '</div>';
+        container.appendChild(card);
+      });
+    }
+
+    function markRead(id) {
+      var n = notifs.find(function(x){return x.id===id;});
+      if (n) n.unread = false;
+      renderNotifs();
+    }
+
+    function deleteNotif(id) {
+      notifs = notifs.filter(function(x){return x.id!==id;});
+      renderNotifs();
+    }
+
+    function clearAll() {
+      notifs = [];
+      renderNotifs();
+    }
+
+    renderNotifs();
+  </script>
+</body>
+</html>

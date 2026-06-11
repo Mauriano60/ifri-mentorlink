@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head><title>Références - IFRI_MentorLink</title></head>
+<body>
+    <h1>Références</h1>
+    <h2>Matières</h2>
+    <ul>{% for m in matieres %}<li>{{ m.nom }}</li>{% endfor %}</ul>
+    <h2>Filières</h2>
+    <ul>{% for f in filieres %}<li>{{ f.nom }}</li>{% endfor %}</ul>
+    <h2>Niveaux</h2>
+    <ul>{% for n in niveaux %}<li>{{ n.nom }}</li>{% endfor %}</ul>
+</body>
+</html>

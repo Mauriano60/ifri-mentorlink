@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription - IFRI_MentorLink</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <style>
+    .password-toggle { position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--slate-400);cursor:pointer;padding:0;z-index:2;line-height:1 }
+    .password-toggle:hover { color:var(--slate-600) }
+  </style>
+</head>
+<body style="background:var(--slate-50);min-height:100vh">
+  <div class="container py-5">
+    <div class="text-center mb-4">
+      <a href="{{ url_for('auth.index') }}" class="d-inline-flex align-items-center justify-content-center" style="width:48px;height:48px;border-radius:12px;background:var(--blue-100);color:var(--blue-600);text-decoration:none;margin-bottom:16px">
+        <i class="bi bi-book" style="font-size:1.3rem"></i>
+      </a>
+      <h2 class="fw-bold" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Cr&eacute;er mon compte IFRI_MentorLink</h2>
+      <p style="color:var(--slate-500)">Rejoignez la communaut&eacute; de mentorat de l'IFRI</p>
+    </div>
+
+    <div class="stepper-wrapper mx-auto mb-4">
+      <div class="stepper-track">
+        <div class="stepper-line-bg"></div>
+        <div class="stepper-line-fill" id="stepperFill" style="width:0%"></div>
+        <div class="step-item">
+          <div class="step-circle active" id="stepCircle1">1</div>
+          <span class="step-label active" id="stepLabel1">Informations<br/>personnelles</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle inactive" id="stepCircle2">2</div>
+          <span class="step-label inactive" id="stepLabel2">Profil<br/>acad&eacute;mique</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle inactive" id="stepCircle3">3</div>
+          <span class="step-label inactive" id="stepLabel3">Disponibilit&eacute;s</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="max-width:600px;margin:auto">
+      <div class="auth-form-card" style="padding:32px">
+        {% if error %}
+          <div class="alert alert-danger alert-dismissible fade show py-2" style="font-size:.85rem">
+            {{ error }}
+            <button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button>
+          </div>
+        {% endif %}
+        <form method="POST" action="{{ url_for('auth.register') }}" id="registerForm">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+          <input type="hidden" name="step" id="currentStep" value="{{ current_step | default('1') }}" />
+              <div id="step1" class="animate-fade-in"{% if current_step | default('1') != '1' %} style="display:none"{% endif %}>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Nom</label>
+                <input type="text" name="nom" id="regNom" class="form-control input-custom" placeholder="Dupont" value="{{ form_data.get('nom', '') }}" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Pr&eacute;nom</label>
+                <input type="text" name="prenom" id="regPrenom" class="form-control input-custom" placeholder="Jean" value="{{ form_data.get('prenom', '') }}" required />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">Email</label>
+              <input type="email" name="email" id="regEmail" class="form-control input-custom" placeholder="jean.dupont@ifri.edu" value="{{ form_data.get('email', '') }}" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">T&eacute;l&eacute;phone</label>
+              <input type="tel" name="telephone" id="regPhone" class="form-control input-custom" placeholder="+229 01 XX XX XX XX" value="{{ form_data.get('telephone', '') }}" required />
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Mot de passe</label>
+                <div class="position-relative">
+                  <input type="password" name="password" id="regPwd1" class="form-control input-custom" placeholder="••••••••" />
+                  <button type="button" class="password-toggle" onclick="togglePwd('regPwd1','regEye1')"><i id="regEye1" class="bi bi-eye-slash"></i></button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Confirmer</label>
+                <div class="position-relative">
+                  <input type="password" id="regPwd2" class="form-control input-custom" placeholder="••••••••" />
+                  <button type="button" class="password-toggle" onclick="togglePwd('regPwd2','regEye2')"><i id="regEye2" class="bi bi-eye-slash"></i></button>
+                </div>
+              </div>
+            </div>
+            <div id="step1Error" style="color:var(--red-500);font-size:.85rem;margin-bottom:12px;display:none"></div>
+            <button type="button" class="btn btn-primary-custom w-100 py-3" onclick="goStep2()">Suivant &rarr;</button>
+          </div>
+
+          <div id="step2" class="animate-fade-in"{% if current_step | default('1') != '2' %} style="display:none"{% endif %}>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Fili&egrave;re</label>
+                <select name="id_filiere" id="regFiliere" class="filter-select w-100" required>
+                  <option value="">S&eacute;lectionnez...</option>
+                  {% for f in filieres %}
+                    <option value="{{ f.id }}"{% if form_data.get('id_filiere') == f.id|string %} selected{% endif %}>{{ f.nom }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Niveau</label>
+                <select name="id_niveau" id="regNiveau" class="filter-select w-100" required>
+                  <option value="">S&eacute;lectionnez...</option>
+                  {% for n in niveaux %}
+                    <option value="{{ n.id }}"{% if form_data.get('id_niveau') == n.id|string %} selected{% endif %}>{{ n.nom }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label-custom mb-2">Comp&eacute;tences (max 4)</label>
+                <div class="checkbox-group" id="compGroup">
+                  {% for m in matieres %}
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="competences" value="{{ m.id }}" class="skill-check" data-group="comp" data-matiere="{{ m.id }}"{% if m.id|string in form_data.get('competences', []) %} checked{% endif %}>
+                    {{ m.nom }}
+                  </label>
+                  {% endfor %}
+                </div>
+                <small class="text-muted" id="compCount">0/4 s&eacute;lectionn&eacute;e(s)</small>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom mb-2">Lacunes (max 4)</label>
+                <div class="checkbox-group" id="lacuneGroup">
+                  {% for m in matieres %}
+                  <label class="checkbox-item">
+                    <input type="checkbox" name="lacunes" value="{{ m.id }}" class="skill-check" data-group="lacune" data-matiere="{{ m.id }}"{% if m.id|string in form_data.get('lacunes', []) %} checked{% endif %}>
+                    {{ m.nom }}
+                  </label>
+                  {% endfor %}
+                </div>
+                <small class="text-muted" id="lacuneCount">0/4 s&eacute;lectionn&eacute;e(s)</small>
+              </div>
+            </div>
+            <div id="step2Error" style="color:var(--red-500);font-size:.85rem;margin-bottom:12px;display:none"></div>
+            <div class="d-flex gap-3">
+              <button type="button" class="btn btn-outline-custom flex-shrink-0" onclick="goStep(1)">&larr; Retour</button>
+              <button type="button" class="btn btn-primary-custom w-100 py-3" onclick="goStep3()">Suivant &rarr;</button>
+            </div>
+          </div>
+
+            <div id="step3" class="animate-fade-in"{% if current_step | default('1') != '3' %} style="display:none"{% endif %}>
+              <p style="color:var(--slate-600);font-size:.9rem;margin-bottom:16px">Ajoutez vos cr&eacute;neaux de disponibilit&eacute; pour le mentorat (au moins 1 requis).</p>
+              <div id="dispoContainer">
+                {% if form_data.get('dispo_jours') and form_data['dispo_jours']|length > 0 %}
+                  {% for i in range(form_data['dispo_jours']|length) %}
+                <div class="dispo-row animate-fade-in">
+                  <select name="dispo_jour" style="flex:1" required>
+                    <option value="">Jour</option>
+                    {% for j in ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi','Dimanche'] %}
+                    <option{% if form_data['dispo_jours'][i] == j %} selected{% endif %}>{{ j }}</option>
+                    {% endfor %}
+                  </select>
+                  <input type="time" name="dispo_debut" style="flex:1" value="{{ form_data['dispo_debuts'][i] if i < form_data['dispo_debuts']|length else '' }}" required />
+                  <input type="time" name="dispo_fin" style="flex:1" value="{{ form_data['dispo_fins'][i] if i < form_data['dispo_fins']|length else '' }}" required />
+                  <button type="button" class="btn btn-sm" style="color:var(--red-500);background:none;border:none" onclick="if(document.getElementById('dispoContainer').children.length>1)this.parentElement.remove()"><i class="bi bi-trash3"></i></button>
+                </div>
+                  {% endfor %}
+                {% else %}
+                <div class="dispo-row animate-fade-in">
+                  <select name="dispo_jour" style="flex:1" required>
+                    <option value="">Jour</option>
+                    <option>Lundi</option>
+                    <option>Mardi</option>
+                    <option>Mercredi</option>
+                    <option>Jeudi</option>
+                    <option>Vendredi</option>
+                    <option>Samedi</option>
+                    <option>Dimanche</option>
+                  </select>
+                  <input type="time" name="dispo_debut" style="flex:1" required />
+                  <input type="time" name="dispo_fin" style="flex:1" required />
+                  <button type="button" class="btn btn-sm" style="color:var(--red-500);background:none;border:none" onclick="if(document.getElementById('dispoContainer').children.length>1)this.parentElement.remove()"><i class="bi bi-trash3"></i></button>
+                </div>
+                {% endif %}
+              </div>
+              <button type="button" class="btn btn-outline-custom w-100 mb-3" onclick="addDispo()"><i class="bi bi-plus-lg me-1"></i> Ajouter un cr&eacute;neau</button>
+              <div id="step3Error" style="color:var(--red-500);font-size:.85rem;margin-bottom:12px;display:none"></div>
+              <div class="d-flex gap-3">
+                <button type="button" class="btn btn-outline-custom flex-shrink-0" onclick="goStep(2)">&larr; Retour</button>
+                <button type="submit" class="btn btn-primary-custom w-100 py-3">Finaliser l'inscription</button>
+              </div>
+            </div>
+        </form>
+      </div>
+      <p class="mt-4 text-center" style="font-size:.9rem;color:var(--slate-600)">
+        Vous avez d&eacute;j&agrave; un compte ?
+        <a href="{{ url_for('auth.login') }}" style="color:var(--blue-600);font-weight:600;text-decoration:none">Se connecter</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    var currentStep = {{ current_step | default('1') }};
+    var dispoCount = 0;
+
+    function togglePwd(id, eyeId) {
+      var inp = document.getElementById(id), eye = document.getElementById(eyeId);
+      if (inp.type === 'password') { inp.type = 'text'; eye.className = 'bi bi-eye'; }
+      else { inp.type = 'password'; eye.className = 'bi bi-eye-slash'; }
+    }
+
+    function updateStepper(step) {
+      for (var i = 1; i <= 3; i++) {
+        var c = document.getElementById('stepCircle' + i);
+        var l = document.getElementById('stepLabel' + i);
+        if (i <= step) { c.className = 'step-circle active'; l.className = 'step-label active'; }
+        else { c.className = 'step-circle inactive'; l.className = 'step-label inactive'; }
+      }
+      document.getElementById('stepperFill').style.width = ((step - 1) / 2 * 100) + '%';
+    }
+
+    function showStep(step) {
+      for (var i = 1; i <= 3; i++) document.getElementById('step' + i).style.display = i === step ? 'block' : 'none';
+      currentStep = step;
+      document.getElementById('currentStep').value = step;
+      updateStepper(step);
+    }
+
+    function goStep(n) { showStep(n); }
+
+    function goStep2() {
+      var err = document.getElementById('step1Error');
+      var fields = ['regNom','regPrenom','regEmail','regPhone','regPwd1','regPwd2'];
+      var ok = true;
+      fields.forEach(function(id) { if (!document.getElementById(id).value.trim()) ok = false; });
+      if (!ok) { err.textContent = 'Veuillez remplir tous les champs.'; err.style.display = 'block'; return; }
+      var pwd1 = document.getElementById('regPwd1').value;
+      var pwd2 = document.getElementById('regPwd2').value;
+      if (pwd1.length < 8) { err.textContent = 'Mot de passe : minimum 8 caractères.'; err.style.display = 'block'; return; }
+      if (pwd1 !== pwd2) { err.textContent = 'Les mots de passe ne correspondent pas.'; err.style.display = 'block'; return; }
+      showStep(2);
+    }
+
+    function goStep3() {
+      var err = document.getElementById('step2Error');
+      err.style.display = 'none';
+      if (!document.getElementById('regFiliere').value) { err.textContent = 'Sélectionnez une filière.'; err.style.display = 'block'; return; }
+      if (!document.getElementById('regNiveau').value) { err.textContent = 'Sélectionnez un niveau.'; err.style.display = 'block'; return; }
+      var comps = document.querySelectorAll('#compGroup input[type="checkbox"]:checked');
+      if (comps.length === 0) { err.textContent = 'Sélectionnez au moins une compétence.'; err.style.display = 'block'; return; }
+      showStep(3);
+      // Vérifier au moins une dispo remplie avant soumission
+      var dispoContainer = document.getElementById('dispoContainer');
+      var form = document.getElementById('registerForm');
+      var oldSubmit = form.onsubmit;
+      form.onsubmit = function(e) {
+        var jours = form.querySelectorAll('select[name="dispo_jour"]');
+        var ok = false;
+        for (var i = 0; i < jours.length; i++) {
+          if (jours[i].value) {
+            var debs = form.querySelectorAll('input[name="dispo_debut"]');
+            var fins = form.querySelectorAll('input[name="dispo_fin"]');
+            if (i < debs.length && i < fins.length && debs[i].value && fins[i].value) { ok = true; break; }
+          }
+        }
+        if (!ok) {
+          e.preventDefault();
+          document.getElementById('step3Error').textContent = 'Ajoutez au moins un créneau de disponibilité complet (jour, début, fin).';
+          document.getElementById('step3Error').style.display = 'block';
+        }
+      };
+    }
+
+    function initCheckboxes() {
+      function updateUI() {
+        ['comp', 'lacune'].forEach(function(g) {
+          var checks = document.querySelectorAll('#' + g + 'Group input[type="checkbox"]');
+          var sel = document.querySelectorAll('#' + g + 'Group input[type="checkbox"]:checked');
+          document.getElementById(g + 'Count').textContent = sel.length + '/4 s\u00e9lectionn\u00e9e(s)';
+          checks.forEach(function(cb) {
+            if (!cb.disabled && !cb.checked && sel.length >= 4) cb.disabled = true;
+            else if (!cb.disabled && sel.length < 4) cb.disabled = false;
+          });
+        });
+      }
+      document.querySelectorAll('.skill-check').forEach(function(cb) {
+        cb.addEventListener('change', function() {
+          var other = this.dataset.group === 'comp' ? 'lacune' : 'comp';
+          var otherCb = document.querySelector('#' + other + 'Group input[data-matiere="' + this.dataset.matiere + '"]');
+          var otherLabel = otherCb ? otherCb.closest('.checkbox-item') : null;
+          if (this.checked) {
+            if (otherCb) { otherCb.checked = false; otherCb.disabled = true; }
+            if (otherLabel) otherLabel.classList.add('disabled-item');
+          } else {
+            if (otherCb) otherCb.disabled = false;
+            if (otherLabel) otherLabel.classList.remove('disabled-item');
+          }
+          updateUI();
+        });
+      });
+      updateUI();
+    }
+    initCheckboxes();
+
+    function addDispo() {
+      dispoCount++;
+      var div = document.createElement('div');
+      div.className = 'dispo-row animate-fade-in';
+      div.innerHTML =
+        '<select name="dispo_jour" style="flex:1"><option value="">Jour</option><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option>Vendredi</option><option>Samedi</option><option>Dimanche</option></select>' +
+        '<input type="time" name="dispo_debut" style="flex:1" /><input type="time" name="dispo_fin" style="flex:1" />' +
+        '<button type="button" class="btn btn-sm" style="color:var(--red-500);background:none;border:none" onclick="this.parentElement.remove()"><i class="bi bi-trash3"></i></button>';
+      document.getElementById('dispoContainer').appendChild(div);
+    }
+
+    updateStepper(currentStep);
+  </script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

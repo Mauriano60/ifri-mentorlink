@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<!-- Déclaration du type de document HTML5 -->
+<html lang="fr">
+<!-- Langue de la page définie en français -->
+
+<head>
+  <!-- Section d'en-tête : métadonnées, liens CSS, titre -->
+  <meta charset="UTF-8" />
+  <!-- Encodage UTF-8 pour les caractères français -->
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Responsive sur mobile et tablette -->
+
+  <title>Profil académique — IFRI_MentorLink</title>
+  <!-- Titre affiché dans l'onglet navigateur -->
+
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet" />
+
+  <!-- Styles partagés de l'étape 1 -->
+  <link rel="stylesheet" href="Inscription 1.css" />
+
+  <!-- Styles spécifiques à l'étape 2 -->
+  <link rel="stylesheet" href="Inscription 2.css" />
+</head>
+
+<body>
+  <!-- Corps de la page -->
+
+  <!-- Conteneur principal centré -->
+  <div class="main-wrapper d-flex flex-column align-items-center justify-content-center min-vh-100 py-5">
+
+    <!-- ===== EN-TÊTE : Logo + Titre ===== -->
+    <div class="text-center mb-4">
+
+      <!-- Icône logo -->
+      <div class="logo-icon mb-3 mx-auto">
+        <!-- Icône livre SVG bleue -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16" style="color: #007bff;">
+          <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783"/>
+        </svg>
+      </div>
+
+      <!-- Titre principal -->
+      <h1 class="fw-bold fs-3 mb-1">Créer mon compte IFRI_MentorLink</h1>
+
+      <!-- Sous-titre -->
+      <p class="text-muted small">Rejoignez la communauté de mentorat de l'IFRI</p>
+    </div>
+
+    <!-- ===== STEPPER — Indicateur d'étapes ===== -->
+    <div class="stepper d-flex align-items-center justify-content-center mb-4 gap-0">
+
+      <!-- Étape 1 : complétée (cercle bleu avec coche) -->
+      <div class="step-item text-center">
+        <div class="step-circle completed mx-auto mb-1">
+          <!-- Coche Bootstrap Icons pour indiquer que l'étape est terminée -->
+          <i class="bi bi-check-lg"></i>
+        </div>
+        <!-- Libellé en gris car étape passée -->
+        <span class="step-label text-muted small">Informations personnelles</span>
+      </div>
+
+      <!-- Ligne entre étape 1 et 2 — bleue car étape 1 validée -->
+      <div class="step-line step-line-done"></div>
+
+      <!-- Étape 2 : active (cercle bleu rempli) -->
+      <div class="step-item text-center">
+        <div class="step-circle active mx-auto mb-1">2</div>
+        <!-- Libellé en gras car étape en cours -->
+        <span class="step-label fw-bold small">Profil académique</span>
+      </div>
+
+      <!-- Ligne entre étape 2 et 3 — grise car étape 3 non atteinte -->
+      <div class="step-line"></div>
+
+      <!-- Étape 3 : inactive -->
+      <div class="step-item text-center">
+        <div class="step-circle mx-auto mb-1">3</div>
+        <!-- Libellé gris car non atteinte -->
+        <span class="step-label text-muted small">Disponibilités</span>
+      </div>
+    </div>
+
+    <!-- ===== CARTE FORMULAIRE ===== -->
+    <div class="form-card p-4 p-md-5">
+
+      <!-- Zone d'alerte (injectée par JS si erreur ou succès) -->
+      <div id="zoneAlerte"></div>
+
+      <!-- ===== LIGNE : Filière + Niveau ===== -->
+      <div class="row g-3 mb-4">
+
+        <!-- Select Filière -->
+        <div class="col-md-6">
+          <!-- Libellé du champ Filière -->
+          <label for="filiere" class="form-label text-muted small">Filière</label>
+
+          <!-- Menu déroulant Filière -->
+          <select id="filiere" class="form-select custom-input">
+            <!-- Option par défaut non sélectionnable -->
+            <option value="" disabled selected>Sélectionnez...</option>
+
+            <!-- Options de filières de l'IFRI -->
+            <option value="gl">Génie Logiciel</option>
+            <option value="si">Sécurité Informatique</option>
+            <option value="im">Internet et Multimédia</option>
+            <option value="ia">Intelligence Artificielle</option>
+            <option value="se">Systèmes Embarqués et Internet des Objets (IoT)</option>
+            <option value="sr">Systèmes d'Information et Réseaux Informatiques</option>
+          </select>
+
+          <!-- Message d'erreur Bootstrap (caché par défaut) -->
+          <div class="invalid-feedback">Veuillez sélectionner une filière.</div>
+        </div>
+
+        <!-- Select Niveau -->
+        <div class="col-md-6">
+          <!-- Libellé du champ Niveau -->
+          <label for="niveau" class="form-label text-muted small">Niveau</label>
+
+          <!-- Menu déroulant Niveau -->
+          <select id="niveau" class="form-select custom-input">
+            <!-- Option par défaut non sélectionnable -->
+            <option value="" disabled selected>Sélectionnez...</option>
+
+            <!-- Niveaux Licence -->
+            <option value="L1">L1</option>
+            <option value="L2">L2</option>
+            <option value="L3">L3</option>
+
+            <!-- Niveaux Master -->
+            <option value="M1">M1</option>
+            <option value="M2">M2</option>
+          </select>
+
+          <!-- Message d'erreur Bootstrap (caché par défaut) -->
+          <div class="invalid-feedback">Veuillez sélectionner un niveau.</div>
+        </div>
+      </div>
+
+      <!-- ===== SECTION : Compétences maîtrisées ===== -->
+      <div class="mb-4">
+
+        <!-- Libellé de la section -->
+        <p class="section-label mb-2">Compétences maîtrisées</p>
+
+        <!-- Conteneur des badges cliquables de compétences -->
+        <!-- data-groupe="competences" permet au JS d'identifier ce groupe -->
+        <div class="badges-container" id="competences" data-groupe="competences">
+
+          <!-- Chaque badge est un span cliquable avec la classe "badge-pill" -->
+          <!-- Le JS ajoute/retire la classe "selected" au clic -->
+
+          <span class="badge-pill" data-valeur="python">Python</span>
+          <span class="badge-pill" data-valeur="javascript">JavaScript</span>
+          <span class="badge-pill" data-valeur="sql">SQL</span>
+          <span class="badge-pill" data-valeur="dev-web">Développement Web</span>
+          <span class="badge-pill" data-valeur="algorithmique">Algorithmique</span>
+          <span class="badge-pill" data-valeur="bdd">Base de données</span>
+          <span class="badge-pill" data-valeur="reseaux">Réseaux</span>
+        </div>
+      </div>
+
+      <!-- ===== SECTION : Lacunes / Besoins académiques ===== -->
+      <div class="mb-5">
+
+        <!-- Libellé de la section -->
+        <p class="section-label mb-2">Lacunes / Besoins académiques</p>
+
+        <!-- Conteneur des badges cliquables de lacunes -->
+        <div class="badges-container" id="lacunes" data-groupe="lacunes">
+
+          <!-- Badges des besoins académiques — même mécanisme de sélection -->
+          <span class="badge-pill" data-valeur="securite">Sécurité informatique</span>
+          <span class="badge-pill" data-valeur="ia-ml">IA / Machine Learning</span>
+          <span class="badge-pill" data-valeur="python-lac">Python</span>
+          <span class="badge-pill" data-valeur="js-lac">JavaScript</span>
+          <span class="badge-pill" data-valeur="sql-lac">SQL</span>
+          <span class="badge-pill" data-valeur="dev-web-lac">Développement Web</span>
+        </div>
+      </div>
+
+      <!-- ===== BOUTONS : Retour + Suivant ===== -->
+      <div class="row g-3">
+
+        <!-- Bouton Retour (contour bleu) -->
+        <div class="col-md-5">
+          <button
+            type="button"
+            class="btn btn-outline-primary w-100 btn-retour"
+            onclick="retourEtape1()"
+          >
+            <!-- Flèche gauche + texte -->
+            ← Retour
+          </button>
+        </div>
+
+        <!-- Bouton Suivant (bleu plein) -->
+        <div class="col-md-7">
+          <button
+            type="button"
+            class="btn btn-primary w-100 btn-suivant"
+            onclick="validerEtape2()"
+          >
+            <!-- Texte + flèche droite -->
+            Suivant →
+          </button>
+        </div>
+      </div>
+      <!-- Fin des boutons -->
+
+    </div>
+    <!-- Fin de la carte formulaire -->
+
+    <!-- ===== LIEN : Déjà un compte ===== -->
+    <p class="mt-4 text-muted small text-center">
+      Vous avez déjà un compte ?
+      <!-- Lien vers la connexion -->
+      <a href="#" class="text-primary fw-semibold text-decoration-none">Se connecter</a>
+    </p>
+
+  </div>
+  <!-- Fin du conteneur principal -->
+
+  <!-- Bootstrap 5 JS Bundle (inclut Popper.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Script de l'étape 2 -->
+  <script src="Inscription 2.js"></script>
+</body>
+
+</html>

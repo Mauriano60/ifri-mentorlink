@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Inscription - IFRI_MentorLink</title>
+  <link href="css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="css/bootstrap-icons.min.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body style="background:var(--slate-50);min-height:100vh">
+  <div class="container py-5">
+    <div class="text-center mb-4">
+      <a href="index.html" class="d-inline-flex align-items-center justify-content-center" style="width:48px;height:48px;border-radius:12px;background:var(--blue-100);color:var(--blue-600);text-decoration:none;margin-bottom:16px">
+        <i class="bi bi-book" style="font-size:1.3rem"></i>
+      </a>
+      <h2 class="fw-bold" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Créer mon compte IFRI_MentorLink</h2>
+      <p style="color:var(--slate-500)">Rejoignez la communauté de mentorat de l'IFRI</p>
+    </div>
+
+    <!-- Stepper -->
+    <div class="stepper-wrapper mx-auto mb-4">
+      <div class="stepper-track">
+        <div class="stepper-line-bg"></div>
+        <div class="stepper-line-fill" id="stepperFill" style="width:0%"></div>
+        <div class="step-item">
+          <div class="step-circle active" id="stepCircle1">1</div>
+          <span class="step-label active" id="stepLabel1">Informations<br/>personnelles</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle inactive" id="stepCircle2">2</div>
+          <span class="step-label inactive" id="stepLabel2">Profil<br/>académique</span>
+        </div>
+        <div class="step-item">
+          <div class="step-circle inactive" id="stepCircle3">3</div>
+          <span class="step-label inactive" id="stepLabel3">Disponibilités</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Form Card -->
+    <div style="max-width:600px;margin:auto">
+      <div class="auth-form-card" style="padding:32px">
+        <form id="registerForm" onsubmit="return false">
+          <!-- Step 1 -->
+          <div id="step1" class="animate-fade-in">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Nom</label>
+                <input type="text" id="nom" class="form-control input-custom" placeholder="Dupont" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Prénom</label>
+                <input type="text" id="prenom" class="form-control input-custom" placeholder="Jean" required />
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">Email</label>
+              <input type="email" id="email" class="form-control input-custom" placeholder="jean.dupont@ifri.edu" required />
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">Téléphone</label>
+              <input type="tel" id="phone" class="form-control input-custom" placeholder="+229 01 XX XX XX XX" required />
+            </div>
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Mot de passe</label>
+                <div class="position-relative">
+                  <input type="password" id="pwd1" class="form-control input-custom" placeholder="••••••••" required />
+                  <button type="button" class="password-toggle" onclick="togglePwd('pwd1','eye1')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--slate-400)"><i id="eye1" class="bi bi-eye-slash"></i></button>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Confirmer</label>
+                <div class="position-relative">
+                  <input type="password" id="pwd2" class="form-control input-custom" placeholder="••••••••" required />
+                  <button type="button" class="password-toggle" onclick="togglePwd('pwd2','eye2')" style="position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--slate-400)"><i id="eye2" class="bi bi-eye-slash"></i></button>
+                </div>
+              </div>
+            </div>
+            <div id="step1Error" style="color:var(--red-500);font-size:.85rem;margin-bottom:12px;display:none"></div>
+            <button type="button" class="btn btn-primary-custom w-100 py-3" onclick="goStep2()">Suivant &rarr;</button>
+          </div>
+
+          <!-- Step 2 -->
+          <div id="step2" style="display:none" class="animate-fade-in">
+            <div class="row g-3 mb-3">
+              <div class="col-md-6">
+                <label class="form-label-custom">Filière</label>
+                <select id="filiere" class="filter-select w-100">
+                  <option value="">Sélectionnez...</option>
+                  <option>Génie Logiciel</option>
+                  <option>Réseaux & Télécoms</option>
+                  <option>Systèmes d'Information</option>
+                  <option>Intelligence Artificielle</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label-custom">Niveau</label>
+                <select id="niveau" class="filter-select w-100">
+                  <option value="">Sélectionnez...</option>
+                  <option>L1</option><option>L2</option><option>L3</option><option>M1</option><option>M2</option>
+                </select>
+              </div>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">Compétences (ce que vous pouvez enseigner, max 4)</label>
+              <ul class="bullet-list" id="competences">
+                <li>Python</li><li>JavaScript</li><li>SQL</li><li>Développement Web</li>
+                <li>Algorithmique</li><li>Base de données</li><li>Réseaux</li>
+                <li>IA / Machine Learning</li><li>Sécurité informatique</li>
+              </ul>
+            </div>
+            <div class="mb-3">
+              <label class="form-label-custom">Lacunes (matières où vous avez besoin d'aide, max 4)</label>
+              <ul class="bullet-list" id="lacunes">
+                <li>Python</li><li>JavaScript</li><li>SQL</li><li>Développement Web</li>
+                <li>Algorithmique</li><li>Base de données</li><li>Réseaux</li>
+                <li>IA / Machine Learning</li><li>Sécurité informatique</li>
+              </ul>
+            </div>
+            <div id="step2Error" style="color:var(--red-500);font-size:.85rem;margin-bottom:12px;display:none"></div>
+            <div class="d-flex gap-3">
+              <button type="button" class="btn btn-outline-custom flex-shrink-0" onclick="goStep(1)">&larr; Retour</button>
+              <button type="button" class="btn btn-primary-custom w-100 py-3" onclick="goStep3()">S'inscrire &rarr;</button>
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div id="step3" style="display:none" class="animate-fade-in">
+            <p style="color:var(--slate-600);font-size:.9rem;margin-bottom:16px">Ajoutez vos créneaux de disponibilité pour le mentorat.</p>
+            <div id="dispoContainer"></div>
+            <button type="button" class="btn btn-outline-custom w-100 mb-3" onclick="addDispo()"><i class="bi bi-plus-lg me-1"></i> Ajouter un créneau</button>
+            <div id="step3Error" style="color:var(--red-500);font-size:.85rem;margin-bottom:12px;display:none"></div>
+            <div class="d-flex gap-3">
+              <button type="button" class="btn btn-outline-custom flex-shrink-0" onclick="goStep(2)">&larr; Retour</button>
+              <button type="submit" class="btn btn-primary-custom w-100 py-3" onclick="handleRegister()">Finaliser l'inscription</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    var currentStep = 1;
+    var competences = [], lacunes = [];
+    var dispoCount = 0;
+
+    function togglePwd(id, eyeId) {
+      var inp = document.getElementById(id), eye = document.getElementById(eyeId);
+      if (inp.type === 'password') { inp.type = 'text'; eye.className = 'bi bi-eye'; }
+      else { inp.type = 'password'; eye.className = 'bi bi-eye-slash'; }
+    }
+
+    function updateStepper(step) {
+      for (var i = 1; i <= 3; i++) {
+        var circle = document.getElementById('stepCircle' + i);
+        var label = document.getElementById('stepLabel' + i);
+        if (i <= step) {
+          circle.className = 'step-circle active';
+          label.className = 'step-label active';
+        } else {
+          circle.className = 'step-circle inactive';
+          label.className = 'step-label inactive';
+        }
+      }
+      document.getElementById('stepperFill').style.width = ((step - 1) / 2 * 100) + '%';
+    }
+
+    function showStep(step) {
+      for (var i = 1; i <= 3; i++) document.getElementById('step' + i).style.display = i === step ? 'block' : 'none';
+      currentStep = step;
+      updateStepper(step);
+    }
+
+    function goStep(n) { showStep(n); }
+
+    function goStep2() {
+      var err = document.getElementById('step1Error');
+      var nom = document.getElementById('nom').value.trim();
+      var prenom = document.getElementById('prenom').value.trim();
+      var email = document.getElementById('email').value.trim();
+      var phone = document.getElementById('phone').value.trim();
+      var pwd1 = document.getElementById('pwd1').value;
+      var pwd2 = document.getElementById('pwd2').value;
+      err.style.display = 'none';
+      if (!nom || !prenom || !email || !phone || !pwd1 || !pwd2) {
+        err.textContent = 'Veuillez remplir tous les champs.'; err.style.display = 'block'; return;
+      }
+      if (pwd1.length < 8) { err.textContent = 'Mot de passe : minimum 8 caractères.'; err.style.display = 'block'; return; }
+      if (pwd1 !== pwd2) { err.textContent = 'Les mots de passe ne correspondent pas.'; err.style.display = 'block'; return; }
+      showStep(2);
+    }
+
+    function goStep3() {
+      var err = document.getElementById('step2Error');
+      err.style.display = 'none';
+      if (!document.getElementById('filiere').value) { err.textContent = 'Sélectionnez une filière.'; err.style.display = 'block'; return; }
+      if (!document.getElementById('niveau').value) { err.textContent = 'Sélectionnez un niveau.'; err.style.display = 'block'; return; }
+      var comps = document.querySelectorAll('#competences li.selected');
+      if (comps.length === 0) { err.textContent = 'Sélectionnez au moins une compétence.'; err.style.display = 'block'; return; }
+      showStep(3);
+    }
+
+    function handleRegister() {
+      var err = document.getElementById('step3Error');
+      err.style.display = 'none';
+      var dispoRows = document.querySelectorAll('.dispo-row');
+      if (dispoRows.length === 0) {
+        if (!confirm('Aucune disponibilité ajoutée. Voulez-vous continuer ?')) return;
+      } else {
+        for (var i = 0; i < dispoRows.length; i++) {
+          var selects = dispoRows[i].querySelectorAll('select, input');
+          var ok = true;
+          for (var j = 0; j < selects.length; j++) { if (!selects[j].value) ok = false; }
+          if (!ok) { err.textContent = 'Remplissez tous les champs du créneau ' + (i+1) + '.'; err.style.display = 'block'; return; }
+        }
+      }
+      window.location.href = 'email_envoye.html';
+    }
+
+    function addDispo() {
+      dispoCount++;
+      var div = document.createElement('div');
+      div.className = 'dispo-row animate-fade-in';
+      div.innerHTML =
+        '<select style="flex:1"><option value="">Jour</option><option>Lundi</option><option>Mardi</option><option>Mercredi</option><option>Jeudi</option><option>Vendredi</option><option>Samedi</option><option>Dimanche</option></select>' +
+        '<input type="time" style="flex:1" /><input type="time" style="flex:1" />' +
+        '<button type="button" class="btn btn-sm" style="color:var(--red-500);background:none;border:none" onclick="this.parentElement.remove()"><i class="bi bi-trash3"></i></button>';
+      document.getElementById('dispoContainer').appendChild(div);
+    }
+
+    document.querySelectorAll('.bullet-list').forEach(function(list) {
+      var items = list.querySelectorAll('li');
+      items.forEach(function(item) {
+        item.addEventListener('click', function() {
+          if (item.classList.contains('disabled-item')) return;
+          var otherList = list.id === 'competences' ? 'lacunes' : 'competences';
+          var otherItems = document.getElementById(otherList).querySelectorAll('li');
+          var isSelected = item.classList.contains('selected');
+          var selectedCount = list.querySelectorAll('li.selected').length;
+          if (!isSelected && selectedCount >= 4) {
+            alert('Maximum 4 sélections autorisées.');
+            return;
+          }
+          item.classList.toggle('selected');
+          var skill = item.textContent.trim();
+          otherItems.forEach(function(oi) {
+            if (oi.textContent.trim() === skill) {
+              oi.classList.toggle('disabled-item', item.classList.contains('selected'));
+            }
+          });
+        });
+      });
+    });
+  </script>
+</body>
+</html>

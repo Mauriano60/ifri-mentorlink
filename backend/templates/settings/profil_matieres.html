@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Param&egrave;tres - IFRI_MentorLink</title>
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap-icons.min.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <style>
+    .settings-layout { display:flex; flex-direction:row; gap:32px; max-width:1200px; margin:0 auto }
+    .settings-sidebar { width:220px; min-width:220px; background:white; border-radius:12px; padding:16px; box-shadow:0 1px 3px rgba(0,0,0,.08); height:fit-content }
+    .settings-sidebar .tab-btn { width:100%; display:flex; align-items:center; gap:12px; padding:12px 16px; border-radius:8px; font-size:.9rem; font-weight:500; background:none; border:none; color:var(--slate-600); transition:all .2s; cursor:pointer; text-decoration:none }
+    .settings-sidebar .tab-btn:hover { background:var(--slate-50) }
+    .settings-sidebar .tab-btn.active { background:var(--blue-50); color:var(--blue-600) }
+    .settings-sidebar .tab-btn.danger { color:var(--red-500) }
+    .settings-sidebar .tab-btn.danger.active { background:var(--red-50); color:var(--red-600) }
+    .settings-content { flex:1; background:white; border-radius:12px; padding:32px; box-shadow:0 1px 3px rgba(0,0,0,.08) }
+    .settings-content h3 { font-size:1.25rem; font-family:'Poppins',sans-serif; font-weight:600; color:var(--slate-900); margin-bottom:24px; padding-bottom:12px; border-bottom:1px solid var(--slate-100) }
+    .form-label-custom { font-size:.85rem; font-weight:500; color:var(--slate-700); margin-bottom:6px }
+  </style>
+</head>
+<body>
+  <div class="dashboard-layout">
+    <aside class="dash-sidebar">
+      <div class="brand"><i class="bi bi-book" style="font-size:1.3rem;color:white"></i><span>IFRI_MentorLink</span></div>
+      <div class="divider"></div>
+      <nav class="dash-nav">
+        <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2" style="width:20px"></i> Dashboard</a>
+        <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle" style="width:20px"></i> Profil</a>
+        <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text" style="width:20px"></i> Offres</a>
+        <a href="{{ url_for('demandes.demandes') }}"><i class="bi bi-inbox" style="width:20px"></i> Demandes</a>
+        <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge" style="width:20px"></i> Matching</a>
+        <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots" style="width:20px"></i> Messages</a>
+        <a href="{{ url_for('notifications.notifications') }}"><i class="bi bi-bell" style="width:20px"></i> Notifications</a>
+        <a href="{{ url_for('settings.modifier_profil_matieres') }}" class="active"><i class="bi bi-gear" style="width:20px"></i> Param&egrave;tres</a>
+        <div class="divider" style="margin:16px"></div>
+        <button class="logout-btn" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right" style="width:20px"></i> D&eacute;connexion</button>
+      </nav>
+      <div class="sidebar-user">
+        {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-sm" style="object-fit:cover" />{% else %}<div class="avatar-sm">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+        <div><div class="name">{{ user.prenom }} {{ user.nom }}</div><div class="role">{{ user.filiere_nom or '' }}</div></div>
+      </div>
+    </aside>
+
+    <div class="dash-main">
+      <header class="dash-header">
+        <h1>Param&egrave;tres</h1>
+        <div class="header-actions">
+          <button class="bell-btn" onclick="window.location.href='{{ url_for('notifications.notifications') }}'">
+            <i class="bi bi-bell" style="font-size:1.2rem"></i>
+            {% if nb_notifs > 0 %}<span class="bell-dot"></span>{% endif %}
+          </button>
+          {% if user.avatar_url %}<img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" class="avatar-circle" style="object-fit:cover" />{% else %}<div class="avatar-circle">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>{% endif %}
+          <button class="d-md-none btn btn-sm" style="color:var(--slate-500)" onclick="window.location.href='{{ url_for('auth.logout') }}'"><i class="bi bi-box-arrow-right"></i></button>
+        </div>
+      </header>
+
+      <div class="dash-content">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            {% for category, message in messages %}
+              <div class="alert alert-{{ category }} alert-dismissible fade show py-2" style="font-size:.85rem">{{ message }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>
+            {% endfor %}
+          {% endif %}
+        {% endwith %}
+
+        {% if error %}<div class="alert alert-danger alert-dismissible fade show py-2" style="font-size:.85rem">{{ error }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>{% endif %}
+        {% if success %}<div class="alert alert-success alert-dismissible fade show py-2" style="font-size:.85rem">{{ success }}<button type="button" class="btn-close py-2" data-bs-dismiss="alert"></button></div>{% endif %}
+
+        <div class="settings-layout">
+          <div class="settings-sidebar">
+            <a href="{{ url_for('settings.modifier_profil_matieres') }}" class="tab-btn active"><i class="bi bi-person-circle"></i> Compte</a>
+            <a href="{{ url_for('settings.preferences') }}" class="tab-btn"><i class="bi bi-sliders2"></i> Pr&eacute;f&eacute;rences</a>
+            <a href="{{ url_for('settings.confidentialite') }}" class="tab-btn"><i class="bi bi-eye-slash"></i> Confidentialit&eacute;</a>
+            <a href="{{ url_for('settings.supprimer_compte') }}" class="tab-btn danger"><i class="bi bi-exclamation-triangle"></i> Zone de danger</a>
+          </div>
+          <div class="settings-content">
+            <h3>Informations personnelles</h3>
+
+            <form method="POST" action="{{ url_for('settings.modifier_profil_matieres') }}" enctype="multipart/form-data">
+              <input type="hidden" name="csrf_token" value="{{ csrf_token() }}" />
+              <div class="row g-3 mb-4">
+                <div class="col-12 d-flex align-items-center gap-4 mb-2">
+                  <div class="avatar-upload-wrap">
+                    {% if user.avatar_url %}
+                      <img src="{{ url_for('static', filename=user.avatar_url.lstrip('static/')) }}" alt="Avatar" style="width:96px;height:96px;border-radius:50%;object-fit:cover;border:4px solid white;box-shadow:0 2px 8px rgba(0,0,0,.1)" />
+                    {% else %}
+                      <div class="profile-avatar" style="width:96px;height:96px;font-size:2rem">{{ user.prenom[:1]|upper }}{{ user.nom[:1]|upper }}</div>
+                    {% endif %}
+                    <div class="avatar-overlay" onclick="document.getElementById('avatarInput').click()"><i class="bi bi-camera-fill" style="color:white;font-size:1.5rem"></i></div>
+                  </div>
+                  <div>
+                    <label class="form-label-custom mb-1">Photo de profil</label>
+                    <div><input type="file" id="avatarInput" name="avatar" accept="image/*" style="display:none" onchange="previewAvatar(event)" /><i class="bi bi-pencil-fill" onclick="document.getElementById('avatarInput').click()" style="cursor:pointer;color:var(--blue-600);font-size:1.1rem" title="Modifier la photo"></i></div>
+                    <small class="text-muted">PNG, JPG ou WEBP. Max 2 Mo.</small>
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom">Pr&eacute;nom</label>
+                  <input type="text" name="prenom" class="form-control input-custom" value="{{ user.prenom }}" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom">Nom</label>
+                  <input type="text" name="nom" class="form-control input-custom" value="{{ user.nom }}" required />
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom">Fili&egrave;re</label>
+                  <select name="id_filiere" class="form-select input-custom">
+                    {% for f in filieres %}
+                    <option value="{{ f.id }}"{% if user.id_filiere == f.id %} selected{% endif %}>{{ f.nom }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label-custom">Niveau</label>
+                  <select name="id_niveau" class="form-select input-custom">
+                    {% for n in niveaux %}
+                    <option value="{{ n.id }}"{% if user.id_niveau == n.id %} selected{% endif %}>{{ n.nom }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label class="form-label-custom">Biographie</label>
+                  <textarea name="biographie" class="form-control input-custom" rows="3">{{ user.biographie or '' }}</textarea>
+                </div>
+              </div>
+
+              <div class="pt-3 mb-4" style="border-top:1px solid var(--slate-100)">
+                <h5 class="fw-semibold mb-1" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Comp&eacute;tences et lacunes</h5>
+                <p style="font-size:.8rem;color:var(--slate-500);margin-bottom:16px">Maximum 4 dans chaque cat&eacute;gorie. Une mati&egrave;re ne peut pas &ecirc;tre dans les deux.</p>
+                <div class="row g-3">
+                  <div class="col-md-6">
+                    <label class="form-label-custom mb-2">Comp&eacute;tences (max 4)</label>
+                    <div class="checkbox-group" id="compGroup">
+                      {% for m in matieres %}
+                      <label class="checkbox-item{% if m.id in mes_lacunes %} disabled-item{% endif %}">
+                        <input type="checkbox" name="competences" value="{{ m.id }}" class="skill-check" data-group="comp" data-matiere="{{ m.id }}"{% if m.id in mes_competences %} checked{% endif %}{% if m.id in mes_lacunes %} disabled{% endif %}>
+                        {{ m.nom }}
+                      </label>
+                      {% endfor %}
+                    </div>
+                    <small class="text-muted" id="compCount">0/4 s&eacute;lectionn&eacute;e(s)</small>
+                  </div>
+                  <div class="col-md-6">
+                    <label class="form-label-custom mb-2">Lacunes (max 4)</label>
+                    <div class="checkbox-group" id="lacuneGroup">
+                      {% for m in matieres %}
+                      <label class="checkbox-item{% if m.id in mes_competences %} disabled-item{% endif %}">
+                        <input type="checkbox" name="lacunes" value="{{ m.id }}" class="skill-check" data-group="lacune" data-matiere="{{ m.id }}"{% if m.id in mes_lacunes %} checked{% endif %}{% if m.id in mes_competences %} disabled{% endif %}>
+                        {{ m.nom }}
+                      </label>
+                      {% endfor %}
+                    </div>
+                    <small class="text-muted" id="lacuneCount">0/4 s&eacute;lectionn&eacute;e(s)</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="pt-3 mb-4" style="border-top:1px solid var(--slate-100)">
+                <h5 class="fw-semibold mb-3" style="font-family:'Poppins',sans-serif;color:var(--slate-900)">Disponibilit&eacute;s</h5>
+                <div id="dispoContainer">
+                  {% for d in disponibilites %}
+                  <div class="dispo-row">
+                    <select name="jour[]" class="form-select" style="flex:1;min-width:100px">
+                      <option value="">Jour</option>
+                      {% for j in ['Lundi','Mardi','Mercredi','Jeudi','Vendredi','Samedi'] %}
+                      <option value="{{ j }}"{% if d.jour_semaine == j %} selected{% endif %}>{{ j }}</option>
+                      {% endfor %}
+                    </select>
+                    <input type="time" name="heure_debut[]" class="form-control" style="flex:1;min-width:80px" title="D&eacute;but" value="{{ d.heure_debut }}" />
+                    <input type="time" name="heure_fin[]" class="form-control" style="flex:1;min-width:80px" title="Fin" value="{{ d.heure_fin }}" />
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDispo(this)" style="flex-shrink:0" title="Supprimer"><i class="bi bi-x-lg"></i></button>
+                  </div>
+                  {% else %}
+                  <div class="dispo-row">
+                    <select name="jour[]" class="form-select" style="flex:1;min-width:100px">
+                      <option value="">Jour</option>
+                      <option value="Lundi">Lundi</option>
+                      <option value="Mardi">Mardi</option>
+                      <option value="Mercredi">Mercredi</option>
+                      <option value="Jeudi">Jeudi</option>
+                      <option value="Vendredi">Vendredi</option>
+                      <option value="Samedi">Samedi</option>
+                    </select>
+                    <input type="time" name="heure_debut[]" class="form-control" style="flex:1;min-width:80px" title="D&eacute;but" />
+                    <input type="time" name="heure_fin[]" class="form-control" style="flex:1;min-width:80px" title="Fin" />
+                    <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDispo(this)" style="flex-shrink:0" title="Supprimer"><i class="bi bi-x-lg"></i></button>
+                  </div>
+                  {% endfor %}
+                </div>
+                <button type="button" class="btn btn-sm btn-outline-primary mt-2" onclick="addDispo()"><i class="bi bi-plus-lg"></i> Ajouter un cr&eacute;neau</button>
+              </div>
+
+              <div style="border-top:1px solid var(--slate-200);padding-top:24px;text-align:right">
+                <button type="submit" class="btn" style="background:var(--blue-600);color:white;padding:10px 32px;border-radius:8px">Enregistrer les modifications</button>
+              </div>
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <nav class="bottom-nav">
+      <a href="{{ url_for('users.dashboard') }}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{{ url_for('users.profil', user_id=user.id) }}"><i class="bi bi-person-circle"></i> Profil</a>
+      <a href="{{ url_for('offres.offres') }}"><i class="bi bi-file-text"></i> Offres</a>
+      <a href="{{ url_for('matching.matching') }}"><i class="bi bi-lightning-charge"></i> Matching</a>
+      <a href="{{ url_for('conversations.conversations') }}"><i class="bi bi-chat-dots"></i> Messages</a>
+    </nav>
+  </div>
+
+  <script>
+    function updateCheckboxUI() {
+      ['comp', 'lacune'].forEach(function(group) {
+        var checks = document.querySelectorAll('.' + group + 'Group input[type="checkbox"]');
+        var sel = document.querySelectorAll('.' + group + 'Group input[type="checkbox"]:checked');
+        document.getElementById(group + 'Count').textContent = sel.length + '/4 s\u00e9lectionn\u00e9e(s)';
+        checks.forEach(function(cb) {
+          if (!cb.disabled && !cb.checked && sel.length >= 4) cb.disabled = true;
+          else if (!cb.disabled && sel.length < 4) cb.disabled = false;
+        });
+      });
+    }
+
+    document.querySelectorAll('.skill-check').forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        var otherGroup = this.dataset.group === 'comp' ? 'lacune' : 'comp';
+        var matiere = this.dataset.matiere;
+        var otherCb = document.querySelector('.' + otherGroup + 'Group input[data-matiere="' + matiere + '"]');
+        var otherLabel = otherCb ? otherCb.closest('.checkbox-item') : null;
+        if (this.checked) {
+          if (otherCb) { otherCb.checked = false; otherCb.disabled = true; }
+          if (otherLabel) otherLabel.classList.add('disabled-item');
+        } else {
+          if (otherCb) otherCb.disabled = false;
+          if (otherLabel) otherLabel.classList.remove('disabled-item');
+        }
+        updateCheckboxUI();
+      });
+    });
+
+    updateCheckboxUI();
+
+    function addDispo() {
+      var container = document.getElementById('dispoContainer');
+      var row = document.createElement('div');
+      row.className = 'dispo-row';
+      row.innerHTML = '<select name="jour[]" class="form-select" style="flex:1;min-width:100px"><option value="">Jour</option><option value="Lundi">Lundi</option><option value="Mardi">Mardi</option><option value="Mercredi">Mercredi</option><option value="Jeudi">Jeudi</option><option value="Vendredi">Vendredi</option><option value="Samedi">Samedi</option></select><input type="time" name="heure_debut[]" class="form-control" style="flex:1;min-width:80px" title="D\u00e9but" /><input type="time" name="heure_fin[]" class="form-control" style="flex:1;min-width:80px" title="Fin" /><button type="button" class="btn btn-sm btn-outline-danger" onclick="removeDispo(this)" style="flex-shrink:0" title="Supprimer"><i class="bi bi-x-lg"></i></button>';
+      container.appendChild(row);
+    }
+    function removeDispo(btn) {
+      var container = document.getElementById('dispoContainer');
+      if (container.children.length > 1) btn.closest('.dispo-row').remove();
+    }
+
+    function previewAvatar(e) {
+      var file = e.target.files[0];
+      if (!file) return;
+      var reader = new FileReader();
+      reader.onload = function(ev) {
+        var wrap = document.querySelector('.avatar-upload-wrap');
+        if (wrap) {
+          var img = wrap.querySelector('img') || wrap.querySelector('.profile-avatar');
+          if (img) {
+            if (img.tagName === 'IMG') { img.src = ev.target.result; }
+            else {
+              var newImg = document.createElement('img');
+              newImg.src = ev.target.result;
+              newImg.style.cssText = 'width:96px;height:96px;border-radius:50%;object-fit:cover;border:4px solid white;box-shadow:0 2px 8px rgba(0,0,0,.1)';
+              img.parentNode.replaceChild(newImg, img);
+            }
+          }
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  </script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>
