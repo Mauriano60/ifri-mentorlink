@@ -193,7 +193,9 @@ def register():
                     error = "Une erreur s'est produite lors de la création de votre compte."
                     
             except Exception as e:
-                error = "Email ou téléphone déjà utilisé"
+                import traceback
+                print(f"[REGISTER ERREUR] {traceback.format_exc()}")
+                error = f"Erreur : {str(e)}"
                 current_step = '1'
 
     return render_template('auth/register.html', error=error, filieres=filieres, niveaux=niveaux, matieres=matieres, current_step=current_step, form_data=form_data)
