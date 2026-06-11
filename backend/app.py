@@ -10,10 +10,8 @@ socketio = SocketIO(cors_allowed_origins="*")
 def create_app():
     app = Flask(__name__)
     
-    app.config.from_object(Config)
-    app.config['SERVER_NAME'] = '127.0.0.1:5000'
-    app.config['APPLICATION_ROOT'] = '/'
-    app.config['PREFERRED_URL_SCHEME'] = 'http'
+    app.config.from_object(Config) 
+    app.config['PREFERRED_URL_SCHEME'] = 'https'
     
     mail.init_app(app)
     limiter.init_app(app)
